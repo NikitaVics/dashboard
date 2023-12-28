@@ -1,6 +1,24 @@
-/** @type {import('next').NextConfig} */
+const nextTranslatePlugin = require('next-translate-plugin');
+
+/**
+ * @type {import('next').NextConfig}
+ */
 const nextConfig = {
   reactStrictMode: true,
-}
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.tsx?$/,
+      use: [
+        {
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: true,
+          },
+        },
+      ],
+    });
+    return config;
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextTranslatePlugin(nextConfig);

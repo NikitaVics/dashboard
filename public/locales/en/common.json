@@ -1,0 +1,26 @@
+{
+    "buttons":{
+        "login" : "Login"
+    },
+    "settings":{
+        "profile": "Profile",
+        "change": "Change Password",
+        "logout":"Logout"
+    },
+    "errors":{
+        "requiredError": "This field is required",
+        "shouldBe100Char":"The value must be at most 100 characters",
+        "shouldBe225Char":"The value must be at most 255 characters",
+        "phoneNumberLengthMax":"The value must be at most {{digit}} digits",
+        "emailError": "Enter a valid email",
+        "invalidEmail":"Invalid Email Address",
+        "numberAllowed": "Only numbers are allowed",
+        "password":"Your Password must contain at least one capital letter, one number, one special character, and one lowercase letter",
+        "match":"passwords-match",
+        "confirmPassword":"Your Passwords must match to setPassword",
+        "website":"Invalid Web Address"
+    },
+    "":{
+        "": ""
+    }
+}

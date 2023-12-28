@@ -1,0 +1,23 @@
+{
+    "page": { "title": "Dashboard", "description": "Vship dashboard" },
+    "sideMenus":{
+      "title":"Main Menu",
+      "dashbords": "Dashboards",
+      "bookings":"Bookings",
+      "reports":"Reports",
+      "application":"Application",
+      "members":"Members",
+      "coach":"Coach",
+      "announcement":"Announcement"
+    },
+    "selectCountry":"Select Country",
+    "footers":{
+          
+      "copy":"© 2022, Verdant",
+      "documentation":"Documentation",
+      "support":"Support"
+  
+  
+  }
+  
+  }
