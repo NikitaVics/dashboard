@@ -3,6 +3,9 @@ import Cookies from "cookies"
 import ky from "ky"
 import { NextApiRequest, NextApiResponse } from "next"
 import login from "./auth/login"
+import getTotalMembers from "./dashboard/totalMembers"
+import getTotalRevenue from "./dashboard/totalRevenue"
+import getMembershipGrowth from "./dashboard/membershipGrowth"
 
 
 
@@ -25,6 +28,7 @@ const {
 export class BehrainClient {
   // API services to expose on the client.
  public auth
+ public dashboard
 
   constructor(
     req: NextApiRequest,
@@ -42,8 +46,8 @@ export class BehrainClient {
       hooks: {
         beforeRequest: [
           (request) => {
-            request.headers.set("Content-type", "application/json")
-            // request.headers.set("tenant", "root")
+            request.headers.set("Content-type", "application/json-patch+json")
+            request.headers.set("accept", "*/*")
             if (opts.overrideLanguage) {
               request.headers.set("Accept-Language", opts.overrideLanguage)
             }
@@ -62,7 +66,7 @@ export class BehrainClient {
               throw new Error("missing valid session")
             }
 
-            request.headers.set("Authorization", `Bearer ${accessToken}`)
+            request.headers.set("Authorization", `${accessToken}`)
           },
         ],
       },
@@ -77,7 +81,12 @@ export class BehrainClient {
   this.auth ={
     login:withApiClient(login)
   }
-
+ 
+  this.dashboard ={
+    totalMembers : withApiClient(getTotalMembers),
+    totalRevenue:withApiClient(getTotalRevenue),
+    getMembershipGrowth : withApiClient(getMembershipGrowth)
+  }
     
   }
 }

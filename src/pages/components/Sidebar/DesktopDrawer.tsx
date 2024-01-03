@@ -177,6 +177,7 @@ function DesktopDrawer() {
       transition="width 300ms cubic-bezier(0.2, 0, 0, 1) 0s"
       position="fixed"
       h="100vh"
+      bgColor="#fff"
     >
       <Flex flexDirection="column" h="full">
         <HStack

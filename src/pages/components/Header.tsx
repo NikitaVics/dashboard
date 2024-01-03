@@ -22,6 +22,7 @@ import {
   // import MoonIcon from "./Icons/MoonIcon"
   import ChakraMenu from "./Menu"
 import DesktopDrawer from "./Sidebar/DesktopDrawer"
+import TorchIcon from "./Icons/torchIcon"
   // import Search from "./Search"
   // import Dropdown from "./SelectCountry"
   // import DesktopDrawer from "./Sidebar/DesktopDrawer"
@@ -86,50 +87,19 @@ import DesktopDrawer from "./Sidebar/DesktopDrawer"
     }, [isHidden])
   
     return (
-      <Container
-        // maxW="full"
-        w="50"
-        height="64px"
-        bgColor={bgColor}
-        transition="margin 300ms cubic-bezier(0.2, 0, 0, 1) 0s"
-        // zIndex="1"
-        // position="fixed"
-        // left="0"
-        right="0"
-        {...props}
-      >
-        <Flex
-          justifyContent="space-between"
-          align="center"
-          h="full"
-          height="100%"
-          gap={"5"}
-        >
-          <Hide below="md">
-            {/* {!isLogoVisible && (
-              <Logo
-                aria-label="logo"
-                height="65px"
-                top={["32px", "12px"]}
-                cursor="pointer"
-                onClick={handleLogoClick}
-              />
-            )} */}
-  
-            {!is404 && ""}
-            <Spacer />
-          </Hide>
+    
   
          
           <Flex
-            h="full"
+            h="50"
             align="center"
-            justify="flex-end"
-            gridGap={{ base: "5", sm: "8" }}
+            justify="end"
+            // gridGap={{ base: "5", sm: "8" }}
             cursor="pointer"
+
           >
          
-            {/* <MoonIcon onClick={toggleColorMode} /> */}
+            <TorchIcon  onClick={toggleColorMode} />
           
             <ChakraMenu items={settings}>
               <MenuButton
@@ -149,8 +119,7 @@ import DesktopDrawer from "./Sidebar/DesktopDrawer"
            
            
           </Flex>
-        </Flex>
-      </Container>
+      
     )
   }
   

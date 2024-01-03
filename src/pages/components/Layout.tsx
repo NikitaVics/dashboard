@@ -1,9 +1,10 @@
-import { Box, useBreakpointValue, useColorModeValue,Text } from "@chakra-ui/react"
+import { Box, useBreakpointValue, useColorModeValue,Text, Grid } from "@chakra-ui/react"
 import React from "react"
 
 import useStore from "@/hooks/useStore"
 import PageContainer from "./PageContainer"
 import DesktopDrawer from "./Sidebar/DesktopDrawer"
+import Header from "./Header"
 
 type LayoutProps = {
   title: string
@@ -17,16 +18,18 @@ type LayoutProps = {
 
 export function Layout(props: React.PropsWithChildren<LayoutProps>) {
   const { children } = props
-  const isDesktopView = useBreakpointValue({ base: false, md: false, xl: true })
+  const isDesktopView = useBreakpointValue({ base: false, md: true, xl: true })
   const [isDrawerOpen] = useStore((state) => [state.isDrawerOpen])
   const containerShadow = useColorModeValue(
     "0px 2px 10px rgba(20, 21, 33, 0.18)",
     "0px 2px 10px rgba(20, 21, 33, 0.18)",
   )
-  const bgColor = useColorModeValue("#FFFFFF", "#30334E")
+  const bgColor = useColorModeValue("rgba(248, 248, 248, 1)", "#30334E")
 
   return (
     <>
+    <Grid >
+      
       <DesktopDrawer />
 
       <Box
@@ -35,32 +38,23 @@ export function Layout(props: React.PropsWithChildren<LayoutProps>) {
         flex="1"
         minW="0"
         transition="margin 300ms cubic-bezier(0.2, 0, 0, 1) 0s"
-        {...(isDesktopView && { ms: isDrawerOpen ? "275px" : "90px" })}
+        {...(isDesktopView && { ms: isDrawerOpen ? "275px" : "95px" })}
+      
       >
        
         <PageContainer
-          mt={{
-            base: "6",
-            lg: "14",
-          }}
+        bgColor="rgba(248, 248, 248, 1)"
           p="3"
+        
         >
-           {/* <Header
-         
-         {...(isDesktopView && { ms: isDrawerOpen ? "275px" : "90px" })}
-         {...(!isDesktopView && { ms: "90px" })}
-       /> */}
-          <Box
-            h={"100vh"}
-            borderRadius="10px"
-            boxShadow={containerShadow}
-            bgColor={bgColor}
-          >
+            <Header />
+        
             {children}
           
-          </Box>
+       
         </PageContainer>
       </Box>
+      </Grid>
     </>
   )
 }

@@ -12,5 +12,6 @@ export type User = {
   }
 
   export type Session = {
+    result: any
     token: string
   }

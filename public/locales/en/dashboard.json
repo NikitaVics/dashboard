@@ -1,0 +1,16 @@
+{
+    "dashboard" : {
+        "title" : "Admin Dashboard",
+        "totalMembers": "Total Members",
+        "totalRevenue": "Total Revenue",
+        "members": "Memberships Growth",
+        "details":"Details",
+        "bookings":"Todays Bookings",
+        "reports":"Todays Reports",
+        "application":"Membership Application",
+        "view":"View",
+        "membersList":"Members",
+        "year":"This Year",
+        "month":"This Month"
+    }
+}
