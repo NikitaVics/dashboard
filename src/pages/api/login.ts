@@ -6,6 +6,7 @@ import { NextApiRequest, NextApiResponse } from "next"
 interface LoginResponse {
   result: {
     token: string;
+    // Add other properties if needed
   };
 }
 

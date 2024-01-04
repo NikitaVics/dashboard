@@ -4,12 +4,12 @@ import { Session } from "../types"
 
 const login = async (
   httpClient: typeof ky,
-  params: { email: string; password: string },
+  params: { userNameOrEmail: string; password: string },
 ) => {
   return httpClient
     .post(`Management/AdminLogin/login`, {
       json: {
-        userNameOrEmail: params.email,
+        userNameOrEmail : params.userNameOrEmail,
         password: params.password,
       },
     })

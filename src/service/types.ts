@@ -15,3 +15,4 @@ export type User = {
     result: string[]
     token: string
   }
+
