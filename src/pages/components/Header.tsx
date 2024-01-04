@@ -1,31 +1,19 @@
 import {
     Avatar,
     AvatarBadge,
-    Container,
     Flex,
-    Hide,
+
     HTMLChakraProps,
     MenuButton,
-    Spacer,
     useColorMode,
-    useColorModeValue,
   } from "@chakra-ui/react"
-  import { Button } from "@chakra-ui/react"
   import ky from "ky"
   import { useRouter } from "next/router"
   import useTranslation from "next-translate/useTranslation"
-  import React, { useEffect, useState } from "react"
-  
-  // import BellIcon from "./Icons/BellIcon"
-  // import LanguageSwitch from "./Icons/LanguageSwitchIcon"
-  // import Logo from "./Icons/Logo"
-  // import MoonIcon from "./Icons/MoonIcon"
+  import React from "react"
+
   import ChakraMenu from "./Menu"
-import DesktopDrawer from "./Sidebar/DesktopDrawer"
-  // import Search from "./Search"
-  // import Dropdown from "./SelectCountry"
-  // import DesktopDrawer from "./Sidebar/DesktopDrawer"
-  // import HorizontalDrawer from "./Sidebar/HorizontalDrawer"
+import TorchIcon from "./Icons/torchIcon"
   
   export interface HeaderProps extends HTMLChakraProps<"header"> {
     understood?: boolean
@@ -35,11 +23,9 @@ import DesktopDrawer from "./Sidebar/DesktopDrawer"
     onDrawerToggle?: () => void
   }
   
-  export function Header(props: HeaderProps) {
-    const { is404 = false, onSmallBoxToggle } = props
+  export function Header() {
     const { t } = useTranslation("")
     const { toggleColorMode } = useColorMode()
-    const bgColor = useColorModeValue("white", "#282A42")
     const router = useRouter()
   
     const settings = [
@@ -63,73 +49,22 @@ import DesktopDrawer from "./Sidebar/DesktopDrawer"
       },
     ]
   
-    const [isHidden, setIsHidden] = useState(false)
-    const [isLogoVisible, setIsLogoVisible] = useState(true)
-  
-    const handleClick = () => {
-      setIsHidden(!isHidden)
-      setIsLogoVisible(false)
-  
-      if (onSmallBoxToggle) {
-        onSmallBoxToggle()
-      }
-    }
-  
-    const handleLogoClick = () => {
-      if (router?.route !== "/") {
-        router.push("/")
-      }
-    }
-  
-    useEffect(() => {
-      setIsLogoVisible(!isHidden)
-    }, [isHidden])
+   
   
     return (
-      <Container
-        // maxW="full"
-        w="50"
-        height="64px"
-        bgColor={bgColor}
-        transition="margin 300ms cubic-bezier(0.2, 0, 0, 1) 0s"
-        // zIndex="1"
-        // position="fixed"
-        // left="0"
-        right="0"
-        {...props}
-      >
-        <Flex
-          justifyContent="space-between"
-          align="center"
-          h="full"
-          height="100%"
-          gap={"5"}
-        >
-          <Hide below="md">
-            {/* {!isLogoVisible && (
-              <Logo
-                aria-label="logo"
-                height="65px"
-                top={["32px", "12px"]}
-                cursor="pointer"
-                onClick={handleLogoClick}
-              />
-            )} */}
-  
-            {!is404 && ""}
-            <Spacer />
-          </Hide>
+    
   
          
           <Flex
-            h="full"
+            h="50"
             align="center"
-            justify="flex-end"
-            gridGap={{ base: "5", sm: "8" }}
+            justify="end"
+            // gridGap={{ base: "5", sm: "8" }}
             cursor="pointer"
+
           >
          
-            {/* <MoonIcon onClick={toggleColorMode} /> */}
+            <TorchIcon  onClick={toggleColorMode} />
           
             <ChakraMenu items={settings}>
               <MenuButton
@@ -149,8 +84,7 @@ import DesktopDrawer from "./Sidebar/DesktopDrawer"
            
            
           </Flex>
-        </Flex>
-      </Container>
+      
     )
   }
   

@@ -5,12 +5,13 @@ export type User = {
     firstName: string
     lastName: string
     email: string
-    isActive: Boolean
-    emailConfirmed: Boolean
+    isActive: boolean
+    emailConfirmed: boolean
     phoneNumber: string
     imageUrl: string
   }
 
   export type Session = {
+    result: string[]
     token: string
   }

@@ -3,7 +3,11 @@ import Cookies from "cookies"
 import { HTTPError } from "ky"
 import { NextApiRequest, NextApiResponse } from "next"
 
-
+interface LoginResponse {
+  result: {
+    token: string;
+  };
+}
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const cookie = new Cookies(req, res)
@@ -17,17 +21,25 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       res.status(401).end()
       return
     }
-
-    const { token: access_token } = await client.auth.login(body)
+   
+  
+    
+    const { result } = await client.auth.login(body) as unknown as LoginResponse;
+    const access_token = result.token;
     const date = new Date()
-    //Cookie expiry time for 24hrs
+    // Cookie expiry time for 24hrs
     const expiryTime = date.setTime(date.getTime() + 23 * 59 * 59 * 1000)
 
-    await cookie.set("access_token", access_token, {
+    const tokenWithBearer = `Bearer ${access_token}`;
+
+    await cookie.set("access_token", tokenWithBearer, {
       expires: new Date(expiryTime),
-    })
+    });
+
+   
 
     res.status(200).json({ message: "Login Successfully" })
+ 
   } catch (error) {
     if (error instanceof HTTPError && error.response.status === 401) {
       res.status(401).json({ message: "Invalid Email or Password" })

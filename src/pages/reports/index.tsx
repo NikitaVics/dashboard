@@ -2,13 +2,13 @@ import { Center, Heading } from "@chakra-ui/react"
 import Layout from "../components/Layout"
 import PageContainer from "../components/PageContainer"
 
-const Bookings = () => {
+const Reports = () => {
     return (
       <>
       <Layout title={""} description={""}>
         <PageContainer>
       <Center>
-      <Heading>Bookings Page</Heading>
+      <Heading>Reports Page</Heading>
       </Center>
       </PageContainer>
       </Layout>
@@ -16,4 +16,4 @@ const Bookings = () => {
     )
 }
 
-export default Bookings
+export default Reports

@@ -10,13 +10,10 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
-import { useRouter } from "next/router"
 import useTranslation from "next-translate/useTranslation"
 import React, { FunctionComponent, ReactElement, useState } from "react"
 
 import useStore from "@/hooks/useStore"
-
-import DotIcon from "../Icons/DotIcon"
 import MenuIcon from "../Icons/MenuIcon"
 import Behrain from "../Icons/Behrain"
 import DashboardIcon from "../Icons/Dashboard"
@@ -36,9 +33,9 @@ interface NavLink {
 export const dashboards: Array<NavLink> = [
   { name: "dashbords", path: routePath.dashboard, icon: DashboardIcon },
   { name: "bookings", path: routePath.booking, icon: BookingsIcon },
-  { name: "reports", path: "", icon: ReportsIcon },
-  { name: "application", path: "", icon: ApplicationIcon },
-  { name: "members", path: "", icon: MembersIcon },
+  { name: "reports", path: routePath.reports, icon: ReportsIcon },
+  { name: "application", path:  routePath.application, icon: ApplicationIcon },
+  { name: "members", path: routePath.members, icon: MembersIcon },
   { name: "coach", path: "", icon: CoachIcon },
   { name: "announcement", path: "", icon: AnnouncementIcon },
 ]
@@ -55,7 +52,6 @@ function DesktopDrawer() {
     defaultIsOpen: isDrawerOpen,
   })
   const { t } = useTranslation("home")
-  const router = useRouter()
 
   // const menuTitleBg = useColorModeValue("#e6e6e6", "#53577a")
   const openDrawer = React.useCallback(() => {
@@ -177,6 +173,7 @@ function DesktopDrawer() {
       transition="width 300ms cubic-bezier(0.2, 0, 0, 1) 0s"
       position="fixed"
       h="100vh"
+      bgColor="#fff"
     >
       <Flex flexDirection="column" h="full">
         <HStack

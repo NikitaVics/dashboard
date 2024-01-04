@@ -1,7 +1,7 @@
-import { chakra, HTMLChakraProps, useColorModeValue } from "@chakra-ui/react"
+import { chakra, HTMLChakraProps } from "@chakra-ui/react"
 
 export const Logo = (props: HTMLChakraProps<"svg">) => {
-  const fillColor = useColorModeValue("#4C4E64", "#EAEAFF")
+ 
   return (
     <chakra.svg
       width="78px !important"
@@ -12,7 +12,7 @@ export const Logo = (props: HTMLChakraProps<"svg">) => {
      
     >
    
-<g clip-path="url(#clip0_1820_4230)">
+<g clipPath="url(#clip0_1820_4230)">
 <path d="M46.8516 15.2258L46.482 15.2478C46.379 15.0692 46.0975 14.5961 45.9262 14.3097C46.4208 14.2288 46.8762 14.023 47.2875 13.7142C47.0477 14.5252 46.8516 15.2258 46.8516 15.2258Z" fill="#3DB049"/>
 <path d="M44.7999 1.8902C46.9594 1.71382 48.911 4.10755 49.1583 7.24107C49.4033 10.3697 47.8533 13.055 45.691 13.234C45.4951 13.2511 45.4708 13.2437 45.2773 13.2168C44.9368 11.9551 44.5231 8.895 44.0529 8.02516C43.6269 7.24107 41.8834 6.85402 41.3128 6.9129C41.4157 4.21788 42.8628 2.04942 44.7999 1.8902Z" fill="#3DB049"/>
 <mask id="mask0_1820_4230" style={{ maskType: "luminance" }} maskUnits="userSpaceOnUse" x="0" y="-1" width="35" height="62">

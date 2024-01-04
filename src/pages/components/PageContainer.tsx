@@ -2,7 +2,6 @@ import { Container, ContainerProps } from "@chakra-ui/layout"
 import { Portal, Progress, Spinner, useBreakpointValue } from "@chakra-ui/react"
 import { motion } from "framer-motion"
 import React from "react"
-import { Header } from "./Header"
 
 interface PageContainerProps extends ContainerProps {
   isLoading?: boolean
@@ -15,15 +14,17 @@ const PageContainer = React.forwardRef<HTMLDivElement, PageContainerProps>(
 
     return (
       <Container
-        ref={ref}
-        pos="relative"
-        px={{ base: 2, md: 2, lg: 4 }}
-        pb="8"
-        flex="1"
-        maxW="15xl"
-        mx="0"
-        {...rest}
+      ref={ref}
+      pos="relative"
+      px={{ base: 2, md: 2, lg: 4 }}
+      pb="8"
+      flex="1"
+      bgColor="rgba(248, 248, 248, 1)"
+      maxW="15xl"
+      mx="0"
+      {...rest}
       >
+       
       
         {isLoading ? (
           <Portal>
@@ -51,6 +52,7 @@ const PageContainer = React.forwardRef<HTMLDivElement, PageContainerProps>(
               {...(isMobileView && { marginLeft: "-40px" })}
               height="80px"
               width="80px"
+              
             />
           </Portal>
         ) : (
@@ -60,8 +62,9 @@ const PageContainer = React.forwardRef<HTMLDivElement, PageContainerProps>(
             style={{ height: "inherit" }}
             initial={{ y: -16, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
+            
           >
-          
+         
             {children}
          
           </motion.div>
