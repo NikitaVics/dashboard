@@ -2,7 +2,6 @@ import { Container, ContainerProps } from "@chakra-ui/layout"
 import { Portal, Progress, Spinner, useBreakpointValue } from "@chakra-ui/react"
 import { motion } from "framer-motion"
 import React from "react"
-import { Header } from "./Header"
 
 interface PageContainerProps extends ContainerProps {
   isLoading?: boolean

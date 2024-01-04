@@ -1,4 +1,4 @@
-import { Box, useBreakpointValue, useColorModeValue,Text, Grid } from "@chakra-ui/react"
+import { Box, useBreakpointValue, Grid } from "@chakra-ui/react"
 import React from "react"
 
 import useStore from "@/hooks/useStore"
@@ -20,11 +20,11 @@ export function Layout(props: React.PropsWithChildren<LayoutProps>) {
   const { children } = props
   const isDesktopView = useBreakpointValue({ base: false, md: true, xl: true })
   const [isDrawerOpen] = useStore((state) => [state.isDrawerOpen])
-  const containerShadow = useColorModeValue(
-    "0px 2px 10px rgba(20, 21, 33, 0.18)",
-    "0px 2px 10px rgba(20, 21, 33, 0.18)",
-  )
-  const bgColor = useColorModeValue("rgba(248, 248, 248, 1)", "#30334E")
+  // const containerShadow = useColorModeValue(
+  //   "0px 2px 10px rgba(20, 21, 33, 0.18)",
+  //   "0px 2px 10px rgba(20, 21, 33, 0.18)",
+  // )
+  // const bgColor = useColorModeValue("rgba(248, 248, 248, 1)", "#30334E")
 
   return (
     <>

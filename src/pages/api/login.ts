@@ -3,7 +3,11 @@ import Cookies from "cookies"
 import { HTTPError } from "ky"
 import { NextApiRequest, NextApiResponse } from "next"
 
-
+interface LoginResponse {
+  result: {
+    token: string;
+  };
+}
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const cookie = new Cookies(req, res)
@@ -18,7 +22,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return
     }
    
-    const { result: { token: access_token } } = await client.auth.login(body);
+  
+    
+    const { result } = await client.auth.login(body) as unknown as LoginResponse;
+    const access_token = result.token;
     const date = new Date()
     // Cookie expiry time for 24hrs
     const expiryTime = date.setTime(date.getTime() + 23 * 59 * 59 * 1000)

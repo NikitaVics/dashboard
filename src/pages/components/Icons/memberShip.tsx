@@ -1,7 +1,7 @@
-import { chakra, HTMLChakraProps, useColorModeValue } from "@chakra-ui/react"
+import { chakra, HTMLChakraProps } from "@chakra-ui/react"
 
 export const MemberShip = (props: HTMLChakraProps<"svg">) => {
-  const fillColor = useColorModeValue("#4C4E64", "#EAEAFF")
+ 
   return (
     <chakra.svg
     width="178px !important"

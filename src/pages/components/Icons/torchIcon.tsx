@@ -1,8 +1,7 @@
-import { chakra, HTMLChakraProps, useColorModeValue } from "@chakra-ui/react";
+import { chakra, HTMLChakraProps } from "@chakra-ui/react";
 
 export const TorchIcon = (props: HTMLChakraProps<"div"> & { isLight?: boolean }) => {
-  const fillColor = useColorModeValue("#4C4E64", "#EAEAFF");
-
+ 
   return (
     <chakra.div display="flex" alignItems="center" width="40px" height="40px" {...props}>
       <svg width="21" height="15" viewBox="0 0 21 15" fill="none">

@@ -18,6 +18,7 @@ interface MonthData {
   value: number;
 }
 
+
 interface CustomTooltipProps {
   active: boolean;
   payload?: { value: number }[];
@@ -42,25 +43,11 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
         borderRadius="5px"
         boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
         position="relative"
-       width= '54px'
-      
+        width="54px"
       >
-         <Flex justifyContent="center" alignItems="center" height="100%">
+        <Flex justifyContent="center" alignItems="center" height="100%">
           <Text>{`${point.value}`}</Text>
         </Flex>
-        {/* <Box
-          className="custom-arrow"
-          
-          position="absolute"
-          bottom="-15px"
-          left="50%"
-          width=""
-          height="0"
-          borderLeft="8px solid transparent"
-          borderRight="8px solid transparent"
-          borderTop="15px solid transparent"
-          transform="translateX(-50%)"
-        /> */}
       </Box>
     );
   }
@@ -69,34 +56,34 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
 };
 
 
-const MonthTabs: React.FC = () => {
 
+const BookingsGraph: React.FC = () => {
 
-  const { data: yearlyGraph } = useSWR<YearlyGraphItem[]>("/api/dashboard/yearlyGrowth");
+  const { data: yearlyGraph } = useSWR<YearlyGraphItem[]>("/api/dashboard/bookingGrowth");
 
-  const monthData: MonthData[] = [
-    { month: '', value: 0 },
-    ...(yearlyGraph || []).map((item: YearlyGraphItem) => ({
-      month: item.monthName,
-      value: item.growth,
-    })),
-  ];
- 
+   const monthData: MonthData[] = [
+  { month: '', value: 0 },
+  ...(yearlyGraph || []).map((item: YearlyGraphItem) => ({
+    month: item.monthName,
+    value: item.growth,
+  })),
+];
+
+      
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const chartRef = useRef<any>(null);
+const chartRef = useRef<any>(null);
 
 
+ 
 
- const { t} = useTranslation("dashboard")
-
+ const {t} = useTranslation("dashboard")
   return (
-    <Box borderWidth="1px" p={4} mx={4}border="none">
-     <Text fontSize={"24px"} fontWeight={"700"}>{t(`dashboard.membershipGrowth`)}</Text>
+    <Box borderWidth="1px" p={4} mx={4} border="none">
+      <Text fontSize={"24px"} fontWeight={"700"}>{t(`dashboard.bookingsGrowth`)}</Text>
       <Text fontSize={"16px"} fontWeight={"500"} mt={5} mb={5}>{t(`dashboard.year`)}</Text>
-      <ResponsiveContainer width="100%" height={300}>
-        
-        <AreaChart data={monthData} ref={chartRef} margin={{ bottom: 20 }}>
-        <XAxis dataKey="month" tickLine={false} axisLine={false} orientation="bottom"  interval={0}
+      <ResponsiveContainer width="100%" height={300} >   
+        <AreaChart data={monthData} ref={chartRef} margin={{ bottom: 20 }} >
+          <XAxis dataKey="month" tickLine={false} axisLine={false} orientation="bottom"  interval={0}
             textAnchor="end"
             dy={20}
             />
@@ -117,4 +104,4 @@ const MonthTabs: React.FC = () => {
   );
 };
 
-export default MonthTabs;
+export default BookingsGraph;

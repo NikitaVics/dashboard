@@ -1,32 +1,19 @@
 import {
     Avatar,
     AvatarBadge,
-    Container,
     Flex,
-    Hide,
+
     HTMLChakraProps,
     MenuButton,
-    Spacer,
     useColorMode,
-    useColorModeValue,
   } from "@chakra-ui/react"
-  import { Button } from "@chakra-ui/react"
   import ky from "ky"
   import { useRouter } from "next/router"
   import useTranslation from "next-translate/useTranslation"
-  import React, { useEffect, useState } from "react"
-  
-  // import BellIcon from "./Icons/BellIcon"
-  // import LanguageSwitch from "./Icons/LanguageSwitchIcon"
-  // import Logo from "./Icons/Logo"
-  // import MoonIcon from "./Icons/MoonIcon"
+  import React from "react"
+
   import ChakraMenu from "./Menu"
-import DesktopDrawer from "./Sidebar/DesktopDrawer"
 import TorchIcon from "./Icons/torchIcon"
-  // import Search from "./Search"
-  // import Dropdown from "./SelectCountry"
-  // import DesktopDrawer from "./Sidebar/DesktopDrawer"
-  // import HorizontalDrawer from "./Sidebar/HorizontalDrawer"
   
   export interface HeaderProps extends HTMLChakraProps<"header"> {
     understood?: boolean
@@ -36,11 +23,9 @@ import TorchIcon from "./Icons/torchIcon"
     onDrawerToggle?: () => void
   }
   
-  export function Header(props: HeaderProps) {
-    const { is404 = false, onSmallBoxToggle } = props
+  export function Header() {
     const { t } = useTranslation("")
     const { toggleColorMode } = useColorMode()
-    const bgColor = useColorModeValue("white", "#282A42")
     const router = useRouter()
   
     const settings = [
@@ -64,27 +49,7 @@ import TorchIcon from "./Icons/torchIcon"
       },
     ]
   
-    const [isHidden, setIsHidden] = useState(false)
-    const [isLogoVisible, setIsLogoVisible] = useState(true)
-  
-    const handleClick = () => {
-      setIsHidden(!isHidden)
-      setIsLogoVisible(false)
-  
-      if (onSmallBoxToggle) {
-        onSmallBoxToggle()
-      }
-    }
-  
-    const handleLogoClick = () => {
-      if (router?.route !== "/") {
-        router.push("/")
-      }
-    }
-  
-    useEffect(() => {
-      setIsLogoVisible(!isHidden)
-    }, [isHidden])
+   
   
     return (
     

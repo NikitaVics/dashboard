@@ -1,4 +1,5 @@
 import "@fontsource/inter/500.css"
+import React from "react"
 
 import type { AppProps } from "next/app"
 import { useRouter } from "next/router"
@@ -7,8 +8,6 @@ import { SWRConfig } from "swr"
 
 import CustomChakraProvider from "./components/CustomChakraProvider"
 import UserProvider from "@/hooks/useUser"
-import Layout from "./components/Layout"
-
 export class CustomError extends Error {
   info
   status
