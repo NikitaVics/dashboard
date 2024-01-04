@@ -45,7 +45,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const loginSchema = yup.object().shape({
-      email: yup
+      userNameOrEmail: yup
         .string()
         .required("This Field is Required"),
       password: yup
@@ -111,7 +111,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
           localStorage.removeItem("myapp-password")
         }
         const response = await ky
-          .post("/api/login", { json: { email, password } })
+          .post("/api/login", { json: { userNameOrEmail : email, password : password } })
           .json()
         if (response) {
           router.push("/")
@@ -202,7 +202,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
                   <Formik
                     enableReinitialize
                     initialValues={{
-                      email: email || "",
+                      userNameOrEmail: email || "",
                       password: password || "",
                       rememberMe: rememberMe,
                     }}
@@ -220,7 +220,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
                           <Box w={{ base: "100%", md: "380px", sm: "380px" }} mt={10}>
                             <InputGroup mt="20px">
                               <InputControl
-                                name="email"
+                                name="userNameOrEmail"
                                 inputProps={{
                                   type: "text",
                              
