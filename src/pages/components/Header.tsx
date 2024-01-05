@@ -56,11 +56,13 @@ import TorchIcon from "./Icons/torchIcon"
   
          
           <Flex
-            h="50"
+            
             align="center"
             justify="end"
             // gridGap={{ base: "5", sm: "8" }}
             cursor="pointer"
+            m={2}
+            py={10}
 
           >
          

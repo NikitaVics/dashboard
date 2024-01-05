@@ -8,6 +8,7 @@ import {
   ListIcon,
   ListItem,
   Text,
+  useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react"
 import useTranslation from "next-translate/useTranslation"
@@ -47,6 +48,9 @@ function DesktopDrawer() {
     state.isDrawerOpen,
     state.setIsDrawerOpen,
   ])
+  
+  const hoverColor = useColorModeValue("#fff","black")
+  const iconColor = useColorModeValue("rgba(252, 252, 252, 1)","black")
 
   const { isOpen, onOpen, onClose } = useDisclosure({
     defaultIsOpen: isDrawerOpen,
@@ -98,14 +102,14 @@ function DesktopDrawer() {
           borderRadius="4px"
           _hover={{
             bgColor: "green.500",
-            color: "light.100",
+            color: hoverColor,
            
           }}
           _focus={{
             outline: "none",
           }}
           _activeLink={{
-            color: "white",
+            color:hoverColor,
             bgColor: "gray.850",
             _before: {
               content: '""',
@@ -121,7 +125,7 @@ function DesktopDrawer() {
             as={icon}
             mx={isDrawerOpen ? 5 : 4}
             justifyContent="center"
-            stroke={isHovered ? "rgba(252, 252, 252, 1)" : "rgba(124, 124, 125, 1)"}
+            stroke={isHovered ? iconColor : "rgba(124, 124, 125, 1)"}
             alignItems="center"
             textAlign="center"
          
@@ -164,7 +168,7 @@ function DesktopDrawer() {
       )}
     </Flex>
   )
-
+const bgColor = useColorModeValue("#fff","rgba(14, 14, 14, 1)")
   return (
     <Box
       aria-label="leftNavigation"
@@ -173,7 +177,8 @@ function DesktopDrawer() {
       transition="width 300ms cubic-bezier(0.2, 0, 0, 1) 0s"
       position="fixed"
       h="100vh"
-      bgColor="#fff"
+      bgColor={bgColor}
+      color={"rgba(124, 124, 125, 1)"}
     >
       <Flex flexDirection="column" h="full">
         <HStack

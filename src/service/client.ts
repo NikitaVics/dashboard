@@ -8,6 +8,7 @@ import getTotalRevenue from "./dashboard/totalRevenue"
 import getMembershipGrowth from "./dashboard/membershipGrowth"
 import getYearlyGrowth from "./dashboard/yearlyGrowth"
 import getBookingGrowth from "./dashboard/bookingGrowth"
+import getMembersList from "./members/getMembers"
 
 
 
@@ -31,6 +32,7 @@ export class BehrainClient {
   // API services to expose on the client.
  public auth
  public dashboard
+ public members
 
   constructor(
     req: NextApiRequest,
@@ -90,6 +92,10 @@ export class BehrainClient {
     getMembershipGrowth : withApiClient(getMembershipGrowth),
     yearlyGrowth : withApiClient(getYearlyGrowth),
     getBookingGrowth : withApiClient(getBookingGrowth)
+  }
+
+  this.members = {
+    getMembersList : withApiClient(getMembersList)
   }
     
   }

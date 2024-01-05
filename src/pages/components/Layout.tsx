@@ -24,7 +24,7 @@ export function Layout(props: React.PropsWithChildren<LayoutProps>) {
   //   "0px 2px 10px rgba(20, 21, 33, 0.18)",
   //   "0px 2px 10px rgba(20, 21, 33, 0.18)",
   // )
-  // const bgColor = useColorModeValue("rgba(248, 248, 248, 1)", "#30334E")
+ 
 
   return (
     <>
@@ -38,16 +38,17 @@ export function Layout(props: React.PropsWithChildren<LayoutProps>) {
         flex="1"
         minW="0"
         transition="margin 300ms cubic-bezier(0.2, 0, 0, 1) 0s"
-        {...(isDesktopView && { ms: isDrawerOpen ? "275px" : "95px" })}
-      
+        {...(isDesktopView && { ms: isDrawerOpen ? "300px" : "170px" })}
+       
       >
+          <Header />
        
         <PageContainer
-        bgColor="rgba(248, 248, 248, 1)"
+       
           p="3"
         
         >
-            <Header />
+          
         
             {children}
           

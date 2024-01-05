@@ -35,8 +35,8 @@ const styles = {
     // },
     body: {
       height: "100%",
-      color: mode("light.200", "dark.200")(props),
-      background: mode("rgba(248, 248, 248, 1)", "dark.500")(props),
+      color: mode("rgba(29, 29, 31, 1)", "rgba(224, 224, 226, 1)")(props),
+      background: mode("rgba(248, 248, 248, 1)", "rgba(0, 0, 0, 0.02)")(props),
     },
   }),
 }
