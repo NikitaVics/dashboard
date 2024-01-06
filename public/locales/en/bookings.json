@@ -1,0 +1,11 @@
+{
+    "bookings" : {
+        "title" : "Booking Management",
+        "totalBookings": "Total Bookings",
+        "cancelledBookings": "Cancelled Bookings",
+        "members": "Peak booking hour",
+        "day":"Today"
+        
+
+    }
+}

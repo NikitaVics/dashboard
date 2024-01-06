@@ -5,8 +5,8 @@ module.exports = {
       "*": ["home", "common"],
       "/": ["home", "common"],
       "/login":["auth"],
-      "/dashboard":["dashboard"]
-     
+      "/dashboard":["dashboard"],
+      "/bookings":["bookings"]
     },
     loadLocaleFrom: async (lang, ns) => {
       const translations = await import(`./public/locales/${lang}/${ns}.json`);

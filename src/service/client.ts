@@ -6,6 +6,9 @@ import login from "./auth/login"
 import getTotalMembers from "./dashboard/totalMembers"
 import getTotalRevenue from "./dashboard/totalRevenue"
 import getMembershipGrowth from "./dashboard/membershipGrowth"
+import getTotalBookings from "./bookings/totalBookings"
+import getCancelledBookings from "./bookings/cancelledBookings"
+import getPeakBookingHour from "./bookings/peakBookingHour"
 
 
 
@@ -29,6 +32,7 @@ export class BehrainClient {
   // API services to expose on the client.
  public auth
  public dashboard
+ public bookings
 
   constructor(
     req: NextApiRequest,
@@ -86,7 +90,13 @@ export class BehrainClient {
     totalMembers : withApiClient(getTotalMembers),
     totalRevenue:withApiClient(getTotalRevenue),
     getMembershipGrowth : withApiClient(getMembershipGrowth)
-  }
+  } 
+
+  this.bookings ={
+    totalBookings : withApiClient(getTotalBookings),
+    cancelledBookings:withApiClient(getCancelledBookings),
+    peakbookingHour : withApiClient(getPeakBookingHour)
+  } 
     
   }
 }
