@@ -10,7 +10,7 @@ function Home() {
   const { isLoading } = useUser()
   return (
     <>
-      <Layout title={t("page.title")} description={t("page.description")}>
+      <Layout  description={t("page.description")} title={""}>
        <PageContainer
          isLoading={isLoading}
          as="section"

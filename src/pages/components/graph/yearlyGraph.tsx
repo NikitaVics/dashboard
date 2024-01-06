@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import {
   XAxis,
   YAxis,
@@ -32,12 +32,13 @@ interface YearlyGraphItem {
 const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
   if (active && payload && payload.length) {
     const point = payload[0];
+    const bgColor = useColorModeValue("rgba(255, 255, 255, 0.9)","rgba(14, 14, 14, 1)")
     return (
       <Box
         className="custom-tooltip"
         transform="translate(-50%, -50%)"
         padding="8px"
-        backgroundColor="rgba(255, 255, 255, 0.9)"
+        backgroundColor={bgColor}
         border="1px solid #88DCA0"
         borderRadius="5px"
         boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
@@ -81,6 +82,8 @@ const MonthTabs: React.FC = () => {
       value: item.growth,
     })),
   ];
+
+  const color2 = useColorModeValue("rgba(67, 67, 69, 1)","rgba(224, 224, 226, 1)")
  
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const chartRef = useRef<any>(null);
@@ -90,7 +93,7 @@ const MonthTabs: React.FC = () => {
  const { t} = useTranslation("dashboard")
 
   return (
-    <Box borderWidth="1px" p={4} mx={4}border="none">
+    <Box borderWidth="1px" p={4} mx={4 } border="none">
      <Text fontSize={"24px"} fontWeight={"700"}>{t(`dashboard.membershipGrowth`)}</Text>
       <Text fontSize={"16px"} fontWeight={"500"} mt={5} mb={5}>{t(`dashboard.year`)}</Text>
       <ResponsiveContainer width="100%" height={300}>
@@ -99,14 +102,17 @@ const MonthTabs: React.FC = () => {
         <XAxis dataKey="month" tickLine={false} axisLine={false} orientation="bottom"  interval={0}
             textAnchor="end"
             dy={20}
+            tick={{ fill: color2 }} 
             />
           <YAxis hide={true} />
           <Tooltip content={<CustomTooltip active={false} />} cursor={{stroke:"rgba(78, 203, 113, 1)" ,strokeWidth:"2px", strokeDasharray :"5 5"}} />
           <defs>
             <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="rgba(75,200,110,0.14)" stopOpacity={1} />
-              <stop offset="70%" stopColor="rgba(255,255,255,1)" stopOpacity={1} />
-              <stop offset="100%" stopColor="#fff" stopOpacity={1} />
+            <stop offset="0%" stopColor="rgba(75,200,110,0.14)" stopOpacity={3} />
+              <stop offset="70%" stopColor="rgba(75,200,110,0.14)" stopOpacity={0.5} />
+              <stop offset="0%" stopColor="rgba(75,200,110,0.14)" stopOpacity={0.1} />
+              {/* <stop offset="70%" stopColor="rgba(255,255,255,1)" stopOpacity={1} /> */}
+              {/* <stop offset="100%" stopColor="#fff" stopOpacity={1} /> */}
             </linearGradient>
           </defs>
           <Area type="natural" dataKey="value" stroke="rgba(78, 203, 113, 1)" strokeWidth={"3px"} fill="url(#colorGradient)" />

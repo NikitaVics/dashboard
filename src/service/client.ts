@@ -8,6 +8,11 @@ import getTotalRevenue from "./dashboard/totalRevenue"
 import getMembershipGrowth from "./dashboard/membershipGrowth"
 import getYearlyGrowth from "./dashboard/yearlyGrowth"
 import getBookingGrowth from "./dashboard/bookingGrowth"
+import getMembersList from "./members/getMembers"
+import getMemberDetail from "./members/getMembersDetail"
+import getSuccessBookings from "./members/successBookings"
+import getCancelledBookings from "./members/cancelledBookings"
+import ActivateMember from "./members/ActivateMember"
 
 
 
@@ -31,6 +36,7 @@ export class BehrainClient {
   // API services to expose on the client.
  public auth
  public dashboard
+ public members
 
   constructor(
     req: NextApiRequest,
@@ -90,6 +96,14 @@ export class BehrainClient {
     getMembershipGrowth : withApiClient(getMembershipGrowth),
     yearlyGrowth : withApiClient(getYearlyGrowth),
     getBookingGrowth : withApiClient(getBookingGrowth)
+  }
+
+  this.members = {
+    getMembersList : withApiClient(getMembersList),
+    getMemberDetail : withApiClient(getMemberDetail),
+    getSuccessBookings : withApiClient(getSuccessBookings),
+    getCancelledBookings : withApiClient(getCancelledBookings),
+    ActivateMember: withApiClient(ActivateMember)
   }
     
   }

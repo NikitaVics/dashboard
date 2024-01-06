@@ -5,7 +5,8 @@ module.exports = {
       "*": ["home", "common"],
       "/": ["home", "common"],
       "/login":["auth"],
-      "/dashboard":["dashboard"]
+      "/dashboard":["dashboard"],
+      "/members":["members"]
      
     },
     loadLocaleFrom: async (lang, ns) => {
