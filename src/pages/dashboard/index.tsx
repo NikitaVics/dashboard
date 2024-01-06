@@ -1,4 +1,4 @@
-import { Box, Text, Grid, GridItem, HStack, Heading, Flex, Stack, Button, Menu, MenuButton, MenuItem, MenuList, Hide } from "@chakra-ui/react"
+import { Box, Text, Grid, GridItem, HStack, Flex, Stack, Button, Menu, MenuButton, MenuItem, MenuList, Hide, useColorModeValue } from "@chakra-ui/react"
 import Layout from "../components/Layout"
 import PageContainer from "../components/PageContainer"
 import useTranslation from "next-translate/useTranslation"
@@ -26,7 +26,7 @@ const Dashboard = () => {
     const { data: membershipGrowth } = useSWR("/api/dashboard/membershipGrowth")
 
 
-   
+   const bgColor2 = useColorModeValue("rgba(248, 248, 248, 1)","rgba(0, 0, 0, 0.02)")
     const router = useRouter()
 
   const [selectedComponent, setSelectedComponent] = useState('membershipGrowth');
@@ -34,11 +34,16 @@ const Dashboard = () => {
   const handleMenuItemClick = (component: string) => {
     setSelectedComponent(component);
   };
+
+  const bgColor = useColorModeValue("light.300","dark.600")
+  const color  = useColorModeValue("dark.700","light.400")
+  const color2  = useColorModeValue("dark.400","light.50")
+  const menuBg = useColorModeValue("","rgba(20, 20, 20, 1)")
   
     return (
-        <Layout title={""} description={""}>
-            <PageContainer>
-                <Heading>{t(`dashboard.title`)}</Heading>
+        <Layout title = {t(`dashboard.title`)} description={""} >
+            <PageContainer bgColor={bgColor2}>
+               
      
         <Grid
          templateRows="repeat(1, 1fr)"
@@ -50,15 +55,15 @@ const Dashboard = () => {
          gap="5"
          mt="10">
         <GridItem rowSpan={1} colSpan={1}>
-        <Box  bgColor="#fff" h="139px"   borderRadius="20px" px={6} py={6}>
+        <Box  bgColor={bgColor} h="139px"   borderRadius="20px" px={6} py={6}>
             <Flex justify="space-between">
-            <Text color="rgba(29, 29, 31, 1)">{t(`dashboard.totalMembers`)}</Text>
+            <Text color={color}>{t(`dashboard.totalMembers`)}</Text>
             <CalenderIcon />
             </Flex>
             <Flex justify={"space-between"} mt={10}>
               <HStack>
               <Text fontSize={"16px"} fontWeight={"700"}>{membersList}</Text>
-              <Text fontSize={"13px"} fontWeight="400" color="rgba(67, 67, 69, 1)">{t(`dashboard.membersList`)}</Text>
+              <Text fontSize={"13px"} fontWeight="400" color={color2}>{t(`dashboard.membersList`)}</Text>
               </HStack>
           
               <Button color="rgba(78, 203, 113, 1)" p={"0"}  onClick={()=>router.push("/members")} fontSize={"14px"} fontWeight={"700"} background={"none"} _hover={{bg:"none"}}>{t(`dashboard.details`)}</Button>
@@ -69,15 +74,15 @@ const Dashboard = () => {
        
        
         <GridItem rowSpan={1} colSpan={1}>
-        <Box  bgColor="#fff" h="139px"   borderRadius="20px" px={6} py={6}>
+        <Box  bgColor={bgColor} h="139px"   borderRadius="20px" px={6} py={6}>
             <Flex justify="space-between">
-            <Text color="rgba(29, 29, 31, 1)">{t(`dashboard.totalRevenue`)}</Text>
+            <Text color={color}>{t(`dashboard.totalRevenue`)}</Text>
             <RevenueIcon />
             </Flex>
             <Flex justify={"space-between"} mt={10}>
             <HStack>
               <Text fontSize={"16px"} fontWeight={"700"}>${revenueList}</Text>
-              <Text fontSize={"13px"} fontWeight="400" color="rgba(67, 67, 69, 1)">{t(`dashboard.year`)}</Text>
+              <Text fontSize={"13px"} fontWeight="400" color={color2}>{t(`dashboard.year`)}</Text>
               </HStack>
           
               <Button color="rgba(78, 203, 113, 1)"p={"0"}   fontSize={"14px"} fontWeight={"700"} background={"none"} _hover={{bg:"none"}}>{t(`dashboard.details`)}</Button>
@@ -86,16 +91,16 @@ const Dashboard = () => {
         </Box>
         </GridItem>
         <GridItem rowSpan={1} colSpan={1}>
-        <Box bgColor="#fff" h="139px"   borderRadius="20px" px={6} py={6}>
+        <Box bgColor={bgColor} h="139px"   borderRadius="20px" px={6} py={6}>
             <Flex justify="space-between">
-            <Text color="rgba(29, 29, 31, 1)">{t(`dashboard.members`)}</Text>
+            <Text color={color}>{t(`dashboard.members`)}</Text>
             <GrowthIcon />
             </Flex>
             <Flex justify={"space-between"} mt={10}>
               
             <HStack>
               <Text fontSize={"16px"} fontWeight={"700"}>{membershipGrowth}</Text>
-              <Text fontSize={"13px"} fontWeight="400" color="rgba(67, 67, 69, 1)">{t(`dashboard.month`)}</Text>
+              <Text fontSize={"13px"} fontWeight="400" color={color2}>{t(`dashboard.month`)}</Text>
               </HStack>
               
               <Button color="rgba(78, 203, 113, 1)" p={"0"}  fontSize={"14px"} fontWeight={"700"} background={"none"} _hover={{bg:"none"}}>{t(`dashboard.details`)}</Button>
@@ -106,15 +111,15 @@ const Dashboard = () => {
         
       </Grid>
       <Hide  below="sm" >
-      <Box bgColor="#fff" mt={10}  borderRadius={"20px"}> 
+      <Box bgColor={bgColor} mt={10}  borderRadius={"20px"}> 
       <Flex justify="end"  mr={5} >
         <Menu>
-          <MenuButton as={Button} variant="outline" rightIcon={<DownArrowIcon />} mt={"10px"} backgroundColor={"rgba(248, 248, 248, 1)"}>
+          <MenuButton as={Button} variant="outline" rightIcon={<DownArrowIcon />} mt={"10px"} backgroundColor={menuBg}>
             {selectedComponent === 'membershipGrowth' ? t(`dashboard.membershipGrowth`) : t(`dashboard.bookingsGrowth`) }
           </MenuButton>
-          <MenuList>
-            <MenuItem onClick={() => handleMenuItemClick('membershipGrowth')}>{ t(`dashboard.membershipGrowth`)}</MenuItem>
-            <MenuItem onClick={() => handleMenuItemClick('bookingsGrowth')}>{t(`dashboard.bookingsGrowth`)}</MenuItem>
+          <MenuList backgroundColor={menuBg} >
+            <MenuItem onClick={() => handleMenuItemClick('membershipGrowth')} backgroundColor={menuBg} >{ t(`dashboard.membershipGrowth`)}</MenuItem>
+            <MenuItem onClick={() => handleMenuItemClick('bookingsGrowth')} backgroundColor={menuBg}>{t(`dashboard.bookingsGrowth`)}</MenuItem>
           </MenuList>
         </Menu>
       </Flex>
@@ -133,7 +138,7 @@ const Dashboard = () => {
          gap="5"
          mt="10">
         <GridItem rowSpan={1} colSpan={1}>
-        <Box  bgColor="#fff" h="207px"   borderRadius="20px" px={6} py={6}>
+        <Box  bgColor={bgColor} h="207px"   borderRadius="20px" px={6} py={6}>
             <Flex justify="space-between" >
               <Stack gap={8}>
             <Text  fontSize={"20px"} fontWeight={"700"}>{t(`dashboard.bookings`)}</Text>
@@ -147,7 +152,7 @@ const Dashboard = () => {
        
        
         <GridItem rowSpan={1} colSpan={1}>
-        <Box  bgColor="#fff" h="207px"   borderRadius="20px" px={6} py={6}>
+        <Box  bgColor={bgColor} h="207px"   borderRadius="20px" px={6} py={6}>
         <Flex justify="space-between" >
               <Stack gap={8}>
             <Text  fontSize={"20px"} fontWeight={"700"}>{t(`dashboard.reports`)}</Text>
@@ -159,7 +164,7 @@ const Dashboard = () => {
         </Box>
         </GridItem>
         <GridItem rowSpan={1} colSpan={1}>
-         <Box  bgColor="#fff" h="207px"   borderRadius="20px" px={6} py={6}>
+         <Box  bgColor={bgColor} h="207px"   borderRadius="20px" px={6} py={6}>
         <Flex justify="space-between" >
               <Stack gap={8}>
             <Text  fontSize={"20px"} fontWeight={"700"}>{t(`dashboard.application`)}</Text>

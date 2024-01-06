@@ -1,0 +1,14 @@
+{
+    "members" : {
+        "title" : "Member Management",
+        "userName":"User Name",
+        "email":"E-Mail",
+        "phone":"Phone Number",
+        "gender" : "Gender",
+        "member":"Member Since",
+        "name":"Name",
+        "status":"Status",
+        "search":"Search"
+
+    }
+}

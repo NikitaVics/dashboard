@@ -1,5 +1,5 @@
 import {
-    FormLabel,
+    
     FormLabelProps as ChakraFormLabelProps,
     Input as ChakraInput,
     InputGroup,
@@ -9,7 +9,6 @@ import {
     InputProps as ChakraInputProps,
     InputRightAddon,
     InputRightElement,
-    Text,
     useColorModeValue,
   } from "@chakra-ui/react"
   import { useField } from "formik"
@@ -44,12 +43,14 @@ import {
     bottomTextLabel?: string
     bottomText?: BottomTextLabelProperties
   }
+
   
-  export function InputControl(props: InputProps) {
+  
+  export function CustomInput(props: InputProps) {
     const {
       name,
+       // eslint-disable-next-line
       label,
-      labelProps,
       inputProps,
       inputGroupProps,
       inputLeftAddon,
@@ -59,14 +60,10 @@ import {
       inputLeftElementColor,
       inputRightElementColor,
       inputRightElementZIndex = "unset",
-      bottomTextLabel,
-      bottomText,
       ...rest
     } = props
     const [field] = useField(name)
-    const color4 = useColorModeValue("black", "#fff")
-    const color2 = useColorModeValue("#fff", "#fff")
-    const color3 = useColorModeValue("#fff", "black")
+    const color4 = useColorModeValue("light.200", "dark.300")
   
     return (
       <FormControl name={name} {...rest}>
@@ -99,7 +96,8 @@ import {
             {...field}
             id={name}
             aria-label={name}
-            color="gray"
+            
+            _placeholder={{color : color4}}
             _focus={{ boxShadow: "none" ,borderColor:"rgba(78, 203, 113, 1)"}}
             autoComplete="off"
             {...inputProps}
@@ -128,51 +126,28 @@ import {
               {inputRightElement}
             </InputRightElement>
           )}
-          {inputProps && inputProps.placeholder && field.value && (
-            <label
-              style={{
-                padding: "6px",
-                fontSize: "17px",
-                pointerEvents: "none",
-                position: "absolute",
-                left: 15,
-                top: 0,
-                opacity: 1,
-                color: color4,
-  
-                backgroundColor: labelProps ? color3 : color2,
-                transform: field.value
-                  ? "scale(0.75) translateY(-70%) translateX(-14px)"
-                  : "none",
-                display: field.value ? "block" : "block",
-  
-                zIndex: 1,
-  
-                overflow: "visible",
-              }}
-            >
-              {inputProps.placeholder}
-            </label>
-          )}
-        </InputGroup>
-        {typeof label === "string" ? (
-          <FormLabel
-            htmlFor={name}
-            color="gray.500"
-            mb="0"
-            me="0"
-            fontSize="sm"
-            fontWeight="medium"
-            opacity="1"
-            _disabled={{ opacity: "unset" }}
-            {...labelProps}
+         {inputProps && (
+          <label
+            style={{
+              padding: "5px",
+              fontSize: "14px",
+              
+              position: "absolute",
+           
+              opacity: 1,
+              color: "rgba(78, 203, 113, 1)",
+              textTransform: "uppercase",
+              transform: " translateY(-70%) translateX(10px)",
+              display: "block",
+              zIndex: 1,
+              overflow: "visible",
+            }}
           >
-            {label}
-          </FormLabel>
-        ) : (
-          label
+            {inputProps.placeholder}
+          </label>
         )}
-        {bottomTextLabel && <Text {...bottomText}>{bottomTextLabel}</Text>}
+        </InputGroup>
+      
       </FormControl>
     )
   }

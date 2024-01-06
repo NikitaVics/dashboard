@@ -9,6 +9,10 @@ import getMembershipGrowth from "./dashboard/membershipGrowth"
 import getYearlyGrowth from "./dashboard/yearlyGrowth"
 import getBookingGrowth from "./dashboard/bookingGrowth"
 import getMembersList from "./members/getMembers"
+import getMemberDetail from "./members/getMembersDetail"
+import getSuccessBookings from "./members/successBookings"
+import getCancelledBookings from "./members/cancelledBookings"
+import ActivateMember from "./members/ActivateMember"
 
 
 
@@ -95,7 +99,11 @@ export class BehrainClient {
   }
 
   this.members = {
-    getMembersList : withApiClient(getMembersList)
+    getMembersList : withApiClient(getMembersList),
+    getMemberDetail : withApiClient(getMemberDetail),
+    getSuccessBookings : withApiClient(getSuccessBookings),
+    getCancelledBookings : withApiClient(getCancelledBookings),
+    ActivateMember: withApiClient(ActivateMember)
   }
     
   }
