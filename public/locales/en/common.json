@@ -1,6 +1,17 @@
 {
     "buttons":{
-        "login" : "Login"
+        "login" : "Login",
+        "view":"View Details",
+        "inActivate":"In Activate",
+       "activate":"Activate"
+    },
+    "status":{
+        "active":"Active",
+        "inActive":"In Active"
+    },
+    "menu":{
+        "status":"Status",
+        "action":"Action"
     },
     "settings":{
         "profile": "Profile",

@@ -1,4 +1,4 @@
-import { Box, useBreakpointValue, Grid } from "@chakra-ui/react"
+import { Box, useBreakpointValue, Grid, useColorModeValue } from "@chakra-ui/react"
 import React from "react"
 
 import useStore from "@/hooks/useStore"
@@ -14,6 +14,7 @@ type LayoutProps = {
   showBackButtonSubHeader?: boolean
   showBackButtonTabletSubheader?: boolean
   showBackButtonMobileSubheader?: boolean
+ 
 }
 
 export function Layout(props: React.PropsWithChildren<LayoutProps>) {
@@ -24,8 +25,10 @@ export function Layout(props: React.PropsWithChildren<LayoutProps>) {
   //   "0px 2px 10px rgba(20, 21, 33, 0.18)",
   //   "0px 2px 10px rgba(20, 21, 33, 0.18)",
   // )
- 
 
+  const bgColor2 = useColorModeValue("rgba(248, 248, 248, 1)","rgba(0, 0, 0, 0.02)")
+ 
+  const {  title } = props;
   return (
     <>
     <Grid >
@@ -37,16 +40,19 @@ export function Layout(props: React.PropsWithChildren<LayoutProps>) {
         flexDirection="column"
         flex="1"
         minW="0"
+       
         transition="margin 300ms cubic-bezier(0.2, 0, 0, 1) 0s"
         {...(isDesktopView && { ms: isDrawerOpen ? "300px" : "170px" })}
        
       >
-          <Header />
+          <Header title={title}/>
        
         <PageContainer
        
           p="3"
-        
+        bgColor={bgColor2}
+        overflow={"visible"}
+     
         >
           
         

@@ -14,7 +14,7 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react"
-import React, { useRef, useState } from "react"
+import React, { useRef } from "react"
 import { usePagination, useSortBy, useTable } from "react-table"
 
 const Table = ({ columns, data }) => {
@@ -40,15 +40,14 @@ const Table = ({ columns, data }) => {
       data,
       initialState: { pageIndex: 0 },
     },
-    useSortBy, // Place useSortBy before usePagination
+    useSortBy, 
     usePagination,
   )
 
   const tableRowBgColor = useColorModeValue("light.250", "dark.500")
 
  
-
-  const [hoveredHeader, setHoveredHeader] = useState(null)
+const background  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
  
   const borderColor = useColorModeValue("rgba(211, 211, 211, 1)","rgba(57, 57, 57, 1)")
   const tableColor = useColorModeValue("rgba(29, 29, 31, 1)","rgba(252, 252, 252, 1)")
@@ -70,31 +69,13 @@ const Table = ({ columns, data }) => {
                 <Tr
                   key={index}
                   {...headerGroup.getHeaderGroupProps()}
-                  css={{
-                    ":hover th": {
-                      position: "relative",
-                      cursor: "pointer",
-                    },
-
-                    ":hover span": {
-                      visibility:
-                        hoveredHeader &&
-                        hoveredHeader.length > 0 &&
-                        hoveredHeader.includes(headerGroup.headers[0])
-                          ? "visible"
-                          : "hidden",
-                    },
-                  }}
-                  onMouseEnter={() =>
-                    setHoveredHeader([headerGroup.headers[0]])
-                  }
-                  onMouseLeave={() => setHoveredHeader(null)}
+                 
                 >
                   
                   {headerGroup.headers.map((column, colIndex) => (
                     <Th
                       key={colIndex}
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      // {...column.getHeaderProps(column.getSortByToggleProps())}
                       textAlign={column?.textAlign}
 
                     //   // textAlign={
@@ -119,6 +100,7 @@ const Table = ({ columns, data }) => {
                         textTransform: "none",
                         color:tableColor,
                         fontWeight:"600",
+                        fontSize:"14px",
                         borderBottom:"1px solid ",
                         borderColor:borderColor,
                         transform: colIndex === 0 ? "translateX(20px)" : "none",
@@ -126,53 +108,13 @@ const Table = ({ columns, data }) => {
                         marginRight:
                           colIndex < columns.length - 1 ? "100px" : "0",
                       }}
-                      _hover={{
-                        paddingRight: "24px",
-                        ".chakra-icon": {
-                          opacity: 1,
-                          right: "10px",
-                        },
-                      }}
+                     
                     >
                       {column.render("Header")}
-                      <Text
-                        as="span"
-                        opacity={0}
-                        // position="relative"
-                        // transition="0.5s"
-                        className="chakra-icon"
-                        // opacity={0}
-                        // _hover={{ opacity: 1 }}
-                      >
-                        {column.isSorted
-                          ? column.isSortedDesc
-                            ? ""
-                            : ""
-                          : "\u2191"}
-                      </Text>
+                     
 
-                      {column.canSort && (
-                        <span
-                          css={{
-                            position: "absolute",
-                            right: "4px",
-                            top: "50%",
-                            transform: "translateY(-50%)",
-                            visibility:
-                              hoveredHeader &&
-                              hoveredHeader.length > 0 &&
-                              hoveredHeader.includes(column)
-                                ? "visible"
-                                : "hidden",
-                          }}
-                        >
-                          {column.isSorted
-                            ? column.isSortedDesc
-                              ? "\u2193 "
-                              : " \u2191"
-                            : " "}
-                        </span>
-                      )}
+                    
+                  
                     </Th>
                   ))}
                  
@@ -191,7 +133,7 @@ const Table = ({ columns, data }) => {
                 <Tr
                   key={i}
                   {...row.getRowProps()}
-                  _hover={{ background: "rgba(237, 250, 241, 1)" }}
+                  _hover={{ background: background }}
                 >
                   {row.cells.map((cell, cellIndex) => (
                     <Td

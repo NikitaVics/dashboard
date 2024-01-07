@@ -31,7 +31,6 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
     const bgCOlor = useColorModeValue("light.100", "rgba(14, 14, 14, 1)")
     const toast = useToast()
   
-    const color2 = useColorModeValue("light.200", "light.100")
     const color3 = useColorModeValue("light.500", "light.100")
     const color4 = useColorModeValue("dark.50", "light.100")
     const color5 = useColorModeValue("dark.200", "light.100")
@@ -182,7 +181,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
                   <Center><Logo w={132} h={102} mt={200}/></Center>   
                   </Hide>
                   <Text
-                    color={color2}
+                    // color={color2}
                     fontWeight={"700"}
                     fontStyle={"satochi"}
                     mt={{lg:70,sm:20}}
@@ -192,7 +191,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
                     {t("login.page.heading")}
                   </Text>
                   <Text
-                    color={color2}
+                    // color={color2}
                     fontWeight={"700"}
                     fontStyle={"satochi"}
                     fontSize={{md:"1xl",lg:"35px"}}
@@ -225,9 +224,8 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
                                 name="userNameOrEmail"
                                 inputProps={{
                                   type: "text",
-                             
                                   bgColor:"rgba(248, 248, 248, 1)",
-                                  _placeholder: { color: color5 },
+                                  
                                   placeholder: t("login.page.email.placeholder"),
                                   onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
                                     handleEmailChange(e)

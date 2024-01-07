@@ -3,7 +3,10 @@ import {
     AvatarBadge,
     Flex,
 
+    HStack,
+
     HTMLChakraProps,
+    Heading,
     MenuButton,
     useColorMode,
   } from "@chakra-ui/react"
@@ -21,9 +24,10 @@ import TorchIcon from "./Icons/torchIcon"
     is404?: boolean
     onSmallBoxToggle?: () => void
     onDrawerToggle?: () => void
+    title?:string
   }
   
-  export function Header() {
+  export function Header({title} : HeaderProps) {
     const { t } = useTranslation("")
     const { toggleColorMode } = useColorMode()
     const router = useRouter()
@@ -58,14 +62,16 @@ import TorchIcon from "./Icons/torchIcon"
           <Flex
             
             align="center"
-            justify="end"
+            justify="space-between"
             // gridGap={{ base: "5", sm: "8" }}
             cursor="pointer"
             m={2}
             py={10}
 
           >
+            <Heading> {title}</Heading>
          
+         <HStack>
             <TorchIcon  onClick={toggleColorMode} />
           
             <ChakraMenu items={settings}>
@@ -81,7 +87,7 @@ import TorchIcon from "./Icons/torchIcon"
                 />{" "}
               </MenuButton>
             </ChakraMenu>
-  
+            </HStack>
   
            
            
