@@ -1,6 +1,5 @@
 import useTranslation from "next-translate/useTranslation"
 import React from "react"
-import { Text } from "@chakra-ui/react"
 
 import Layout from "./components/Layout"
 import PageContainer from "./components/PageContainer"

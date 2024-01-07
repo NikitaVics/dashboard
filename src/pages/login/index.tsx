@@ -28,11 +28,10 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
   
   
   function LoginScreen() {
-    const bgCOlor = useColorModeValue("light.100", "dark.500")
+    const bgCOlor = useColorModeValue("light.100", "rgba(14, 14, 14, 1)")
     const toast = useToast()
   
     const color2 = useColorModeValue("light.200", "light.100")
-    const RememberColor = useColorModeValue("green.100", "light.100")
     const color3 = useColorModeValue("light.500", "light.100")
     const color4 = useColorModeValue("dark.50", "light.100")
     const color5 = useColorModeValue("dark.200", "light.100")
@@ -45,7 +44,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const loginSchema = yup.object().shape({
-      email: yup
+      userNameOrEmail: yup
         .string()
         .required("This Field is Required"),
       password: yup
@@ -73,6 +72,9 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
         setPassword(storedPassword)
       }
     }, [])
+
+    const bgColor = useColorModeValue("rgba(248, 248, 248, 1)","rgba(20, 20, 20, 1)")
+
   
     const handleRememberMeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setRememberMe(e.target.checked)
@@ -111,7 +113,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
           localStorage.removeItem("myapp-password")
         }
         const response = await ky
-          .post("/api/login", { json: { email, password } })
+          .post("/api/login", { json: { userNameOrEmail : email, password : password } })
           .json()
         if (response) {
           router.push("/")
@@ -143,13 +145,13 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
             }}
             gap="2"
           >
-       <GridItem rowSpan={2} colSpan={{ base: 2, md: 1 }} bg="rgba(248, 248, 248, 1)">
+       <GridItem rowSpan={2} colSpan={{ base: 2, md: 1 }} bg="rgba(248, 248, 248, 1)" bgColor={bgColor}>
        
    <Box ml={{base:"20px",lg:100}} mt={{base:"20px",lg:30}} >
    <Logo  w={{base:"50px",md:"60px",lg:"78px"}} />
    </Box>
       
-            <Center>
+            <Center >
             <LoginPic w={{ base:"504px",md:"504px", lg :"704px"}} h={{ base:"200px",sm:"604px",lg:"740px"}}  />
             </Center>
           
@@ -202,7 +204,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
                   <Formik
                     enableReinitialize
                     initialValues={{
-                      email: email || "",
+                      userNameOrEmail: email || "",
                       password: password || "",
                       rememberMe: rememberMe,
                     }}
@@ -220,7 +222,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
                           <Box w={{ base: "100%", md: "380px", sm: "380px" }} mt={10}>
                             <InputGroup mt="20px">
                               <InputControl
-                                name="email"
+                                name="userNameOrEmail"
                                 inputProps={{
                                   type: "text",
                              
@@ -303,7 +305,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
                                 <Text
                                   fontSize={"sm"}
                                   fontWeight={"normal"}
-                                  color={RememberColor}
+                                  color={"green.100"}
                                 >
                                   {t("login.page.rememberMe")}
                                 </Text>

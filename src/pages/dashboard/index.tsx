@@ -1,4 +1,4 @@
-import { Box, Center, Text, Grid, GridItem, HStack, Heading, Flex, Stack, Button } from "@chakra-ui/react"
+import { Box, Text, Grid, GridItem, HStack, Heading, Flex, Stack, Button, Menu, MenuButton, MenuItem, MenuList, Hide } from "@chakra-ui/react"
 import Layout from "../components/Layout"
 import PageContainer from "../components/PageContainer"
 import useTranslation from "next-translate/useTranslation"
@@ -9,15 +9,13 @@ import GrowthIcon from "../components/Icons/growthIcon"
 
 import { useRouter } from "next/router"
 
-import YearlyGraph from "../components/graph/yearlyGraph"
-import Example from "../components/graph/yearlyGraph"
-import TemperatureChart from "../components/graph/yearlyGraph"
-import MonthlySalesChart from "../components/graph/yearlyGraph"
 import { useState } from "react"
 import MemberShip from "../components/Icons/memberShip"
 import TodaysReports from "../components/Icons/ReportPic"
 import BookingsPic from "../components/Icons/BookingsPic"
 import MonthTabs from "../components/graph/yearlyGraph"
+import BookingsGraph from "../components/graph/bookingsGraph"
+import DownArrowIcon from "../components/Icons/downArrow"
 
 
 const Dashboard = () => {
@@ -31,20 +29,11 @@ const Dashboard = () => {
    
     const router = useRouter()
 
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const salesData = [5, 5, 5, 4, 5, 6, 5, 4,5, 5, 5, 5];
+  const [selectedComponent, setSelectedComponent] = useState('membershipGrowth');
 
-    const [clickedMonth, setClickedMonth] = useState<string | null>(null);
-    const [clickedValue, setClickedValue] = useState<number | null>(null);
-  
-   
-  const handleMonthClick = (monthIndex: number, value: number) => {
-    console.log("index",monthIndex)
-    const clickedMonthLabel = months[monthIndex];
-    setClickedMonth(clickedMonthLabel);
-    setClickedValue(value);
+  const handleMenuItemClick = (component: string) => {
+    setSelectedComponent(component);
   };
-  
   
     return (
         <Layout title={""} description={""}>
@@ -52,16 +41,16 @@ const Dashboard = () => {
                 <Heading>{t(`dashboard.title`)}</Heading>
      
         <Grid
-         templateRows="repeat(2, 1fr)"
+         templateRows="repeat(1, 1fr)"
          templateColumns={{
            base: "repeat(1, 1fr)",
            md: "repeat(3, 2fr)",
            sm: "repeat(2, 1fr)",
          }}
          gap="5"
-         mt="20">
+         mt="10">
         <GridItem rowSpan={1} colSpan={1}>
-        <Box boxShadow={"xl"} bgColor="#fff" h="139px"   borderRadius="20px" px={6} py={6}>
+        <Box  bgColor="#fff" h="139px"   borderRadius="20px" px={6} py={6}>
             <Flex justify="space-between">
             <Text color="rgba(29, 29, 31, 1)">{t(`dashboard.totalMembers`)}</Text>
             <CalenderIcon />
@@ -72,7 +61,7 @@ const Dashboard = () => {
               <Text fontSize={"13px"} fontWeight="400" color="rgba(67, 67, 69, 1)">{t(`dashboard.membersList`)}</Text>
               </HStack>
           
-              <Text color="rgba(78, 203, 113, 1)" >{t(`dashboard.details`)}</Text>
+              <Button color="rgba(78, 203, 113, 1)" p={"0"}  onClick={()=>router.push("/members")} fontSize={"14px"} fontWeight={"700"} background={"none"} _hover={{bg:"none"}}>{t(`dashboard.details`)}</Button>
             </Flex>
            
         </Box>
@@ -80,7 +69,7 @@ const Dashboard = () => {
        
        
         <GridItem rowSpan={1} colSpan={1}>
-        <Box boxShadow={"xl"} bgColor="#fff" h="139px"   borderRadius="20px" px={6} py={6}>
+        <Box  bgColor="#fff" h="139px"   borderRadius="20px" px={6} py={6}>
             <Flex justify="space-between">
             <Text color="rgba(29, 29, 31, 1)">{t(`dashboard.totalRevenue`)}</Text>
             <RevenueIcon />
@@ -91,13 +80,13 @@ const Dashboard = () => {
               <Text fontSize={"13px"} fontWeight="400" color="rgba(67, 67, 69, 1)">{t(`dashboard.year`)}</Text>
               </HStack>
           
-              <Text color="rgba(78, 203, 113, 1)" >{t(`dashboard.details`)}</Text>
+              <Button color="rgba(78, 203, 113, 1)"p={"0"}   fontSize={"14px"} fontWeight={"700"} background={"none"} _hover={{bg:"none"}}>{t(`dashboard.details`)}</Button>
             </Flex>
            
         </Box>
         </GridItem>
         <GridItem rowSpan={1} colSpan={1}>
-        <Box boxShadow={"xl"} bgColor="#fff" h="139px"   borderRadius="20px" px={6} py={6}>
+        <Box bgColor="#fff" h="139px"   borderRadius="20px" px={6} py={6}>
             <Flex justify="space-between">
             <Text color="rgba(29, 29, 31, 1)">{t(`dashboard.members`)}</Text>
             <GrowthIcon />
@@ -108,34 +97,49 @@ const Dashboard = () => {
               <Text fontSize={"16px"} fontWeight={"700"}>{membershipGrowth}</Text>
               <Text fontSize={"13px"} fontWeight="400" color="rgba(67, 67, 69, 1)">{t(`dashboard.month`)}</Text>
               </HStack>
-              <Text color="rgba(78, 203, 113, 1)" >{t(`dashboard.details`)}</Text>
+              
+              <Button color="rgba(78, 203, 113, 1)" p={"0"}  fontSize={"14px"} fontWeight={"700"} background={"none"} _hover={{bg:"none"}}>{t(`dashboard.details`)}</Button>
             </Flex>
            
         </Box>
         </GridItem>
         
       </Grid>
-      <Box  bgColor="#fff">
-     <MonthTabs />
-      </Box>
+      <Hide  below="sm" >
+      <Box bgColor="#fff" mt={10}  borderRadius={"20px"}> 
+      <Flex justify="end"  mr={5} >
+        <Menu>
+          <MenuButton as={Button} variant="outline" rightIcon={<DownArrowIcon />} mt={"10px"} backgroundColor={"rgba(248, 248, 248, 1)"}>
+            {selectedComponent === 'membershipGrowth' ? t(`dashboard.membershipGrowth`) : t(`dashboard.bookingsGrowth`) }
+          </MenuButton>
+          <MenuList>
+            <MenuItem onClick={() => handleMenuItemClick('membershipGrowth')}>{ t(`dashboard.membershipGrowth`)}</MenuItem>
+            <MenuItem onClick={() => handleMenuItemClick('bookingsGrowth')}>{t(`dashboard.bookingsGrowth`)}</MenuItem>
+          </MenuList>
+        </Menu>
+      </Flex>
+      {selectedComponent === 'membershipGrowth' && <MonthTabs />}
+      {selectedComponent === 'bookingsGrowth' && <BookingsGraph />}
+    </Box>
       
+      </Hide>
       <Grid
-         templateRows="repeat(2, 1fr)"
+         templateRows="repeat(1, 1fr)"
          templateColumns={{
            base: "repeat(1, 1fr)",
            md: "repeat(3, 1fr)",
            sm: "repeat(2, 1fr)",
          }}
          gap="5"
-         mt="20">
+         mt="10">
         <GridItem rowSpan={1} colSpan={1}>
-        <Box boxShadow={"xl"} bgColor="#fff" h="207px"   borderRadius="20px" px={6} py={6}>
+        <Box  bgColor="#fff" h="207px"   borderRadius="20px" px={6} py={6}>
             <Flex justify="space-between" >
               <Stack gap={8}>
             <Text  fontSize={"20px"} fontWeight={"700"}>{t(`dashboard.bookings`)}</Text>
             <Button bg="none" color="rgba(78, 203, 113, 1)" borderRadius={"51px"} border="1px solid  rgba(78, 203, 113, 1)" fontWeight={"500"} fontSize="14px" cursor="pointer" onClick={()=>router.push(`/bookings`)}>{t(`dashboard.view`)}</Button>
             </Stack>
-            <BookingsPic />
+            <BookingsPic w={"100%"}/>
             </Flex>
            
         </Box>
@@ -143,25 +147,25 @@ const Dashboard = () => {
        
        
         <GridItem rowSpan={1} colSpan={1}>
-        <Box boxShadow={"xl"} bgColor="#fff" h="207px"   borderRadius="20px" px={6} py={6}>
+        <Box  bgColor="#fff" h="207px"   borderRadius="20px" px={6} py={6}>
         <Flex justify="space-between" >
               <Stack gap={8}>
             <Text  fontSize={"20px"} fontWeight={"700"}>{t(`dashboard.reports`)}</Text>
             <Button bg="none" color="rgba(78, 203, 113, 1)" borderRadius={"51px"} border="1px solid  rgba(78, 203, 113, 1)" fontWeight={"500"} fontSize="14px" cursor="pointer" onClick={()=>router.push(`/reports`)}>{t(`dashboard.view`)}</Button>
             </Stack>
-          <TodaysReports />
+          <TodaysReports w={"100%"}/>
             </Flex>
            
         </Box>
         </GridItem>
         <GridItem rowSpan={1} colSpan={1}>
-         <Box boxShadow={"xl"} bgColor="#fff" h="207px"   borderRadius="20px" px={6} py={6}>
+         <Box  bgColor="#fff" h="207px"   borderRadius="20px" px={6} py={6}>
         <Flex justify="space-between" >
               <Stack gap={8}>
             <Text  fontSize={"20px"} fontWeight={"700"}>{t(`dashboard.application`)}</Text>
             <Button bg="none" color="rgba(78, 203, 113, 1)" borderRadius={"51px"} maxW={"80%"} border="1px solid  rgba(78, 203, 113, 1)" fontWeight={"500"} fontSize="14px" cursor="pointer" onClick={()=>router.push(`/application`)}>{t(`dashboard.view`)}</Button>
             </Stack> 
-            <MemberShip />
+            <MemberShip w={"100%"}/>
             </Flex>
            
         </Box>

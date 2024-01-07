@@ -6,7 +6,7 @@ export type AppState = {
   setIsDrawerOpen: (isDrawerOpen: boolean) => void
 }
 
-const useStore = create<AppState>((set, _get) => ({
+const useStore = create<AppState>((set) => ({
   isDrawerOpen: true,
   setIsDrawerOpen: (isDrawerOpen) =>
     set(
