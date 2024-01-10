@@ -8,7 +8,7 @@ export const LoginPic = (props: HTMLChakraProps<"svg">) => {
       width="864 !important"
       height="540px !important"
       viewBox="100 140 754 740"
-      // fill="none"
+      fill="none"
       {...props}
     >
   

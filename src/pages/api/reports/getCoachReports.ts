@@ -1,22 +1,23 @@
 import { BehrainClient } from "@/service/client"
-import { getMember } from "@/service/types"
+import { ReportProps } from "@/service/types"
 import type { NextApiRequest, NextApiResponse } from "next"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const client = new BehrainClient(req, res)
   if (req.method === "GET") {
-    await getMembers()
+    await getCoachReports()
   } else {
     res.status(405).end(`Method ${req.method} Not Allowed`)
   }
 
-  async function getMembers() {
+  async function getCoachReports() {
     try {
-      const { searchTerm = "" } = req.query
+      const { bookingDate = "",coach = ""} = req.query
       const params = {
-        searchTerm: searchTerm as string,
-      } as getMember
-      const response = await client.members.getMembersList(params)
+        bookingDate: bookingDate as string,
+        coach : coach as string
+      } as ReportProps
+      const response = await client.reports.getCoachReports(params)
       res.status(200).json(response)
     } catch (error) {
       console.log(error)

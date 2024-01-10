@@ -1,0 +1,7 @@
+{
+    "announce" : {
+        "title":"Announcement Management",
+        "maintain":"Court Maintainence",
+        "create":"Create"
+    }
+}

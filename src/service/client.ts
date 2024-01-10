@@ -13,6 +13,12 @@ import getMemberDetail from "./members/getMembersDetail"
 import getSuccessBookings from "./members/successBookings"
 import getCancelledBookings from "./members/cancelledBookings"
 import ActivateMember from "./members/ActivateMember"
+import getCourtReports from "./reports/getCourtReports"
+import courtDropdown from "./reports/getCourtDropdown"
+import exportCourtReports from "./reports/exportCourtReport"
+import coachDropdown from "./reports/getCoachDropdown"
+import getCoachReports from "./reports/getCoachReport"
+import exportCoachReports from "./reports/exportCoachReport"
 
 
 
@@ -37,6 +43,7 @@ export class BehrainClient {
  public auth
  public dashboard
  public members
+ public reports
 
   constructor(
     req: NextApiRequest,
@@ -104,6 +111,15 @@ export class BehrainClient {
     getSuccessBookings : withApiClient(getSuccessBookings),
     getCancelledBookings : withApiClient(getCancelledBookings),
     ActivateMember: withApiClient(ActivateMember)
+  }
+
+  this.reports = {
+    getCourtReports : withApiClient(getCourtReports),
+    courtDropdown : withApiClient(courtDropdown),
+    exportCourtReports : withApiClient(exportCourtReports),
+    getCoachReports : withApiClient(getCoachReports),
+    coachDropdown : withApiClient(coachDropdown),
+    exportCoachReports : withApiClient(exportCoachReports)
   }
     
   }

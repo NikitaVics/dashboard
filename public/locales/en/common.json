@@ -3,11 +3,15 @@
         "login" : "Login",
         "view":"View Details",
         "inActivate":"In Activate",
-       "activate":"Activate"
+       "activate":"Activate",
+       "download":"Download"
     },
     "status":{
         "active":"Active",
-        "inActive":"In Active"
+        "inActive":"In Active",
+        "booked":"Booked",
+        "pending":"Pending",
+        "cancel":"Cancelled"
     },
     "menu":{
         "status":"Status",
@@ -16,7 +20,8 @@
     "settings":{
         "profile": "Profile",
         "change": "Change Password",
-        "logout":"Logout"
+        "logout":"Logout",
+        "search":"Search"
     },
     "errors":{
         "requiredError": "This field is required",

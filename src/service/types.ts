@@ -42,3 +42,13 @@ export type User = {
    
   }
 
+export type ReportProps = {
+  bookingDate : string
+  court : string
+  coach : string
+}
+
+  export type getMember = {
+    searchTerm : string
+  }
+

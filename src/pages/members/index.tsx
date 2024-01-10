@@ -30,6 +30,10 @@ import MembersForm from "@/components/membersForm"
 import TableSkeleton from "@/components/Skeleton/TableSkeleton"
 import SearchIcon from "../components/Icons/searchIcon"
 import { InputControl } from "@/components/Input/Input"
+import { useDebounce } from "use-debounce"
+
+
+
 type EditTaxDetailsProps = {
   memberData: MemberProps
 }
@@ -51,9 +55,10 @@ function Member({memberData}:EditTaxDetailsProps) {
 
  
   const [memberId, setMemberId] = useState("")
-
+  const [searchInput, setSearchInput] = useState("")
+  const [debouncedSearchInput] = useDebounce(searchInput, 800)
   const { data: responseData } = useSWR(
-    `/api/members`,
+    `/api/members?searchTerm=${debouncedSearchInput}`,
   )
 
 const background = useColorModeValue("#fff","#0D0D0D")
@@ -264,8 +269,6 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818;")
  
 
   const isLoading = !responseData
-
-  const [searchInput, setSearchInput] = useState("")
   const isDesktopView = useBreakpointValue({ base: false, md: false, xl: true })
 
   return (
@@ -326,5 +329,6 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818;")
 }
 
 export default Member
+
 
 
