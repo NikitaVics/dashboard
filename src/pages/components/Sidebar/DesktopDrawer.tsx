@@ -37,8 +37,8 @@ export const dashboards: Array<NavLink> = [
   { name: "reports", path: routePath.reports, icon: ReportsIcon },
   { name: "application", path:  routePath.application, icon: ApplicationIcon },
   { name: "members", path: routePath.members, icon: MembersIcon },
-  { name: "coach", path: "", icon: CoachIcon },
-  { name: "announcement", path: "", icon: AnnouncementIcon },
+  { name: "coach", path: routePath.coach, icon: CoachIcon },
+  { name: "announcement", path: routePath.announcement, icon: AnnouncementIcon },
 ]
 
 
@@ -173,7 +173,7 @@ const bgColor = useColorModeValue("#fff","rgba(14, 14, 14, 1)")
     <Box
       aria-label="leftNavigation"
       as="nav"
-      w={isDrawerOpen ? "275px" : "150px"}
+      w={isDrawerOpen ? "270px" : "120px"}
       transition="width 300ms cubic-bezier(0.2, 0, 0, 1) 0s"
       position="fixed"
       h="100vh"

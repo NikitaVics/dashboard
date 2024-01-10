@@ -3,7 +3,8 @@ export const routePath = {
     booking: "/bookings",
     members:"/members",
     reports:"/reports",
-    application : "/application"
-    
+    application : "/application",
+    coach : "/coach",
+    announcement : "/announcement"
   }
   

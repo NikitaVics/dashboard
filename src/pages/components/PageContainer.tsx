@@ -10,7 +10,7 @@ interface PageContainerProps extends ContainerProps {
 const PageContainer = React.forwardRef<HTMLDivElement, PageContainerProps>(
   function PageContainer(props, ref) {
     const { children, isLoading, ...rest } = props
-    const isMobileView = useBreakpointValue({ base: true, md: false })
+    const isMobileView = useBreakpointValue({ base: true, md: true })
  const bgColor = useColorModeValue("rgba(254, 254, 254, 1)","rgba(14, 14, 14, 1)")
     return (
       <Container

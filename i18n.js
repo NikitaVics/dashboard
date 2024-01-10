@@ -7,7 +7,8 @@ module.exports = {
       "/login":["auth"],
       "/dashboard":["dashboard"],
       "/members":["members"],
-      "/bookings":["bookings"],
+      "/reports":["reports"],
+      "/announcement":["announcement"]
      
     },
     loadLocaleFrom: async (lang, ns) => {

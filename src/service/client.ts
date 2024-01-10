@@ -13,8 +13,6 @@ import getMemberDetail from "./members/getMembersDetail"
 import getSuccessBookings from "./members/successBookings"
 import getCancelledBookings from "./members/cancelledBookings"
 import ActivateMember from "./members/ActivateMember"
-import getPeakBookingHour from "./bookings/peakBookingHour"
-import getTotalBookings from "./bookings/totalBookings"
 
 
 
@@ -39,7 +37,6 @@ export class BehrainClient {
  public auth
  public dashboard
  public members
- public bookings
 
   constructor(
     req: NextApiRequest,
@@ -108,11 +105,6 @@ export class BehrainClient {
     getCancelledBookings : withApiClient(getCancelledBookings),
     ActivateMember: withApiClient(ActivateMember)
   }
-
-    this.bookings = {
-      getCancelledBookings : withApiClient(getCancelledBookings),
-      getPeakBookingHour : withApiClient(getPeakBookingHour),
-      getTotalBookings : withApiClient(getTotalBookings)
     
   }
 }

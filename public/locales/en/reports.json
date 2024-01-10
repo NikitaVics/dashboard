@@ -1,0 +1,12 @@
+{
+    "reports":{
+        "title":"Report Management",
+        "bookingName":"Booking Name",
+        "team":"Team",
+        "coach":"Coach",
+        "court":"Court",
+        "time":"Time",
+        "coachName":"Coach Name",
+        "bookingPerson":"Booking Person"
+    }
+}

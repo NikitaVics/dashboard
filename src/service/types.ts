@@ -57,3 +57,13 @@ export type User = {
        membershipExpirationCountDown:string
   }
 
+export type ReportProps = {
+  bookingDate : string
+  court : string
+  coach : string
+}
+
+  export type getMember = {
+    searchTerm : string
+  }
+
