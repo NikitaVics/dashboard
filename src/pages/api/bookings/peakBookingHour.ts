@@ -12,7 +12,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   async function getPeakBookingHour() {
     try {
-      const response = await client.bookings.peakbookingHour()
+      const response = await client.bookings.getPeakBookingHour()
       res.status(200).json(response)
     } catch (error) {
       console.log(error)

@@ -12,7 +12,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   async function getTotalBookings() {
     try {
-      const response = await client.bookings.totalBookings()
+      const response = await client.bookings.getTotalBookings()
+      console.log(response)
       res.status(200).json(response)
     } catch (error) {
       console.log(error)

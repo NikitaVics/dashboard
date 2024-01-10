@@ -4,7 +4,15 @@
         "totalBookings": "Total Bookings",
         "cancelledBookings": "Cancelled Bookings",
         "members": "Peak booking hour",
-        "day":"Today"
+        "day":"Today",
+        "bookingName":"Booking Name",
+        "team":"Team",
+        "coach":"Coach",
+        "court":"Court",
+        "time" : "Time",
+        "status":"Status",
+        "search":"Search"
+
         
 
     }

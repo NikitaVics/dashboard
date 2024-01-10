@@ -41,4 +41,19 @@ export type User = {
       membershipExpirationCountDown:string
    
   }
+  export type BookingsProps={
+
+    image:string
+    memberId : string
+    gender:string
+       id?:string
+       value:string
+       name : string
+       description : string
+       phoneNo:string
+       status?: string;
+       email:string
+       memberSince:string
+       membershipExpirationCountDown:string
+  }
 
