@@ -4,7 +4,9 @@
         "view":"View Details",
         "inActivate":"In Activate",
        "activate":"Activate",
-       "download":"Download"
+       "download":"Download",
+       "schedule":"Schedule",
+       "send":"Send"
     },
     "status":{
         "active":"Active",
