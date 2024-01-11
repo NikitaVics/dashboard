@@ -8,7 +8,8 @@ module.exports = {
       "/dashboard":["dashboard"],
       "/members":["members"],
       "/reports":["reports"],
-      "/announcement":["announcement"]
+      "/announcement":["announcement"],
+      "/bookings":["bookings"]
      
     },
     loadLocaleFrom: async (lang, ns) => {

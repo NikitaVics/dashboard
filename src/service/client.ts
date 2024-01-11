@@ -13,6 +13,17 @@ import getMemberDetail from "./members/getMembersDetail"
 import getSuccessBookings from "./members/successBookings"
 import getCancelledBookings from "./members/cancelledBookings"
 import ActivateMember from "./members/ActivateMember"
+import getCourtReports from "./reports/getCourtReports"
+import courtDropdown from "./reports/getCourtDropdown"
+import exportCourtReports from "./reports/exportCourtReport"
+import coachDropdown from "./reports/getCoachDropdown"
+import getCoachReports from "./reports/getCoachReport"
+import exportCoachReports from "./reports/exportCoachReport"
+import getPeakBookingHour from "./bookings/peakBookingHour"
+import getTotalBookings from "./bookings/totalBookings"
+import getaveragePeakBookingHour from "./bookings/averagepeakBookingMonth"
+import CancelBooking from "./bookings/cancelbooking"
+import bookingDetails from "./bookings/bookingDetails"
 
 
 
@@ -37,6 +48,8 @@ export class BehrainClient {
  public auth
  public dashboard
  public members
+ public reports
+ public bookings
 
   constructor(
     req: NextApiRequest,
@@ -55,7 +68,7 @@ export class BehrainClient {
         beforeRequest: [
           (request) => {
             request.headers.set("Content-type", "application/json-patch+json")
-            request.headers.set("accept", "*/*")
+            request.headers.set("accept", "/")
             if (opts.overrideLanguage) {
               request.headers.set("Accept-Language", opts.overrideLanguage)
             }
@@ -105,7 +118,24 @@ export class BehrainClient {
     getCancelledBookings : withApiClient(getCancelledBookings),
     ActivateMember: withApiClient(ActivateMember)
   }
+
+  this.reports = {
+    getCourtReports : withApiClient(getCourtReports),
+    courtDropdown : withApiClient(courtDropdown),
+    exportCourtReports : withApiClient(exportCourtReports),
+    getCoachReports : withApiClient(getCoachReports),
+    coachDropdown : withApiClient(coachDropdown),
+    exportCoachReports : withApiClient(exportCoachReports)
+  }
+
+  this.bookings = {
+    getCancelledBookings : withApiClient(getCancelledBookings),
+    getPeakBookingHour : withApiClient(getPeakBookingHour),
+    getTotalBookings : withApiClient(getTotalBookings),
+    getaveragePeakBookingHour: withApiClient(getaveragePeakBookingHour),
+    CancelBooking: withApiClient(CancelBooking),
+    bookingDetails:withApiClient(bookingDetails)
+  }
     
   }
-}
 }
