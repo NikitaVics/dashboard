@@ -2,8 +2,6 @@ import { Box, Button, Flex, Grid, GridItem,Text, useColorModeValue, Stack } from
 import Layout from "../components/Layout"
 import useTranslation from "next-translate/useTranslation"
 import router from "next/router"
-import MemberShip from "../components/Icons/memberShip"
-import TodaysReports from "../components/Icons/ReportPic"
 import Maintanence from "../components/Icons/maintanence"
 import PlusIcon from "../components/Icons/PlusIcon"
 import Event from "../components/Icons/event"

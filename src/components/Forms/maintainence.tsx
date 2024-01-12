@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import {
   Box,
   Button,
-  ChakraProvider,
-  CSSReset,
-  Flex,
   Grid,
   GridItem,
   Stack,

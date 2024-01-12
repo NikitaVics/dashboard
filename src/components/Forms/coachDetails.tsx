@@ -8,7 +8,6 @@ import {
     HStack,
     Hide,
     Show,
-    Stack,
     Text,
     useColorModeValue,
     useToast,
@@ -17,50 +16,41 @@ import {
   import ky, { HTTPError } from "ky"
   import useTranslation from "next-translate/useTranslation"
   import React from "react"
-  import * as Yup from "yup"
 import { CustomInput } from "../Input/customInput"
-import useSWR, { mutate } from "swr"
+import  { mutate } from "swr"
 
   
   type FormItems = {
      // eslint-disable-next-line
     status: any
-    memberId?:string
-    memberData?: {
+    coachId?:string
+    coachData?: {
       name: string
-      memberId?:string
+      coachId?:string
       gender:string
       status?: string
       image:string
      phoneNo : string
       email:string
-      memberSince : string
-      membershipExpirationCountDown : string
+      exp:string
     }
     onClose?: () => void
   }
   
-  function MembersDetails({ memberData,memberId,onClose  }: FormItems) {
-    const { t } = useTranslation("members")
+  function CoachDetails({ coachData,coachId,onClose  }: FormItems) {
+    const { t } = useTranslation("coach")
     const toast = useToast()
-
-    const { data: succesData } = useSWR(
-      `/api/members/getSuccessBookings?id=${memberId}`,
-    )
-
-    const { data: cancelledData } = useSWR(
-      `/api/members/getCancelledBookings?id=${memberId}`,
-    )
+   
 
     const color2  = useColorModeValue("rgba(67, 67, 69, 1)","rgba(224, 224, 226, 1)")
 
-    const handleDeactivate = async (memberId: string | undefined) => {
-      if (memberId) {
+    const handleDeactivate = async (coachId: string | undefined) => {
+      if (coachId) {
         try {
-          const updatedValues = { memberId }
-          if (memberId) {
-            const response = await ky.post(
-              `/api/members/Activate/${memberId}`,
+          const updatedValues = { coachId }
+          if (coachId) {
+            const response = await ky.put(
+              `/api/coach/Activate/${coachId}`,
               {
                 json: updatedValues,
               },
@@ -74,7 +64,7 @@ import useSWR, { mutate } from "swr"
                 duration: 3000,
                 isClosable: true,
               })
-              await mutate(`/api/members`)
+              await mutate(`/api/coach`)
               onClose?.()
             }
           }
@@ -101,13 +91,13 @@ import useSWR, { mutate } from "swr"
     }
   
 
-    const handleActivate = async (memberId: string | undefined) => {
-      if (memberId) {
+    const handleActivate = async (coachId: string | undefined) => {
+      if (coachId) {
         try {
-          const updatedValues = { memberId }
-          if (memberId) {
-            const response = await ky.post(
-              `/api/members/Activate/${memberId}`,
+          const updatedValues = { coachId }
+          if (coachId) {
+            const response = await ky.put(
+              `/api/coach/Activate/${coachId}`,
               {
                 json: updatedValues,
               },
@@ -121,7 +111,7 @@ import useSWR, { mutate } from "swr"
                 duration: 3000,
                 isClosable: true,
               })
-              await mutate(`/api/members`)
+              await mutate(`/api/coach`)
              onClose?.()
              
             }
@@ -148,7 +138,7 @@ import useSWR, { mutate } from "swr"
       }
     }
   
-    const handleSubmit = async (values: FormItems) => { 
+    const handleSubmit = async (values: FormItems) => {
       console.log(values)
         try {
          ""
@@ -158,37 +148,30 @@ import useSWR, { mutate } from "swr"
       
     }
   
-    const validationSchema = Yup.object().shape({
-      name: Yup.string().required(t(`common:errors.requiredError`)),
-      status: Yup.string(),
-      description: Yup.string()
-        .max(500, t(`common:errors.shouldBe225Char`))
-        .required(t(`common:errors.requiredError`)),
-    })
   
    const bgColor = useColorModeValue("light.200","dark.300")
    const color  = useColorModeValue("light.50","dark.400")
     return (
       <Formik
         initialValues={{
-          name: memberData?.name || "",
-          image: memberData?.image || "",
-          gender : memberData?.gender || "",
-          email : memberData?.email || "",
-          phoneNo : memberData?.phoneNo || "",
-          memberSince : memberData?.memberSince || "",
-          status : memberData?.status || "",
-          membershipExpirationCountDown : memberData?.membershipExpirationCountDown || "",
+          firstName: coachData?.name || "",
+          image: coachData?.image || "",
+          gender : coachData?.gender || "",
+          email : coachData?.email || "",
+          phoneNo : coachData?.phoneNo || "",
+          exp  : coachData?.exp || "",
+          status : coachData?.status || "",
+         
          
         }}
-        validationSchema={validationSchema}
+  
         onSubmit={handleSubmit}
       >
         {({  setFieldTouched,values }) => (
           <Form noValidate>
             <Show below="sm">
             <Avatar
-  src={memberData?.image} 
+  src={coachData?.image} 
   size="lg" 
 />   
 </Show>
@@ -198,12 +181,12 @@ import useSWR, { mutate } from "swr"
             <Flex alignItems={"center"} gap={6}>
             <Hide below="sm">
             <Avatar
-  src={memberData?.image} 
+  src={coachData?.image} 
   size="lg" 
 />   
 </Hide>
 
-<Text>{memberData?.name}</Text>
+<Text>{coachData?.name}</Text>
 
             </Flex>
 
@@ -229,16 +212,16 @@ import useSWR, { mutate } from "swr"
               <CustomInput
                   inputProps={{
                     type: "text",
-                    placeholder: t(`members.name`),
+                    placeholder: t(`coach.name1`),
                     fontSize: "md",
                     fontWeight: "medium",
                     color: {color},
                     border : "none",
                     h:"45px"
                   }}
-                  name="name"
+                  name="firstName"
                   isReadOnly
-                  onKeyUp={() => setFieldTouched("name")}
+                  onKeyUp={() => setFieldTouched("firstName")}
                 />
               </GridItem>
   
@@ -246,7 +229,7 @@ import useSWR, { mutate } from "swr"
               <CustomInput
                   inputProps={{
                     type: "text",
-                    placeholder: t(`members.gender`),
+                    placeholder: t(`coach.gender`),
                     fontSize: "md",
                     fontWeight: "medium",
                     color: {color},
@@ -262,7 +245,7 @@ import useSWR, { mutate } from "swr"
               <CustomInput
                   inputProps={{
                     type: "text",
-                    placeholder: t(`members.email`),
+                    placeholder: t(`coach.email`),
                     fontSize: "md",
                     fontWeight: "medium",
                     border:"none",
@@ -279,7 +262,7 @@ import useSWR, { mutate } from "swr"
               <CustomInput
                   inputProps={{
                     type: "text",
-                    placeholder: t(`members.phone`),
+                    placeholder: t(`coach.phone`),
                     fontSize: "md",
                     fontWeight: "medium",
                     color: {color},
@@ -295,7 +278,7 @@ import useSWR, { mutate } from "swr"
                 <CustomInput
                   inputProps={{
                     type: "text",
-                    placeholder: t(`members.member`),
+                    placeholder: t(`coach.experience`),
                     fontSize: "md",
                     fontWeight: "medium",
                     color: {color},
@@ -303,8 +286,8 @@ import useSWR, { mutate } from "swr"
                     h:"45px",
                    
                   }}
-                  name="memberSince"
-                  onKeyUp={() => setFieldTouched("memberSince")}
+                  name="exp"
+                  onKeyUp={() => setFieldTouched("exp")}
                 />
               </GridItem>
   
@@ -312,7 +295,7 @@ import useSWR, { mutate } from "swr"
               <CustomInput
                   inputProps={{
                     type: "text",
-                    placeholder: t(`members.status`),
+                    placeholder: t(`coach.status`),
                     fontSize: "md",
                     fontWeight: "medium",
                     color: {color},
@@ -329,27 +312,10 @@ import useSWR, { mutate } from "swr"
                   onKeyUp={() => setFieldTouched("status")}
                 />
               </GridItem>
-              <GridItem rowSpan={2} colSpan={1}>
-                <CustomInput
-                  inputProps={{
-                    type: "text",
-                    placeholder: t(`members.name`),
-                    fontSize: "md",
-                    fontWeight: "medium",
-                    color: "rgba(244, 166, 98, 1)",
-                    border:"none",
-                    h:"45px"
-                  }}
-                  name="membershipExpirationCountDown"
-                  isReadOnly
-                  onKeyUp={() => setFieldTouched("membershipExpirationCountDown")}
-                />
-              </GridItem>
+         
   
              
-              {/* <GridItem rowSpan={2} colSpan={2}>
-                
-              </GridItem> */}
+           
             </Grid>
 
 
@@ -365,35 +331,27 @@ import useSWR, { mutate } from "swr"
               p={7}
               borderRadius={"20px"}
             >
-              <Box   bgColor={bgColor} h={"122px"} borderRadius={"12px"} px={4} py={3}>
-             <GridItem rowSpan={1} colSpan={1} >
-              <Stack>
-              <Text fontSize={"43px"} fontWeight={"700"} color="green.300">{succesData}</Text>
+         
+             <GridItem rowSpan={1} colSpan={2}  bgColor={bgColor} h={"75px"} borderRadius={"12px"} px={4} py={3} >
+              <HStack>
+              {/* <Text fontSize={"43px"} fontWeight={"700"} color="green.300">{succesData}</Text> */}
               <Text fontSize={"14px"} color={color2}>Succesfull Booking</Text>
-              </Stack>
+              </HStack>
               
              </GridItem>
-             </Box>
-             <Box   bgColor={bgColor} h={"122px"} borderRadius={"12px"} px={4} py={3}>
-             <GridItem rowSpan={1} colSpan={1} >
-              <Stack>
-              <Text fontSize={"43px"} fontWeight={"700"} color="red.200">{cancelledData}</Text>
-              <Text fontSize={"14px"} color={color2}>Cancelled Booking</Text>
-              </Stack>
-              
-             </GridItem>
-             </Box>
+             
+            
             </Grid>
   
            
   <Box maxW="full">
-  {memberData?.status ? (
-    <Button variant="outline" colorScheme="red" w="full" h={"80px"} onClick={() => handleActivate(memberId)}>
-      DeActivate
+  {coachData?.status ? (
+    <Button variant="outline" colorScheme="red" w="full" h={"80px"} onClick={() => handleActivate(coachId)}>
+      DeActivate Coach
     </Button>
     ) : (
-      <Button variant="outline" colorScheme="green" w="full" h={"80px"} onClick={() => handleDeactivate(memberId)}>
-      Activate
+      <Button variant="outline" colorScheme="green" w="full" h={"80px"} onClick={() => handleDeactivate(coachId)}>
+      Activate Coach
     </Button>
     )}
   </Box>
@@ -407,5 +365,5 @@ import useSWR, { mutate } from "swr"
     )
   }
   
-  export default MembersDetails
+  export default CoachDetails
   

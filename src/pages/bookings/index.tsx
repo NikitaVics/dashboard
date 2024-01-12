@@ -6,10 +6,13 @@ const Bookings = () => {
     return (
       <>
       <Layout title={""} description={""}>
-        <PageContainer>
+       
       <Center>
-      <Heading>Bookings Page</Heading>
+    
       </Center>
+    
+      <PageContainer>
+      <Heading>Bookings Page</Heading>
       </PageContainer>
       </Layout>
       </>

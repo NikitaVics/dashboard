@@ -52,3 +52,17 @@ export type ReportProps = {
     searchTerm : string
   }
 
+  export type AddCoachProps = {
+  name:string
+  coachId?: string
+  firstName:string
+  lastName:string
+  phoneNumber:string
+  exp:string
+  phoneNo:string
+  email:string
+  gender:string
+  experience:string
+  image : string
+  }
+

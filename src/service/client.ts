@@ -19,6 +19,10 @@ import exportCourtReports from "./reports/exportCourtReport"
 import coachDropdown from "./reports/getCoachDropdown"
 import getCoachReports from "./reports/getCoachReport"
 import exportCoachReports from "./reports/exportCoachReport"
+import getCoach from "./coach/getCoach"
+import AddCoach from "./coach/addCoach"
+import getCoachDetail from "./coach/getCoachDetails"
+import ActivateCoach from "./coach/ActivateCoach"
 
 
 
@@ -44,6 +48,7 @@ export class BehrainClient {
  public dashboard
  public members
  public reports
+ public coach
 
   constructor(
     req: NextApiRequest,
@@ -111,6 +116,13 @@ export class BehrainClient {
     getSuccessBookings : withApiClient(getSuccessBookings),
     getCancelledBookings : withApiClient(getCancelledBookings),
     ActivateMember: withApiClient(ActivateMember)
+  }
+
+  this.coach = {
+    getCoach : withApiClient(getCoach),
+    AddCoach : withApiClient(AddCoach),
+    getCoachDetail : withApiClient(getCoachDetail),
+    ActivateCoach : withApiClient(ActivateCoach)
   }
 
   this.reports = {

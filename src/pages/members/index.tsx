@@ -64,7 +64,7 @@ function Member({memberData}:EditTaxDetailsProps) {
 const background = useColorModeValue("#fff","#0D0D0D")
 
  
-const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818;")
+const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
   const columnConfig = [
     {
       Header: t(`members.userName`),
@@ -176,6 +176,8 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818;")
  
   const toast = useToast()
  
+
+
   const handleActivate = async (memberId: string) => {
     if (memberId) {
       try {
@@ -319,6 +321,7 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818;")
               <><MembersForm
                     isOpen={isEditModalOpen}
                     onClose={() => setIsEditModalOpen(false)} memberId={memberId} memberData={memberData} /></>
+             
               )}
             </Stack>
           </PageContainer>

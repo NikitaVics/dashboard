@@ -17,7 +17,7 @@ const EventAnnouncement = () => {
           }}
           onSubmit={() => {}}
         >
-          {({  setFieldTouched,values }) => (
+          {() => (
             <Form noValidate>
 
       
