@@ -64,9 +64,9 @@ import {
       ...rest
     } = props
     const [field] = useField(name)
-    const color4 = useColorModeValue("rgba(76, 78, 100, 0.6)", "#fff")
-    const color2 = useColorModeValue("#fff", "rgba(48, 51, 78, 1)")
-    const color3 = useColorModeValue("#fff", "rgba(40, 42, 66, 1)")
+    const color4 = useColorModeValue("black", "#fff")
+    const color2 = useColorModeValue("#fff", "#fff")
+    const color3 = useColorModeValue("#fff", "black")
   
     return (
       <FormControl name={name} {...rest}>
@@ -99,6 +99,7 @@ import {
             {...field}
             id={name}
             aria-label={name}
+            color="gray"
             _focus={{ boxShadow: "none" ,borderColor:"rgba(78, 203, 113, 1)"}}
             autoComplete="off"
             {...inputProps}

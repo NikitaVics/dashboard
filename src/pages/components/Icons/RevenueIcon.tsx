@@ -1,6 +1,7 @@
 import { chakra, HTMLChakraProps } from "@chakra-ui/react"
 
 export const RevenueIcon = (props: HTMLChakraProps<"svg">) => {
+  
   return (
     <chakra.svg
       width="24px !important"

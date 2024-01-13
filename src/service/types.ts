@@ -11,8 +11,44 @@ export type User = {
     imageUrl: string
   }
 
+  export interface ErrorResponse {
+    messages: string[]
+    source: string
+    exception: string
+    errorId: string
+    supportMessage: string
+    statusCode: number
+  }
+
   export type Session = {
     result: string[]
     token: string
+  }
+
+  export type MemberProps ={
+
+    image:string
+   memberId : string
+   gender:string
+      id?:string
+      value:string
+      name : string
+      description : string
+      phoneNo:string
+      status?: string;
+      email:string
+      memberSince:string
+      membershipExpirationCountDown:string
+   
+  }
+
+export type ReportProps = {
+  bookingDate : string
+  court : string
+  coach : string
+}
+
+  export type getMember = {
+    searchTerm : string
   }
 

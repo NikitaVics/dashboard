@@ -8,6 +8,17 @@ import getTotalRevenue from "./dashboard/totalRevenue";
 import getMembershipGrowth from "./dashboard/membershipGrowth";
 import getYearlyGrowth from "./dashboard/yearlyGrowth";
 import getBookingGrowth from "./dashboard/bookingGrowth";
+import getMembersList from "./members/getMembers";
+import getMemberDetail from "./members/getMembersDetail";
+import getSuccessBookings from "./members/successBookings";
+import getCancelledBookings from "./members/cancelledBookings";
+import ActivateMember from "./members/ActivateMember";
+import getCourtReports from "./reports/getCourtReports";
+import courtDropdown from "./reports/getCourtDropdown";
+import exportCourtReports from "./reports/exportCourtReport";
+import coachDropdown from "./reports/getCoachDropdown";
+import getCoachReports from "./reports/getCoachReport";
+import exportCoachReports from "./reports/exportCoachReport";
 import getApproved from "./bookings/getApproved";
 
 type ApiHandler<T, U> = (baseHttpClient: typeof ky, params: U) => Promise<T>;
@@ -30,6 +41,8 @@ export class BehrainClient {
   // API services to expose on the client.
   public auth;
   public dashboard;
+  public members;
+  public reports;
   public application;
 
   constructor(
@@ -90,6 +103,23 @@ export class BehrainClient {
       getMembershipGrowth: withApiClient(getMembershipGrowth),
       yearlyGrowth: withApiClient(getYearlyGrowth),
       getBookingGrowth: withApiClient(getBookingGrowth),
+    };
+
+    this.members = {
+      getMembersList: withApiClient(getMembersList),
+      getMemberDetail: withApiClient(getMemberDetail),
+      getSuccessBookings: withApiClient(getSuccessBookings),
+      getCancelledBookings: withApiClient(getCancelledBookings),
+      ActivateMember: withApiClient(ActivateMember),
+    };
+
+    this.reports = {
+      getCourtReports: withApiClient(getCourtReports),
+      courtDropdown: withApiClient(courtDropdown),
+      exportCourtReports: withApiClient(exportCourtReports),
+      getCoachReports: withApiClient(getCoachReports),
+      coachDropdown: withApiClient(coachDropdown),
+      exportCoachReports: withApiClient(exportCoachReports),
     };
     this.application = {
       getApproved: withApiClient(getApproved),

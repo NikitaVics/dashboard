@@ -1,11 +1,29 @@
 {
     "buttons":{
-        "login" : "Login"
+        "login" : "Login",
+        "view":"View Details",
+        "inActivate":"In Activate",
+       "activate":"Activate",
+       "download":"Download",
+       "schedule":"Schedule",
+       "send":"Send"
+    },
+    "status":{
+        "active":"Active",
+        "inActive":"In Active",
+        "booked":"Booked",
+        "pending":"Pending",
+        "cancel":"Cancelled"
+    },
+    "menu":{
+        "status":"Status",
+        "action":"Action"
     },
     "settings":{
         "profile": "Profile",
         "change": "Change Password",
-        "logout":"Logout"
+        "logout":"Logout",
+        "search":"Search"
     },
     "errors":{
         "requiredError": "This field is required",
