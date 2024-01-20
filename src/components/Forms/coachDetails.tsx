@@ -28,8 +28,9 @@ import  { mutate } from "swr"
       name: string
       coachId?:string
       gender:string
+      
       status?: string
-      image:string
+      image: File | string;
      phoneNo : string
       email:string
       exp:string
@@ -171,7 +172,7 @@ import  { mutate } from "swr"
           <Form noValidate>
             <Show below="sm">
             <Avatar
-  src={coachData?.image} 
+  src={typeof coachData?.image === 'string' ? coachData?.image : undefined}
   size="lg" 
 />   
 </Show>
@@ -181,7 +182,7 @@ import  { mutate } from "swr"
             <Flex alignItems={"center"} gap={6}>
             <Hide below="sm">
             <Avatar
-  src={coachData?.image} 
+ src={typeof coachData?.image === 'string' ? coachData?.image : undefined}
   size="lg" 
 />   
 </Hide>

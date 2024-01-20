@@ -352,7 +352,7 @@ const { isOpen, onOpen, onClose } = useDisclosure()
 
         <DrawerBody>
        
-       <CoachAddForm />
+       <CoachAddForm image={undefined} />
         
         </DrawerBody>
       </DrawerContent>

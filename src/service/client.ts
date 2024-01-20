@@ -23,6 +23,10 @@ import getCoach from "./coach/getCoach"
 import AddCoach from "./coach/addCoach"
 import getCoachDetail from "./coach/getCoachDetails"
 import ActivateCoach from "./coach/ActivateCoach"
+import AddCourtMaintainence from "./announcement/addCourtMaintainence"
+import AddEvent from "./announcement/addEvent"
+import AddAnnouncement from "./announcement/addAnnouncement"
+import getAnnouncement from "./announcement/getAnnouncement"
 
 
 
@@ -49,6 +53,7 @@ export class BehrainClient {
  public members
  public reports
  public coach
+ public announcement
 
   constructor(
     req: NextApiRequest,
@@ -132,6 +137,13 @@ export class BehrainClient {
     getCoachReports : withApiClient(getCoachReports),
     coachDropdown : withApiClient(coachDropdown),
     exportCoachReports : withApiClient(exportCoachReports)
+  }
+
+  this.announcement = {
+    AddCourtMaintainence  :withApiClient(AddCourtMaintainence),
+    AddEvent : withApiClient(AddEvent),
+    AddAnnouncement : withApiClient(AddAnnouncement),
+    getAnnouncement : withApiClient(getAnnouncement)
   }
     
   }

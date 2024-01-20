@@ -1,16 +1,16 @@
 import {  Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody,  useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 import useTranslation from "next-translate/useTranslation";
-import CourtMaintainence from "./Forms/maintainence";
+import AnnouncementForm from "./Forms/announcement";
 
 
-type MaintainenceProps = {
+type AnnouncementProps = {
     isOpen: boolean
     onClose: () => void
    
   }
 
-const MaintainenceForm = (props: MaintainenceProps) => {
+const Announcement = (props: AnnouncementProps) => {
     const { isOpen, onClose } = props
 
   const color = useColorModeValue("rgba(248, 248, 248, 1)","dark.500")
@@ -22,11 +22,11 @@ const MaintainenceForm = (props: MaintainenceProps) => {
       <DrawerContent bgColor={color}>
 
         <DrawerCloseButton  h="40px" w="40px" mt={3} bgColor="rgba(0, 0, 0, 0.08)"/>
-        <DrawerHeader fontSize="28px" fontWeight="700">{t(`announce.courtAnnouncement`)}</DrawerHeader>
+        <DrawerHeader fontSize="28px" fontWeight="700">{t(`announce.announce`)}</DrawerHeader>
 
         <DrawerBody>
        
-       <CourtMaintainence scheduledTime={""} message={""} />
+   <AnnouncementForm message={undefined} />
         
         </DrawerBody>
       </DrawerContent>
@@ -34,4 +34,4 @@ const MaintainenceForm = (props: MaintainenceProps) => {
   );
 };
 
-export default MaintainenceForm;
+export default Announcement;

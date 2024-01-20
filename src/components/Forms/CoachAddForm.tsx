@@ -1,4 +1,4 @@
-import {  Button,  Flex,  Grid, GridItem,  Select, Text, useColorModeValue, useToast } from "@chakra-ui/react";
+import {  Button,  Flex,  Grid, GridItem,  Input,  Select, Text, useColorModeValue, useToast } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { InputControl } from "../Input/Input";
 import useTranslation from "next-translate/useTranslation";
@@ -6,6 +6,8 @@ import PlusIcon from "@/pages/components/Icons/PlusIcon";
 import ky, { HTTPError } from "ky";
 
 type FormItems = {
+      // eslint-disable-next-line
+  image: any;
   coachData?: {
     id?: string
     firstName: string
@@ -82,7 +84,7 @@ const toast = useToast()
       // validationSchema={}
       onSubmit={handleSubmit}
     >
-      {({  setFieldTouched,setFieldValue }) => (
+      {({  setFieldTouched,setFieldValue,values }) => (
         <Form noValidate>
           <Grid
             templateRows="repeat(3, 1fr)"
@@ -180,31 +182,34 @@ const toast = useToast()
             </GridItem>
             <GridItem rowSpan={1} colSpan={2}>
             <Flex
-        alignItems="center"
-        justifyContent="center"
-        border="1px solid gra.500"
-        borderRadius="4px"
-        height="120px"
-        backgroundColor={bgColor}
-      >
-        <label htmlFor="image" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '4px 8px' }}>
-        <InputControl
-  inputProps={{
-    type: "file",
-    // onChange: (e) => {
-    //   const file = e.currentTarget.files?.[0];
-    //   if (file) {
-    //     setFieldValue('Image', file);
-    //   }
-    // },
-    display:"none"
-  }}
-  name="Image"
-/>
-          <PlusIcon  />
-          <Text ml={2} color="gray.500">Images</Text>
-        </label>
-      </Flex>
+  alignItems="center"
+  justifyContent="center"
+  border="1px solid gra.500"
+  borderRadius="4px"
+  height="120px"
+  backgroundColor={bgColor}
+>
+  <label htmlFor="image" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '4px 8px' }}>
+    <Input
+      type="file"
+      id="image"
+      name="image"
+      onChange={(e) => {
+        const file = e.currentTarget.files?.[0];
+        if (file) {
+          setFieldValue('image', file);
+        }
+      }}
+      style={{ display: 'none' }}
+    />
+    <PlusIcon />
+    <Text ml={2} color="gray.500">Images</Text>
+  </label>
+  {values.image && (
+    <Text ml={2} color="gray.500">{values.image.name}</Text>
+  )}
+</Flex>
+
             </GridItem>
             <GridItem rowSpan={1} colSpan={2}>
             <Button

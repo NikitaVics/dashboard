@@ -15,8 +15,11 @@ export type User = {
     messages: string[]
     source: string
     exception: string
+    errors:string[]
+    ScheduledDateTime:string
     errorId: string
     supportMessage: string
+    title:string
     statusCode: number
   }
 
@@ -52,6 +55,13 @@ export type ReportProps = {
     searchTerm : string
   }
 
+  export type CourtMaintainence = {
+    scheduledDateTime: string
+    message : string
+    scheduledTime : string
+    images:string
+  }
+
   export type AddCoachProps = {
   name:string
   coachId?: string
@@ -63,6 +73,6 @@ export type ReportProps = {
   email:string
   gender:string
   experience:string
-  image : string
+  image : File
   }
 

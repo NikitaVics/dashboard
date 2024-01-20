@@ -6,8 +6,8 @@ import {
   GridItem,
   Stack,
   Text,
-  Textarea,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
 import Court1 from '@/pages/components/Icons/court1';
 import Court2 from '@/pages/components/Icons/court2';
@@ -16,6 +16,9 @@ import Court4 from '@/pages/components/Icons/court4';
 import Court5 from '@/pages/components/Icons/court5';
 import Court6 from '@/pages/components/Icons/court6';
 import useTranslation from 'next-translate/useTranslation';
+import { Form, Formik } from 'formik';
+import { InputControl } from '../Input/Input';
+import ky, { HTTPError } from 'ky';
 
 interface ImageItem {
   id: number;
@@ -24,7 +27,19 @@ interface ImageItem {
   selected: boolean;
 }
 
-const CourtMaintainence: React.FC = () => {
+
+type FormItems = {
+  scheduledTime: string | Blob;
+  message: string | Blob;
+  courtData?: {
+    id?: string
+    message : string
+    scheduleTime : string
+    image : string
+  }
+}
+
+const CourtMaintainence: React.FC<FormItems> = ({ courtData }: FormItems) => {
   const { t } = useTranslation('announcement');
   const [images, setImages] = useState<ImageItem[]>([
     { id: 1, name: 'Court1', icon: <Court1 />, selected: false },
@@ -41,17 +56,72 @@ const CourtMaintainence: React.FC = () => {
     );
   };
 
-  const handleSubmit = () => {
-    const selectedImages = images.filter((image) => image.selected).map((image) => image.name);
-    console.log('Selected Images:', selectedImages);
-    // Add your submission logic here
+  const toast = useToast();
+
+  const handleSubmit = async (values: FormItems) => {
+    const formData = new FormData();
+  
+    // Append values to the FormData
+    formData.append('Message', values.message);
+    formData.append('ScheduledTime', values.scheduledTime);
+  
+    // Append selected images to the FormData
+    images
+      .filter((image) => image.selected)
+      .forEach((image) => formData.append('Images[]', image.name));
+  
+    try {
+      const response = await ky.post(`/api/announcement/AddCourtMaintainence`, {
+        body: formData,
+      });
+  
+      if (response) {
+        toast({
+          description: "Successfully added",
+          status: "success",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      if (error instanceof HTTPError && error.response.status === 400) {
+        const errorResponse = await error.response.json();
+        const messages = errorResponse.error.messages;
+        toast({
+          description: (
+            <>
+              {messages.map((message: string, index: number) => (
+                <Text key={index}>{message}</Text>
+              ))}
+            </>
+          ),
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    }
   };
+  
 
   const bgColor = useColorModeValue('light.200', 'dark.300');
 
   return (
     <Box>
-      <Grid
+    
+      <Formik
+      initialValues={{
+        message : courtData?.message || "",
+        scheduledTime : courtData?.scheduleTime || ""
+      }}
+      // validationSchema={}
+      onSubmit={handleSubmit}
+    >
+      {({  setFieldTouched }) => (
+        <Form noValidate>
+           <Grid
         templateRows="repeat(1, 1fr)"
         templateColumns={{
           base: 'repeat(1, 1fr)',
@@ -79,7 +149,15 @@ const CourtMaintainence: React.FC = () => {
         ))}
       </Grid>
 
-      <Textarea h={'141px'} mt={10} placeholder={t(`announce.placeholder`)} />
+      <InputControl 
+      inputProps = {{
+        h:'141px',
+         mt:10 ,
+         placeholder : t(`announce.placeholder`)  
+      
+      }}
+      name="message"
+      onKeyUp={() => setFieldTouched("message")}/>
 
       <Grid templateRows="repeat(1, 1fr)" templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }} gap="4" mt={8}>
         <GridItem rowSpan={1} colSpan={1}>
@@ -91,7 +169,7 @@ const CourtMaintainence: React.FC = () => {
             border="1px solid"
             color="rgba(78, 203, 113, 1)"
             h="80px"
-            onClick={handleSubmit}
+            // onClick={handleSubmit}
           >
             {t(`common:buttons.schedule`)}
           </Button>
@@ -102,13 +180,18 @@ const CourtMaintainence: React.FC = () => {
             bgColor="rgba(78, 203, 113, 1)"
             color="#fff"
             h="80px"
+            type = "submit"
             _hover={{ bg: 'none', color: 'rgba(78, 203, 113, 1)', border: '1px solid rgba(78, 203, 113, 1)' }}
-            onClick={handleSubmit}
+            // onClick={handleSubmit}
           >
                {t(`common:buttons.send`)}
           </Button>
         </GridItem>
       </Grid>
+         
+        </Form>
+      )}
+    </Formik>
     </Box>
   );
 };
