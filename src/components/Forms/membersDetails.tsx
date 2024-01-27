@@ -33,8 +33,8 @@ import useSWR, { mutate } from "swr"
       status?: string
       image:string
      phoneNo : string
-      email:string
-      memberSince : string
+    email:string
+     memberSince : string
       membershipExpirationCountDown : string
     }
     onClose?: () => void

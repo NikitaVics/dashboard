@@ -6,6 +6,8 @@ const AddCoach = async (
   httpClient: typeof ky,
   params: AddCoachProps,
 ) => {
+
+  console.log("Coach :",params)
   return httpClient
     .post(`Management/Coach`, {
       json: {
@@ -15,10 +17,12 @@ const AddCoach = async (
         phoneNumber : params.phoneNumber,
         gender : params.gender,
         experience : params.experience,
-        image : params.image
+        // image : params.image
       }
     })
     .json()
+
+  
 }
 
 export default AddCoach

@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import {
   Box,
   Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
   Grid,
   GridItem,
   Stack,
@@ -29,18 +35,29 @@ interface ImageItem {
 
 
 type FormItems = {
-  scheduledTime: string | Blob;
-  message: string | Blob;
+ 
   courtData?: {
     id?: string
     message : string
     scheduleTime : string
-    image : string
+    courtNames : string
   }
 }
 
 const CourtMaintainence: React.FC<FormItems> = ({ courtData }: FormItems) => {
   const { t } = useTranslation('announcement');
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const handleEditModalOpen = () => {
+   
+    setIsEditModalOpen(true)
+   
+    
+    
+  }
+  const handleCloseDrawer = () => {
+    setIsEditModalOpen(false);
+  };
+  const color = useColorModeValue("dark.100","dark.500")
   const [images, setImages] = useState<ImageItem[]>([
     { id: 1, name: 'Court1', icon: <Court1 />, selected: false },
     { id: 2, name: 'Court2', icon: <Court2 />, selected: false },
@@ -59,20 +76,21 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData }: FormItems) => {
   const toast = useToast();
 
   const handleSubmit = async (values: FormItems) => {
-    const formData = new FormData();
-  
-    // Append values to the FormData
-    formData.append('Message', values.message);
-    formData.append('ScheduledTime', values.scheduledTime);
-  
-    // Append selected images to the FormData
-    images
-      .filter((image) => image.selected)
-      .forEach((image) => formData.append('Images[]', image.name));
-  
+    console.log("values :",values)
+    
     try {
+      const selectedImages = images.filter((image) => image.selected);
+
+      // Extract names from selected images
+      const courtNames = selectedImages.map((image) => t(`announce.${image.name.toLowerCase()}`)).join(', ');
+
+      // Update values before submission
+      const updatedValues = {
+        ...values,
+        courtNames,
+      };
       const response = await ky.post(`/api/announcement/AddCourtMaintainence`, {
-        body: formData,
+       json : updatedValues
       });
   
       if (response) {
@@ -114,7 +132,8 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData }: FormItems) => {
       <Formik
       initialValues={{
         message : courtData?.message || "",
-        scheduledTime : courtData?.scheduleTime || ""
+        scheduledTime : courtData?.scheduleTime || "",
+        courtNames : courtData?.courtNames || ""
       }}
       // validationSchema={}
       onSubmit={handleSubmit}
@@ -169,7 +188,7 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData }: FormItems) => {
             border="1px solid"
             color="rgba(78, 203, 113, 1)"
             h="80px"
-            // onClick={handleSubmit}
+            onClick={() => handleEditModalOpen()}
           >
             {t(`common:buttons.schedule`)}
           </Button>
@@ -188,6 +207,21 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData }: FormItems) => {
           </Button>
         </GridItem>
       </Grid>
+      {isEditModalOpen && (
+              <Drawer placement="right" isOpen={isEditModalOpen} onClose={handleCloseDrawer} size="md" >
+              <DrawerOverlay />
+              <DrawerContent bgColor={color}>
+        
+                <DrawerCloseButton  h="40px" w="40px" mt={3} bgColor="rgba(0, 0, 0, 0.08)"/>
+                <DrawerHeader fontSize="28px" fontWeight="700">Members Details</DrawerHeader>
+        
+                <DrawerBody>
+                <Text>dcdewdwdde</Text>
+                </DrawerBody>
+              </DrawerContent>
+            </Drawer>
+             
+              )}
          
         </Form>
       )}

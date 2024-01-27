@@ -34,7 +34,7 @@ const AnnouncementForm = ({Data}:FormItems) => {
       
       
       if (values.message) {
-        formData.append("message", values.message);
+        formData.append("Message", values.message);
       } else {
         console.error("Error: Message is empty or undefined");
         return; 
@@ -51,10 +51,11 @@ const AnnouncementForm = ({Data}:FormItems) => {
       }
   
       console.log("FormData Entries:", [...formData.entries()]);
-  
-      const response = await ky.post("/api/announcement/AddAnnouncement", {
-        body: formData,
+      const response = await ky.post(`/api/announcement/AddAnnouncement`, {
+        body :formData
       });
+  
+   
   
       if (response) {
         toast({

@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid, GridItem,Text, useColorModeValue, Stack, IconButton, Menu, MenuButton,  MenuList } from "@chakra-ui/react"
+import { Box, Button, Flex, Grid, GridItem,Text, useColorModeValue, Stack, IconButton, Menu, MenuButton,  MenuList, useBreakpointValue } from "@chakra-ui/react"
 import Layout from "../components/Layout"
 import useTranslation from "next-translate/useTranslation"
 import Maintanence from "../components/Icons/maintanence"
@@ -15,15 +15,20 @@ import useSWR from "swr"
 import PageContainer from "../components/PageContainer"
 
 import TableSkeleton from "@/components/Skeleton/TableSkeleton"
+import { InputControl } from "@/components/Input/Input"
+import SearchIcon from "../components/Icons/searchIcon"
+import { useDebounce } from "use-debounce"
+import { Formik } from "formik"
 
 
 
 
 const Announcemnet = () => {
     const {t} = useTranslation("announcement")
-
+    const [searchInput, setSearchInput] = useState("")
+    const [debouncedSearchInput] = useDebounce(searchInput, 800)
     const { data: announcementData } = useSWR(
-      `/api/announcement/getAnnouncement`,
+      `/api/announcement/getAnnouncement?announcementType=${debouncedSearchInput}`,
     )
     const responseData = announcementData?.result;
 
@@ -53,7 +58,7 @@ const Announcemnet = () => {
     const isLoading = !responseData
 
     const background = useColorModeValue("#fff","#0D0D0D")
-
+    const isDesktopView = useBreakpointValue({ base: false, md: false, xl: true })
 
 
 
@@ -188,16 +193,17 @@ const Announcemnet = () => {
         <Grid
          templateRows="repeat(1, 1fr)"
          templateColumns={{
-           base: "repeat(1, 1fr)",
-           md: "repeat(3, 1fr)",
-           sm: "repeat(2, 1fr)",
+          //  base: "repeat(1, 1fr)",
+          lg :"repeat(3, 1fr)",
+           md: "repeat(2, 1fr)",
+           sm: "repeat(1, 1fr)",
          }}
          gap="5"
          mt="10">
         <GridItem rowSpan={1} colSpan={1}>
         <Box  bgColor={bgColor} h="127px"   borderRadius="20px" px={6} py={6}>
             <Flex gap={20} >
-            <Maintanence />
+            <Maintanence  />
               <Stack gap={4} >
             <Text  fontSize={"18px"} fontWeight={"700"} >{t(`announce.maintain`)}</Text>
             <Button bg="none" color="rgba(78, 203, 113, 1)" borderRadius={"51px"} border="1px solid  rgba(78, 203, 113, 1)"
@@ -242,9 +248,35 @@ const Announcemnet = () => {
       </Grid>
       <PageContainer    as="section"
             maxW="full"
-            px="0"
-            mt={{ base: 8, md: 18, lg: 0 }}>
+            p="3"
+            mt={{ base: 8, md: 18, lg: 8 }}>
               <Stack py={{ base: 3, md: 5 }}>
+              <Formik
+                    initialValues={{
+                      firstName: "",
+                    }}
+                    onSubmit={() => {}}
+                    
+                  >
+<Box px={5}>
+                    <InputControl
+                      {...(isDesktopView && { width: "30%" })}
+                      inputProps={{
+                        type: "text",
+                        placeholder: t(`members.search`),
+                        fontSize: "md",
+                        fontWeight: "medium",
+                        color: "gray.500",
+                        h:"64px",
+                        value: searchInput,
+                        onChange: (e) => setSearchInput(e.target.value),
+                      }}
+                      name="description"
+                      inputRightElement={<SearchIcon />}
+                    />
+                  
+                    </Box>
+                  </Formik>
    <Box>
                 <Table columns={columnConfig} data={responseData} />
                 </Box>

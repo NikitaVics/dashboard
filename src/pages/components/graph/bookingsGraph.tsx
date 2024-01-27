@@ -89,6 +89,7 @@ const chartRef = useRef<any>(null);
             textAnchor="end"
             dy={20}
             tick={{ fill: color2 }} 
+          
             />
           <YAxis hide={true} />
           <Tooltip content={<CustomTooltip active={false} />} cursor={{stroke:"rgba(78, 203, 113, 1)" ,strokeWidth:"2px", strokeDasharray :"5 5"}} />

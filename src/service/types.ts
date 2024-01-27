@@ -55,11 +55,16 @@ export type ReportProps = {
     searchTerm : string
   }
 
+  export type getAnnouncementProps = {
+    announcementType : string
+  }
+
   export type CourtMaintainence = {
     scheduledDateTime: string
     message : string
     scheduledTime : string
-    images:string
+    courtNames:string
+    images  : string
   }
 
   export type AddCoachProps = {

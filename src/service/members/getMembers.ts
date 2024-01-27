@@ -3,7 +3,7 @@ import ky from "ky"
 import { User, getMember } from "../types"
 
 const getMembersList = async (httpClient: typeof ky, { searchTerm }: getMember,) => {
-  return httpClient.get(`ManagementMember`, {
+  return httpClient.get(`Management/Member`, {
     searchParams: {
       searchTerm: searchTerm,
     } as unknown as string,

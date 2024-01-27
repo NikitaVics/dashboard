@@ -9,10 +9,9 @@ const AddCourtMaintainence = async (
   return httpClient
     .post(`Management/Announcement/create CourtMaintenance Announcement`, {
       json: {
-        Message : params.message,
-        ScheduledDateTime : params.scheduledTime,
-        Images : params.images,
-        
+        message: params.message,
+  scheduledDateTime: "2024-01-25T13:14:15.859Z",
+  courtNames:[params.courtNames]
       }
     })
     .json()

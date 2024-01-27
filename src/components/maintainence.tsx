@@ -26,7 +26,7 @@ const MaintainenceForm = (props: MaintainenceProps) => {
 
         <DrawerBody>
        
-       <CourtMaintainence scheduledTime={""} message={""} />
+       <CourtMaintainence  />
         
         </DrawerBody>
       </DrawerContent>

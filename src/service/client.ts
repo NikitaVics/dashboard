@@ -27,6 +27,7 @@ import AddCourtMaintainence from "./announcement/addCourtMaintainence"
 import AddEvent from "./announcement/addEvent"
 import AddAnnouncement from "./announcement/addAnnouncement"
 import getAnnouncement from "./announcement/getAnnouncement"
+import getProfile from "./dashboard/profile"
 
 
 
@@ -72,6 +73,7 @@ export class BehrainClient {
         beforeRequest: [
           (request) => {
             request.headers.set("Content-type", "application/json-patch+json")
+          
             request.headers.set("accept", "*/*")
             if (opts.overrideLanguage) {
               request.headers.set("Accept-Language", opts.overrideLanguage)
@@ -112,7 +114,8 @@ export class BehrainClient {
     totalRevenue:withApiClient(getTotalRevenue),
     getMembershipGrowth : withApiClient(getMembershipGrowth),
     yearlyGrowth : withApiClient(getYearlyGrowth),
-    getBookingGrowth : withApiClient(getBookingGrowth)
+    getBookingGrowth : withApiClient(getBookingGrowth),
+    getProfile  :withApiClient(getProfile)
   }
 
   this.members = {
