@@ -13,6 +13,21 @@ import getMemberDetail from "./members/getMembersDetail"
 import getSuccessBookings from "./members/successBookings"
 import getCancelledBookings from "./members/cancelledBookings"
 import ActivateMember from "./members/ActivateMember"
+import getCourtReports from "./reports/getCourtReports"
+import courtDropdown from "./reports/getCourtDropdown"
+import exportCourtReports from "./reports/exportCourtReport"
+import coachDropdown from "./reports/getCoachDropdown"
+import getCoachReports from "./reports/getCoachReport"
+import exportCoachReports from "./reports/exportCoachReport"
+import getCoach from "./coach/getCoach"
+import AddCoach from "./coach/addCoach"
+import getCoachDetail from "./coach/getCoachDetails"
+import ActivateCoach from "./coach/ActivateCoach"
+import AddCourtMaintainence from "./announcement/addCourtMaintainence"
+import AddEvent from "./announcement/addEvent"
+import AddAnnouncement from "./announcement/addAnnouncement"
+import getAnnouncement from "./announcement/getAnnouncement"
+import getProfile from "./dashboard/profile"
 
 
 
@@ -37,6 +52,9 @@ export class BehrainClient {
  public auth
  public dashboard
  public members
+ public reports
+ public coach
+ public announcement
 
   constructor(
     req: NextApiRequest,
@@ -55,6 +73,7 @@ export class BehrainClient {
         beforeRequest: [
           (request) => {
             request.headers.set("Content-type", "application/json-patch+json")
+          
             request.headers.set("accept", "*/*")
             if (opts.overrideLanguage) {
               request.headers.set("Accept-Language", opts.overrideLanguage)
@@ -95,7 +114,8 @@ export class BehrainClient {
     totalRevenue:withApiClient(getTotalRevenue),
     getMembershipGrowth : withApiClient(getMembershipGrowth),
     yearlyGrowth : withApiClient(getYearlyGrowth),
-    getBookingGrowth : withApiClient(getBookingGrowth)
+    getBookingGrowth : withApiClient(getBookingGrowth),
+    getProfile  :withApiClient(getProfile)
   }
 
   this.members = {
@@ -104,6 +124,29 @@ export class BehrainClient {
     getSuccessBookings : withApiClient(getSuccessBookings),
     getCancelledBookings : withApiClient(getCancelledBookings),
     ActivateMember: withApiClient(ActivateMember)
+  }
+
+  this.coach = {
+    getCoach : withApiClient(getCoach),
+    AddCoach : withApiClient(AddCoach),
+    getCoachDetail : withApiClient(getCoachDetail),
+    ActivateCoach : withApiClient(ActivateCoach)
+  }
+
+  this.reports = {
+    getCourtReports : withApiClient(getCourtReports),
+    courtDropdown : withApiClient(courtDropdown),
+    exportCourtReports : withApiClient(exportCourtReports),
+    getCoachReports : withApiClient(getCoachReports),
+    coachDropdown : withApiClient(coachDropdown),
+    exportCoachReports : withApiClient(exportCoachReports)
+  }
+
+  this.announcement = {
+    AddCourtMaintainence  :withApiClient(AddCourtMaintainence),
+    AddEvent : withApiClient(AddEvent),
+    AddAnnouncement : withApiClient(AddAnnouncement),
+    getAnnouncement : withApiClient(getAnnouncement)
   }
     
   }

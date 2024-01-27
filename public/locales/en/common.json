@@ -3,11 +3,18 @@
         "login" : "Login",
         "view":"View Details",
         "inActivate":"In Activate",
-       "activate":"Activate"
+       "activate":"Activate",
+       "download":"Download",
+       "schedule":"Schedule",
+       "send":"Send",
+       "addCoach":"Add Coach"
     },
     "status":{
         "active":"Active",
-        "inActive":"In Active"
+        "inActive":"In Active",
+        "booked":"Booked",
+        "pending":"Pending",
+        "cancel":"Cancelled"
     },
     "menu":{
         "status":"Status",
@@ -16,7 +23,8 @@
     "settings":{
         "profile": "Profile",
         "change": "Change Password",
-        "logout":"Logout"
+        "logout":"Logout",
+        "search":"Search"
     },
     "errors":{
         "requiredError": "This field is required",

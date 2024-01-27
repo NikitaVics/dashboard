@@ -6,7 +6,10 @@ module.exports = {
       "/": ["home", "common"],
       "/login":["auth"],
       "/dashboard":["dashboard"],
-      "/members":["members"]
+      "/members":["members"],
+      "/reports":["reports"],
+      "/announcement":["announcement"],
+      "/coach":["coach"]
      
     },
     loadLocaleFrom: async (lang, ns) => {

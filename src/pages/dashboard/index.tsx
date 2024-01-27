@@ -49,7 +49,7 @@ const Dashboard = () => {
          templateRows="repeat(1, 1fr)"
          templateColumns={{
            base: "repeat(1, 1fr)",
-           md: "repeat(3, 2fr)",
+           md: "repeat(3, 4fr)",
            sm: "repeat(2, 1fr)",
          }}
          gap="5"
@@ -90,7 +90,8 @@ const Dashboard = () => {
            
         </Box>
         </GridItem>
-        <GridItem rowSpan={1} colSpan={1}>
+     
+      <GridItem rowSpan={1} colSpan={1}>
         <Box bgColor={bgColor} h="139px"   borderRadius="20px" px={6} py={6}>
             <Flex justify="space-between">
             <Text color={color}>{t(`dashboard.members`)}</Text>
@@ -108,6 +109,7 @@ const Dashboard = () => {
            
         </Box>
         </GridItem>
+    
         
       </Grid>
       <Hide  below="sm" >

@@ -15,7 +15,6 @@ import {
   } from "@chakra-ui/react"
   import { Form, Formik } from "formik"
   import ky, { HTTPError } from "ky"
-  import { useRouter } from "next/router"
   import useTranslation from "next-translate/useTranslation"
   import React from "react"
   import * as Yup from "yup"
@@ -34,8 +33,8 @@ import useSWR, { mutate } from "swr"
       status?: string
       image:string
      phoneNo : string
-      email:string
-      memberSince : string
+    email:string
+     memberSince : string
       membershipExpirationCountDown : string
     }
     onClose?: () => void
@@ -44,8 +43,6 @@ import useSWR, { mutate } from "swr"
   function MembersDetails({ memberData,memberId,onClose  }: FormItems) {
     const { t } = useTranslation("members")
     const toast = useToast()
-    const router = useRouter()
-    const { id } = router.query
 
     const { data: succesData } = useSWR(
       `/api/members/getSuccessBookings?id=${memberId}`,
@@ -151,83 +148,14 @@ import useSWR, { mutate } from "swr"
       }
     }
   
-    const handleSubmit = async (values: FormItems) => {
-      if (id) {
+    const handleSubmit = async (values: FormItems) => { 
+      console.log(values)
         try {
-          const response = await ky
-            .post("/api/roles/create-role", {
-              json: {
-                ...values,
-                id: router.query.id,
-              },
-            })
-            .json()
-          if (response) {
-            toast({
-              description: t("forms.role.update"),
-              status: "success",
-              position: "top",
-              duration: 3000,
-              isClosable: true,
-            })
-            router.push("/roles")
-          }
+         ""
         } catch (error) {
-          if (error instanceof HTTPError && error.response.status === 500) {
-            const errorResponse = await error.response.json()
-            const messages = errorResponse.error.messages
-  
-            toast({
-              description: (
-                <>
-                  {messages.map((message: string, index: number) => (
-                    <Text key={index}>{message}</Text>
-                  ))}
-                </>
-              ),
-              status: "error",
-              position: "top",
-              duration: 3000,
-              isClosable: true,
-            })
-          }
+        ""
         }
-      } else {
-        try {
-          const response = await ky
-            .post("/api/roles/create-role", { json: values })
-            .json()
-          if (response) {
-            toast({
-              description: t("forms.role.success"),
-              status: "success",
-              position: "top",
-              duration: 3000,
-              isClosable: true,
-            })
-            router.push("/roles")
-          }
-        } catch (error) {
-          if (error instanceof HTTPError && error.response.status === 500) {
-            const errorResponse = await error.response.json()
-            const messages = errorResponse.error.messages
-  
-            toast({
-              description: (
-                <>
-                  {messages.map((message: string, index: number) => (
-                    <Text key={index}>{message}</Text>
-                  ))}
-                </>
-              ),
-              status: "error",
-              position: "top",
-              duration: 3000,
-              isClosable: true,
-            })
-          }
-        }
-      }
+      
     }
   
     const validationSchema = Yup.object().shape({

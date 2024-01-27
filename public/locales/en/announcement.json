@@ -1,0 +1,24 @@
+{
+    "announce" : {
+        "title":"Announcement Management",
+        "courtAnnouncement":"Court Announcement",
+        "maintain":"Court Maintainence",
+        "create":"Create",
+        "event":"Events",
+        "announce":"Announcement",
+        "court1":"Court 1",
+        "court2":"Court 2",
+        "court3":"Court 3",
+        "court4":"Court 4",
+        "court5":"Court 5",
+        "court6":"Court 6",
+        "placeholder":"Type Message....",
+        "eventAnnoun":"Event Announcement",
+        "type":"Announcement Type",
+        "message" : "Message",
+        "date" : "Date",
+        "time" : "Scheduled Time",
+        "status" : "Status"
+
+    }
+}

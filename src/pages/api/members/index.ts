@@ -1,4 +1,5 @@
 import { BehrainClient } from "@/service/client"
+import { getMember } from "@/service/types"
 import type { NextApiRequest, NextApiResponse } from "next"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -11,7 +12,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   async function getMembers() {
     try {
-      const response = await client.members.getMembersList()
+      const { searchTerm = "" } = req.query
+      const params = {
+        searchTerm: searchTerm as string,
+      } as getMember
+      const response = await client.members.getMembersList(params)
       res.status(200).json(response)
     } catch (error) {
       console.log(error)

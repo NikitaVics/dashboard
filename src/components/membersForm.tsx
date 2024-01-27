@@ -35,6 +35,7 @@ const MembersForm = (props: MemberFormProps) => {
           </Flex>
           ) : (
          <MembersDetails memberId={memberId} onClose={onClose} memberData={memberData} status={undefined}  />
+      
           )}
         </DrawerBody>
       </DrawerContent>
