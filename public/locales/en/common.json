@@ -2,6 +2,7 @@
     "buttons":{
         "login" : "Login",
         "view":"View Details",
+        "views":"View Booking",
         "inActivate":"In Activate",
        "activate":"Activate",
        "download":"Download",

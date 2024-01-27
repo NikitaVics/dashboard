@@ -11,7 +11,11 @@
         "court":"Court",
         "time" : "Time",
         "status":"Status",
-        "search":"Search"
+        "search":"Search",
+        "details":"Details",
+        "view":"View",
+        "bookingid":"Booking ID",
+        "date":"Date"
 
         
 

@@ -25,6 +25,8 @@ import getaveragePeakBookingHour from "./bookings/averagepeakBookingMonth"
 import CancelBooking from "./bookings/cancelbooking"
 import bookingDetails from "./bookings/bookingDetails"
 
+import bookingDetail from "./bookings/getbookingDetail"
+
 
 
 type ApiHandler<T, U> = (baseHttpClient: typeof ky, params: U) => Promise<T>
@@ -134,7 +136,8 @@ export class BehrainClient {
     getTotalBookings : withApiClient(getTotalBookings),
     getaveragePeakBookingHour: withApiClient(getaveragePeakBookingHour),
     CancelBooking: withApiClient(CancelBooking),
-    bookingDetails:withApiClient(bookingDetails)
+    bookingDetails:withApiClient(bookingDetails),
+    getbookingDetail:withApiClient(bookingDetail)
   }
     
   }

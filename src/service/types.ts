@@ -42,19 +42,16 @@ export type User = {
    
   }
   export type BookingsProps={
-
-    image:string
     memberId : string
-    gender:string
-       id?:string
-       value:string
-       name : string
-       description : string
-       phoneNo:string
-       status?: string;
-       email:string
-       memberSince:string
-       membershipExpirationCountDown:string
+    image:string
+    name: string
+    bookingId: string
+    bookingDate: string
+    slot: string
+    teamMembers: string
+    status?: string;
+
+   
   }
 
 export type ReportProps = {
@@ -65,5 +62,6 @@ export type ReportProps = {
 
   export type getMember = {
     searchTerm : string
+    bookingDate:string
   }
 

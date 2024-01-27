@@ -3,20 +3,16 @@ import {
     AvatarGroup,
     Box,
     Button,
-    CloseButton,
     Flex,
     Grid,
     GridItem,
     HStack,
     IconButton,
-    Input,
     Menu,
     MenuButton,
     MenuItem,
     MenuList,
     Text,
-    
-    useBreakpointValue,
     
     // useBreakpointValue,
     
@@ -25,7 +21,7 @@ import {
       } from "@chakra-ui/react"
   import Table from "@/components/Table"
   import useTranslation from "next-translate/useTranslation"
-  import React, { ChangeEvent, useState } from "react"
+  import React, { useState } from "react"
   import useSWR, { mutate } from "swr"
   import TableSkeleton from "@/components/Skeleton/TableSkeleton"
   import Layout from "../components/Layout"
@@ -37,15 +33,11 @@ import {
 
 
 import ky, { HTTPError } from "ky"
-import { BookingsProps, MemberProps } from "@/service/types"
-
+//import { MemberProps } from "@/service/types"
+import MembersForm from "@/components/membersForm"
 import { InputControl } from "@/components/Input/Input"
 import { Formik } from "formik"
-import { useDebounce } from "use-debounce"
-
-import BookingForm from "@/components/bookingForm"
-import PeakBooking from "../components/graph/peakbookingHour"
-
+import { BookingsProps } from "@/service/types"
 
 type EditTaxDetailsProps = {
     memberData: BookingsProps
@@ -57,7 +49,7 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
   
     const { t } = useTranslation("bookings")
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const handleEditModalOpen = (memberId: MemberProps | undefined) => {
+  const handleEditModalOpen = (memberId: BookingsProps | undefined) => {
    
     setIsEditModalOpen(true)
     if (memberId) {
@@ -68,30 +60,14 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
   }
 
   const [memberId, setMemberId] = useState("")
-  const [searchInput, setSearchInput] = useState("")
-  const [debouncedSearchInput] = useDebounce(searchInput, 800)
-  const { data: responseData } = useSWR(
-    `/api/bookings/bookingDetails?searchTerm=${debouncedSearchInput}`,
-  )
-
-
-  const [selectedDate, setSelectedDate] = useState("");
-
-  const handleDateChange =(event: ChangeEvent<HTMLInputElement>) => {
-    const selectedDates = event.target.value;
-    const [year, month, day] = selectedDates.split("-");
-    const reversedDate = `${year}-${month}-${day}`;
-    setSelectedDate(reversedDate);
-  };
+  // const [searchInput, setSearchInput] = useState("")
   
-
-  //const menuBg = useColorModeValue("","rgba(20, 20, 20, 1)")
   
      const { data: totalbookingsList } = useSWR("/api/bookings/totalBookings")
      const totalbookings=totalbookingsList?.result
   
-     const { data: cancelbookingsList } = useSWR("/api/bookings/cancelledBookings")
-      const cancelbooking=cancelbookingsList?.result
+    // const { data: cancelbookingsList } = useSWR("/api/bookings/cancelledBookings")
+    //   const cancelbooking=cancelbookingsList?.result
     //   console.log("cancel",cancelbookingsList)
   
     // const { data: peakbookingsHour } = useSWR("/api/bookings/peakBookingHour")
@@ -101,16 +77,10 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
     // const averagepeakbookHour=averagepeakbookhour?.result
    
 
-    //  const { data: responseData } = useSWR(
-    //    `/api/bookings/bookingDetails`,
-    //  )
+    const { data: responseData } = useSWR(
+      `/api/bookings/bookingDetails`,
+    )
     const background = useColorModeValue("#fff","#0D0D0D")
-
-//     const [ setSelectedComponent] = useState('membershipGrowth');
-
-//   const handleMenuItemClick = (component: string) => {
-//     setSelectedComponent(component);
-//   };
 
  
     const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818;")
@@ -320,20 +290,18 @@ const toast=useToast()
       }
   
     const isLoading = !responseData
-     const isDesktopView = useBreakpointValue({ base: false, md: false, xl: true })
+    // const isDesktopView = useBreakpointValue({ base: false, md: false, xl: true })
   
     const bgColor = useColorModeValue("light.300","dark.600")
     const color  = useColorModeValue("dark.700","light.400")
     const color2  = useColorModeValue("dark.400","light.50")
     
-    const handleClearDate = () => {
-        setSelectedDate("");
-      };
+
     
 
-//   function setSearchInput(value: string): void {
-//     throw new Error("Function not implemented.")
-//   }
+  function setSearchInput(value: string): void {
+    throw new Error("Function not implemented.")
+  }
 
     return (
       <>
@@ -358,7 +326,7 @@ const toast=useToast()
             gap="5"
             mt="10">
            <GridItem rowSpan={1} colSpan={1}>
-           <Box  bgColor={bgColor} h="200px"   borderRadius="20px" px={6} py={6}>
+           <Box  bgColor={bgColor} h="139px"   borderRadius="20px" px={6} py={6}>
                <Flex justify="space-between">
                <Text color={color}>{t(`bookings.totalBookings`)}</Text>
                <CalenderIcon />
@@ -366,10 +334,10 @@ const toast=useToast()
                <Flex justify={"space-between"} mt={10}>
                  <HStack>
                   <Text fontSize={"16px"} fontWeight={"700"}>{totalbookings}</Text> 
-                 <Text fontSize={"13px"} fontWeight="400" color={color2}>{t(`bookings.day`)}</Text>
+                 <Text fontSize={"13px"} fontWeight="400" color={color2}>{t(`bookings.totalBookings`)}</Text>
                  </HStack>
              
-                 <Button color="rgba(78, 203, 113, 1)" p={"0"}  onClick={()=>router.push("/bookings")} fontSize={"14px"} fontWeight={"700"} background={"none"} _hover={{bg:"none"}}>{t(`bookings.view`)}</Button>
+                 <Button color="rgba(78, 203, 113, 1)" p={"0"}  onClick={()=>router.push("/bookings")} fontSize={"14px"} fontWeight={"700"} background={"none"} _hover={{bg:"none"}}>{t(`bookings.details`)}</Button>
                </Flex>
               
            </Box>
@@ -377,39 +345,44 @@ const toast=useToast()
           
           
            <GridItem rowSpan={1} colSpan={1}>
-           <Box  bgColor={bgColor} h="200px"   borderRadius="20px" px={6} py={6}>
+           <Box  bgColor={bgColor} h="139px"   borderRadius="20px" px={6} py={6}>
                <Flex justify="space-between">
                <Text color={color}>{t(`bookings.cancelledBookings`)}</Text>
                 <CalenderIcon /> 
                </Flex>
                <Flex justify={"space-between"} mt={10}>
                <HStack>
-                   <Text fontSize={"16px"} fontWeight={"700"}>${cancelbooking}</Text>   
-                 <Text fontSize={"13px"} fontWeight="400" color="red.200">{t(`bookings.day`)}</Text>
+                   {/* <Text fontSize={"16px"} fontWeight={"700"}>${cancelbooking}</Text>   */}
+                 <Text fontSize={"13px"} fontWeight="400" color={color2}>{t(`dashboard.year`)}</Text>
                  </HStack>
              
-                 <Button color="red.200"p={"0"}   fontSize={"14px"} fontWeight={"700"} background={"none"} _hover={{bg:"none"}}>{t(`bookings.view`)}</Button>
+                 <Button color="rgba(78, 203, 113, 1)"p={"0"}   fontSize={"14px"} fontWeight={"700"} background={"none"} _hover={{bg:"none"}}>{t(`dashboard.details`)}</Button>
                </Flex>
               
            </Box>
            </GridItem>
         
-          <GridItem rowSpan={1} colSpan={1}>
-           <Box bgColor={bgColor} h="200px"   borderRadius="20px" px={6} py={6}>
+         {/* <GridItem rowSpan={1} colSpan={1}>
+           <Box bgColor={bgColor} h="139px"   borderRadius="20px" px={6} py={6}>
                <Flex justify="space-between">
-               <Text color={color}>{t(`bookings.members`)}</Text>
-                {/* <GrowthIcon />  */}
+               <Text color={color}>{t(`dashboard.members`)}</Text>
+                <GrowthIcon /> 
+               </Flex>
+               <Flex justify={"space-between"} mt={10}>
+                 
+               <HStack>
+                 <Text fontSize={"16px"} fontWeight={"700"}>{membershipGrowth}</Text> 
+                 <Text fontSize={"13px"} fontWeight="400" color={color2}>{t(`dashboard.month`)}</Text>
+                 </HStack>
+                 
+                 <Button color="rgba(78, 203, 113, 1)" p={"0"}  fontSize={"14px"} fontWeight={"700"} background={"none"} _hover={{bg:"none"}}>{t(`dashboard.details`)}</Button>
                </Flex>
               
-               <PeakBooking />
            </Box>
-
-          
-           </GridItem> 
+           </GridItem> */}
        
            
          </Grid>
-         <Flex justify={"space-between"} mt={"15px"}>
               
          {/* <Box px={5}>
                       <InputControl
@@ -435,14 +408,13 @@ const toast=useToast()
                     }}
                     onSubmit={() => {}}
                     
-                 >
-                    
-<Box px={5} >
+                  >
+<Box px={5}>
                     <InputControl
-                    {...(isDesktopView && { width: "full" })}
+                      {...(isDesktopView && { width: "30%" })}
                       inputProps={{
                         type: "text",
-                        placeholder: t(`bookings.search`),
+                        placeholder: t(`members.search`),
                         fontSize: "md",
                         fontWeight: "medium",
                         color: "gray.500",
@@ -455,26 +427,6 @@ const toast=useToast()
                     />
                     </Box>
                   </Formik>
-
-                  <HStack>
-                    
-     <Input
-        placeholder="Select Date"
-        value={selectedDate}
-        onChange={handleDateChange}
-        type="date"
-        mb={{ base: 4, md: 0 }} 
-        maxW={{md:"352px"}}
-        h="60px"
-      />
-       {selectedDate && (
-        <IconButton onClick={handleClearDate} color="red.400"  aria-label={""} bg="none">
-          <CloseButton />
-        </IconButton>
-      )}
-     </HStack>
-     </Flex>
-     
             
 
                 <Box mt={5}>
@@ -482,7 +434,7 @@ const toast=useToast()
                   <Table columns={columnConfig} data={responseData} />
                 </Box>
                  {isEditModalOpen && (
-                <><BookingForm
+                <><MembersForm
                       isOpen={isEditModalOpen}
                       onClose={() => setIsEditModalOpen(false)} memberId={memberId} memberData={memberData} /></>
                 )} 
