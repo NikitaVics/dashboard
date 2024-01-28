@@ -1,0 +1,23 @@
+{
+    "bookings" : {
+        "title" : "Booking Management",
+        "totalBookings": "Total Bookings",
+        "cancelledBookings": "Cancelled Bookings",
+        "members": "Peak booking hour",
+        "day":"Today",
+        "bookingName":"Booking Name",
+        "team":"Team",
+        "coach":"Coach",
+        "court":"Court",
+        "time" : "Time",
+        "status":"Status",
+        "search":"Search",
+        "details":"Details",
+        "view":"View",
+        "bookingid":"Booking ID",
+        "date":"Date"
+
+        
+
+    }
+}

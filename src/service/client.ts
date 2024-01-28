@@ -28,6 +28,12 @@ import AddEvent from "./announcement/addEvent"
 import AddAnnouncement from "./announcement/addAnnouncement"
 import getAnnouncement from "./announcement/getAnnouncement"
 import getProfile from "./dashboard/profile"
+import getPeakBookingHour from "./bookings/peakBookingHour"
+import getTotalBookings from "./bookings/totalBookings"
+import getaveragePeakBookingHour from "./bookings/averagepeakBookingMonth"
+import CancelBooking from "./bookings/cancelbooking"
+import bookingDetails from "./bookings/bookingDetails"
+import bookingDetail from "./bookings/getbookingDetail"
 
 
 
@@ -55,6 +61,7 @@ export class BehrainClient {
  public reports
  public coach
  public announcement
+ public bookings
 
   constructor(
     req: NextApiRequest,
@@ -74,7 +81,7 @@ export class BehrainClient {
           (request) => {
             request.headers.set("Content-type", "application/json-patch+json")
           
-            request.headers.set("accept", "*/*")
+            request.headers.set("accept", "/")
             if (opts.overrideLanguage) {
               request.headers.set("Accept-Language", opts.overrideLanguage)
             }
@@ -141,6 +148,17 @@ export class BehrainClient {
     coachDropdown : withApiClient(coachDropdown),
     exportCoachReports : withApiClient(exportCoachReports)
   }
+
+  this.bookings = {
+    getCancelledBookings : withApiClient(getCancelledBookings),
+    getPeakBookingHour : withApiClient(getPeakBookingHour),
+    getTotalBookings : withApiClient(getTotalBookings),
+    getaveragePeakBookingHour: withApiClient(getaveragePeakBookingHour),
+    CancelBooking: withApiClient(CancelBooking),
+    bookingDetails:withApiClient(bookingDetails),
+    getbookingDetail:withApiClient(bookingDetail)
+  }
+
 
   this.announcement = {
     AddCourtMaintainence  :withApiClient(AddCourtMaintainence),

@@ -9,7 +9,8 @@ module.exports = {
       "/members":["members"],
       "/reports":["reports"],
       "/announcement":["announcement"],
-      "/coach":["coach"]
+      "/coach":["coach"],
+      "/bookings":["bookings"]
      
     },
     loadLocaleFrom: async (lang, ns) => {

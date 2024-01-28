@@ -25,7 +25,8 @@ interface CustomTooltipProps {
 
 interface YearlyGraphItem {
   monthName: string;
-  growth: number;
+  averagePeakHour: number;
+ 
 }
 
 
@@ -70,20 +71,27 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
 };
 
 
-const MonthTabs: React.FC = () => {
+const PeakBooking: React.FC = () => {
 
 
-  const { data: yearlyGraph } = useSWR<YearlyGraphItem[]>("/api/bookings/peakBookingHour");
+  const { data: bookingyearlyGraph } = useSWR("/api/bookings/peakBookingHour");
+  console.log(bookingyearlyGraph)
+const yearlyGraph=bookingyearlyGraph?.result;
 
-  const monthData: MonthData[] = [
+
+const monthData: MonthData[] = [
     { month: '', value: 0 },
     ...(yearlyGraph || []).map((item: YearlyGraphItem) => ({
       month: item.monthName,
-      value: item.growth,
+      value: item.averagePeakHour,
     })),
   ];
-
-  
+// console.log(yearlyGraph)
+//   const monthData = yearlyGraph.map((value: unknown, index: number) => ({
+//       month: item.monthName, 
+//      value:item.averagePeakHour,
+//   }));
+//const monthData=[1,10,5,]
 
   const color2 = useColorModeValue("rgba(67, 67, 69, 1)","rgba(224, 224, 226, 1)")
  
@@ -92,20 +100,20 @@ const MonthTabs: React.FC = () => {
 
 
 
- const { t} = useTranslation("dashboard")
-
+ useTranslation("bookings")
+//const month=["january","february","march"]
   return (
-    <Box borderWidth="1px" p={4} mx={4 } border="none">
-     <Text fontSize={"24px"} fontWeight={"700"}>{t(`dashboard.membershipGrowth`)}</Text>
-      <Text fontSize={"16px"} fontWeight={"500"} mt={5} mb={5}>{t(`dashboard.year`)}</Text>
-      <ResponsiveContainer width="100%" height={300}>
+    <Box borderWidth="1px" p={4} mx={4 } border="none" >
+     {/* <Text fontSize={"24px"} fontWeight={"700"}>{t(`bookings.membershipGrowth`)}</Text> */}
+      {/* <Text fontSize={"16px"} fontWeight={"500"} mt={5} mb={5}>{t(`bookings.year`)}</Text> */}
+      <ResponsiveContainer width="100%" height={150}>
         
         <AreaChart data={monthData} ref={chartRef} margin={{ bottom: 20 }}>
         <XAxis dataKey="month" tickLine={false} axisLine={false} orientation="bottom"  interval={0}
             textAnchor="end"
             dy={20}
             tick={{ fill: color2 }} 
-          
+             hide={true}
             />
           <YAxis hide={true} />
           <Tooltip content={<CustomTooltip active={false} />} cursor={{stroke:"rgba(78, 203, 113, 1)" ,strokeWidth:"2px", strokeDasharray :"5 5"}} />
@@ -126,4 +134,4 @@ const MonthTabs: React.FC = () => {
   );
 };
 
-export default MonthTabs;
+export default PeakBooking;
