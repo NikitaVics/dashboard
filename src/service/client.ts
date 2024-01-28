@@ -19,19 +19,21 @@ import exportCourtReports from "./reports/exportCourtReport"
 import coachDropdown from "./reports/getCoachDropdown"
 import getCoachReports from "./reports/getCoachReport"
 import exportCoachReports from "./reports/exportCoachReport"
+import getCoach from "./coach/getCoach"
+import AddCoach from "./coach/addCoach"
+import getCoachDetail from "./coach/getCoachDetails"
+import ActivateCoach from "./coach/ActivateCoach"
+import AddCourtMaintainence from "./announcement/addCourtMaintainence"
+import AddEvent from "./announcement/addEvent"
+import AddAnnouncement from "./announcement/addAnnouncement"
+import getAnnouncement from "./announcement/getAnnouncement"
+import getProfile from "./dashboard/profile"
 import getPeakBookingHour from "./bookings/peakBookingHour"
 import getTotalBookings from "./bookings/totalBookings"
 import getaveragePeakBookingHour from "./bookings/averagepeakBookingMonth"
 import CancelBooking from "./bookings/cancelbooking"
 import bookingDetails from "./bookings/bookingDetails"
-
 import bookingDetail from "./bookings/getbookingDetail"
-import getCoach from "./coach/getCoach"
-import AddCoach from "./coach/addCoach"
-import getCoachDetail from "./coach/getCoachDetails"
-import ActivateCoach from "./coach/ActivateCoach"
-
-import getProfile from "./dashboard/profile"
 
 
 
@@ -57,9 +59,9 @@ export class BehrainClient {
  public dashboard
  public members
  public reports
- public bookings
  public coach
- 
+ public announcement
+ public bookings
 
   constructor(
     req: NextApiRequest,
@@ -79,7 +81,7 @@ export class BehrainClient {
           (request) => {
             request.headers.set("Content-type", "application/json-patch+json")
           
-            request.headers.set("accept", "*/*")
+            request.headers.set("accept", "/")
             if (opts.overrideLanguage) {
               request.headers.set("Accept-Language", opts.overrideLanguage)
             }
@@ -155,6 +157,14 @@ export class BehrainClient {
     CancelBooking: withApiClient(CancelBooking),
     bookingDetails:withApiClient(bookingDetails),
     getbookingDetail:withApiClient(bookingDetail)
+  }
+
+
+  this.announcement = {
+    AddCourtMaintainence  :withApiClient(AddCourtMaintainence),
+    AddEvent : withApiClient(AddEvent),
+    AddAnnouncement : withApiClient(AddAnnouncement),
+    getAnnouncement : withApiClient(getAnnouncement)
   }
     
   }

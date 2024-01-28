@@ -16,7 +16,7 @@ import {
     MenuList,
     Text,
     
-    useBreakpointValue,
+    
     
     // useBreakpointValue,
     
@@ -45,6 +45,7 @@ import { useDebounce } from "use-debounce"
 
 import BookingForm from "@/components/bookingForm"
 import PeakBooking from "../components/graph/peakbookingHour"
+import PageContainer from "../components/PageContainer"
 
 
 type EditTaxDetailsProps = {
@@ -57,13 +58,13 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
   
     const { t } = useTranslation("bookings")
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const handleEditModalOpen = (memberId: MemberProps | undefined) => {
+  const handleEditModalOpen = (bookingId: MemberProps | undefined) => {
    
     setIsEditModalOpen(true)
-    if (memberId) {
+    if (bookingId) {
        // eslint-disable-next-line
     //@ts-ignore
-      setMemberId(memberId); 
+      setMemberId(bookingId); 
     }
   }
 
@@ -236,7 +237,7 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
                  
                   bgColor={background}
                   _hover = {{bgColor : hover}}
-                  onClick={() => handleEditModalOpen(row?.original?.memberId)}
+                  onClick={() => handleEditModalOpen(row?.original?.bookingId)}
                 >
                   {t("common:buttons.view")}
                 </MenuItem>
@@ -320,7 +321,7 @@ const toast=useToast()
       }
   
     const isLoading = !responseData
-     const isDesktopView = useBreakpointValue({ base: false, md: false, xl: true })
+     //const isDesktopView = useBreakpointValue({ base: false, md: false, xl: true })
   
     const bgColor = useColorModeValue("light.300","dark.600")
     const color  = useColorModeValue("dark.700","light.400")
@@ -409,7 +410,7 @@ const toast=useToast()
        
            
          </Grid>
-         <Flex justify={"space-between"} mt={"15px"}>
+        
               
          {/* <Box px={5}>
                       <InputControl
@@ -436,10 +437,12 @@ const toast=useToast()
                     onSubmit={() => {}}
                     
                  >
+                  <PageContainer maxWidth={"full"}>
+                   <Flex justify={"space-between"} mt={"15px"}>
                     
 <Box px={5} >
                     <InputControl
-                    {...(isDesktopView && { width: "full" })}
+                   // {...(isDesktopView && { width: "full" })}
                       inputProps={{
                         type: "text",
                         placeholder: t(`bookings.search`),
@@ -454,7 +457,7 @@ const toast=useToast()
                       inputRightElement={<SearchIcon />}
                     />
                     </Box>
-                  </Formik>
+                  
 
                   <HStack>
                     
@@ -473,7 +476,10 @@ const toast=useToast()
         </IconButton>
       )}
      </HStack>
+    
      </Flex>
+     </PageContainer>
+     </Formik>
      
             
 

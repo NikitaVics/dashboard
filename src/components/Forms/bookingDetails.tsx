@@ -318,9 +318,9 @@ import { mutate } from "swr"
                     border : "none",
                     h:"45px"
                   }}
-                  name="court"
+                  name="slot"
                   isReadOnly
-                  onKeyUp={() => setFieldTouched("court")}
+                  onKeyUp={() => setFieldTouched("slot")}
                 />
               </GridItem>
   

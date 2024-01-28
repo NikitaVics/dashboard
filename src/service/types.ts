@@ -29,7 +29,7 @@ export type User = {
   }
 
   export type MemberProps ={
-
+bookingId:string
     image:string
    memberId : string
    gender:string
