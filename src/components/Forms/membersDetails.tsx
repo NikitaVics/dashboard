@@ -1,5 +1,4 @@
 import {
-<<<<<<< HEAD
   Avatar,
   Box,
   Button,
@@ -16,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import ky, { HTTPError } from "ky";
-import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import React from "react";
 import * as Yup from "yup";
@@ -44,67 +42,10 @@ type FormItems = {
 function MembersDetails({ memberData, memberId, onClose }: FormItems) {
   const { t } = useTranslation("members");
   const toast = useToast();
-  const router = useRouter();
-  const { id } = router.query;
 
   const { data: succesData } = useSWR(
-    `/api/members/getSuccessBookings?id=${memberId}`
+    ` /api/members/getSuccessBookings?id=${memberId}`
   );
-=======
-    Avatar,
-    Box,
-    Button,
-    Flex,
-    Grid,
-    GridItem,
-    HStack,
-    Hide,
-    Show,
-    Stack,
-    Text,
-    useColorModeValue,
-    useToast,
-  } from "@chakra-ui/react"
-  import { Form, Formik } from "formik"
-  import ky, { HTTPError } from "ky"
-  import useTranslation from "next-translate/useTranslation"
-  import React from "react"
-  import * as Yup from "yup"
-import { CustomInput } from "../Input/customInput"
-import { mutate } from "swr"
-// import useSWR, { mutate } from "swr"
-
-  
-  type FormItems = {
-     // eslint-disable-next-line
-    status: any
-    memberId?:string
-    memberData?: {
-      name: string
-      memberId?:string
-      gender:string
-      status?: string
-      image:string
-     phoneNo : string
-    email:string
-     memberSince : string
-      membershipExpirationCountDown : string
-    }
-    onClose?: () => void
-  }
-  
-  function MembersDetails({ memberData,memberId,onClose  }: FormItems) {
-    const { t } = useTranslation("members")
-    const toast = useToast()
-
-    // const { data: succesData } = useSWR(
-    //   `/api/members/getSuccessBookings?id=${memberId}`,
-    // )
-
-    // const { data: cancelledData } = useSWR(
-    //   `/api/members/getCancelledBookings?id=${memberId}`,
-    // )
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
 
   const { data: cancelledData } = useSWR(
     `/api/members/getCancelledBookings?id=${memberId}`
@@ -120,11 +61,10 @@ import { mutate } from "swr"
       try {
         const updatedValues = { memberId };
         if (memberId) {
-          const response = await ky.post(`/api/members/Activate/${memberId}`, {
+          const response = await ky.post(` /api/members/Activate/${memberId}`, {
             json: updatedValues,
           });
 
-<<<<<<< HEAD
           if (response) {
             toast({
               description: "Successfully Activated",
@@ -199,142 +139,15 @@ import { mutate } from "swr"
           });
         }
       }
-=======
-    const handleActivate = async (memberId: string | undefined) => {
-      if (memberId) {
-        try {
-          const updatedValues = { memberId }
-          if (memberId) {
-            const response = await ky.post(
-              `/api/members/Activate/${memberId}`,
-              {
-                json: updatedValues,
-              },
-            )
-  
-            if (response) {
-              toast({
-                description: "Successfully Deactivated",
-                status: "success",
-                position: "top",
-                duration: 3000,
-                isClosable: true,
-              })
-              await mutate(`/api/members`)
-             onClose?.()
-             
-            }
-          }
-        } catch (error) {
-          if (error instanceof HTTPError && error.response.status === 400) {
-            const errorResponse = await error.response.json()
-            const messages = errorResponse.error.messages
-            toast({
-              description: (
-                <>
-                  {messages.map((message: string, index: number) => (
-                    <Text key={index}>{message}</Text>
-                  ))}
-                </>
-              ),
-              status: "error",
-              position: "top",
-              duration: 3000,
-              isClosable: true,
-            })
-          }
-        }
-      }
-    }
-  
-    const handleSubmit = async (values: FormItems) => { 
-      console.log(values)
-        try {
-         ""
-        } catch (error) {
-        ""
-        }
-      
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
     }
   };
 
   const handleSubmit = async (values: FormItems) => {
-    if (id) {
-      try {
-        const response = await ky
-          .post("/api/roles/create-role", {
-            json: {
-              ...values,
-              id: router.query.id,
-            },
-          })
-          .json();
-        if (response) {
-          toast({
-            description: t("forms.role.update"),
-            status: "success",
-            position: "top",
-            duration: 3000,
-            isClosable: true,
-          });
-          router.push("/roles");
-        }
-      } catch (error) {
-        if (error instanceof HTTPError && error.response.status === 500) {
-          const errorResponse = await error.response.json();
-          const messages = errorResponse.error.messages;
-
-          toast({
-            description: (
-              <>
-                {messages.map((message: string, index: number) => (
-                  <Text key={index}>{message}</Text>
-                ))}
-              </>
-            ),
-            status: "error",
-            position: "top",
-            duration: 3000,
-            isClosable: true,
-          });
-        }
-      }
-    } else {
-      try {
-        const response = await ky
-          .post("/api/roles/create-role", { json: values })
-          .json();
-        if (response) {
-          toast({
-            description: t("forms.role.success"),
-            status: "success",
-            position: "top",
-            duration: 3000,
-            isClosable: true,
-          });
-          router.push("/roles");
-        }
-      } catch (error) {
-        if (error instanceof HTTPError && error.response.status === 500) {
-          const errorResponse = await error.response.json();
-          const messages = errorResponse.error.messages;
-
-          toast({
-            description: (
-              <>
-                {messages.map((message: string, index: number) => (
-                  <Text key={index}>{message}</Text>
-                ))}
-              </>
-            ),
-            status: "error",
-            position: "top",
-            duration: 3000,
-            isClosable: true,
-          });
-        }
-      }
+    console.log(values);
+    try {
+      ("");
+    } catch (error) {
+      ("");
     }
   };
 
@@ -525,8 +338,8 @@ import { mutate } from "swr"
             </GridItem>
 
             {/* <GridItem rowSpan={2} colSpan={2}>
-                
-              </GridItem> */}
+              
+            </GridItem> */}
           </Grid>
 
           <Grid
@@ -546,7 +359,6 @@ import { mutate } from "swr"
               px={4}
               py={3}
             >
-<<<<<<< HEAD
               <GridItem rowSpan={1} colSpan={1}>
                 <Stack>
                   <Text fontSize={"43px"} fontWeight={"700"} color="green.300">
@@ -577,40 +389,6 @@ import { mutate } from "swr"
               </GridItem>
             </Box>
           </Grid>
-=======
-              <Box   bgColor={bgColor} h={"122px"} borderRadius={"12px"} px={4} py={3}>
-             <GridItem rowSpan={1} colSpan={1} >
-              <Stack>
-              {/* <Text fontSize={"43px"} fontWeight={"700"} color="green.300">{succesData}</Text> */}
-              <Text fontSize={"14px"} color={color2}>Succesfull Booking</Text>
-              </Stack>
-              
-             </GridItem>
-             </Box>
-             <Box   bgColor={bgColor} h={"122px"} borderRadius={"12px"} px={4} py={3}>
-             <GridItem rowSpan={1} colSpan={1} >
-              <Stack>
-              {/* <Text fontSize={"43px"} fontWeight={"700"} color="red.200">{cancelledData}</Text> */}
-              <Text fontSize={"14px"} color={color2}>Cancelled Booking</Text>
-              </Stack>
-              
-             </GridItem>
-             </Box>
-            </Grid>
-  
-           
-  <Box maxW="full">
-  {memberData?.status ? (
-    <Button variant="outline" colorScheme="red" w="full" h={"80px"} onClick={() => handleActivate(memberId)}>
-      DeActivate
-    </Button>
-    ) : (
-      <Button variant="outline" colorScheme="green" w="full" h={"80px"} onClick={() => handleDeactivate(memberId)}>
-      Activate
-    </Button>
-    )}
-  </Box>
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
 
           <Box maxW="full">
             {memberData?.status ? (

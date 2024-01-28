@@ -57,12 +57,8 @@ function Member({ memberData }: EditTaxDetailsProps) {
 
   const background = useColorModeValue("#fff", "#0D0D0D");
 
-<<<<<<< HEAD
-  const hover = useColorModeValue("rgba(237, 250, 241, 1)", "#181818;");
-=======
  
 const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
   const columnConfig = [
     {
       Header: t(`members.userName`),
@@ -182,17 +178,11 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
       },
       textAlign: "center",
     },
-<<<<<<< HEAD
-  ];
-
-  const toast = useToast();
-=======
   ]
  
   const toast = useToast()
  
 
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
 
   const handleActivate = async (memberId: string) => {
     if (memberId) {
@@ -329,16 +319,8 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
                 <>
                   <MembersForm
                     isOpen={isEditModalOpen}
-<<<<<<< HEAD
-                    onClose={() => setIsEditModalOpen(false)}
-                    memberId={memberId}
-                    memberData={memberData}
-                  />
-                </>
-=======
                     onClose={() => setIsEditModalOpen(false)} memberId={memberId} memberData={memberData} /></>
              
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
               )}
             </Stack>
           </PageContainer>

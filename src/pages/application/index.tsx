@@ -65,12 +65,6 @@ const Application = ({ memberData }: EditTaxDetailsProps) => {
 
   const hover = useColorModeValue("rgba(237, 250, 241, 1)", "#181818;");
 
-  const [selectedComponent, setSelectedComponent] =
-    useState("membershipGrowth");
-
-  const handleMenuItemClick = (component: string) => {
-    setSelectedComponent(component);
-  };
   const [searchInput, setSearchInput] = useState("");
   const [debouncedSearchInput] = useDebounce(searchInput, 800);
   const { data: responseData } = useSWR(

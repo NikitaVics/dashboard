@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import siteConfig from "@/config/siteConfig";
 import Cookies from "cookies";
 import ky from "ky";
@@ -20,52 +19,28 @@ import exportCourtReports from "./reports/exportCourtReport";
 import coachDropdown from "./reports/getCoachDropdown";
 import getCoachReports from "./reports/getCoachReport";
 import exportCoachReports from "./reports/exportCoachReport";
-import getApproved from "./bookings/getApproved";
+import getCoach from "./coach/getCoach";
+import AddCoach from "./coach/addCoach";
+import getCoachDetail from "./coach/getCoachDetails";
+import ActivateCoach from "./coach/ActivateCoach";
+import AddCourtMaintainence from "./announcement/addCourtMaintainence";
+import AddEvent from "./announcement/addEvent";
+import AddAnnouncement from "./announcement/addAnnouncement";
+import getAnnouncement from "./announcement/getAnnouncement";
+import getProfile from "./dashboard/profile";
 import getApplication from "./application/getApplication";
-import getDetails from "./application/getDetails";
 import getApprove from "./application/getApprove";
+import getDetails from "./application/getDetails";
 import getPending from "./application/getPending";
 import getRejected from "./application/getRejected";
-import update from "./application/update";
 import rejected from "./application/rejected";
-=======
-import siteConfig from "@/config/siteConfig"
-import Cookies from "cookies"
-import ky from "ky"
-import { NextApiRequest, NextApiResponse } from "next"
-import login from "./auth/login"
-import getTotalMembers from "./dashboard/totalMembers"
-import getTotalRevenue from "./dashboard/totalRevenue"
-import getMembershipGrowth from "./dashboard/membershipGrowth"
-import getYearlyGrowth from "./dashboard/yearlyGrowth"
-import getBookingGrowth from "./dashboard/bookingGrowth"
-import getMembersList from "./members/getMembers"
-import getMemberDetail from "./members/getMembersDetail"
-import getSuccessBookings from "./members/successBookings"
-import getCancelledBookings from "./members/cancelledBookings"
-import ActivateMember from "./members/ActivateMember"
-import getCourtReports from "./reports/getCourtReports"
-import courtDropdown from "./reports/getCourtDropdown"
-import exportCourtReports from "./reports/exportCourtReport"
-import coachDropdown from "./reports/getCoachDropdown"
-import getCoachReports from "./reports/getCoachReport"
-import exportCoachReports from "./reports/exportCoachReport"
-import getCoach from "./coach/getCoach"
-import AddCoach from "./coach/addCoach"
-import getCoachDetail from "./coach/getCoachDetails"
-import ActivateCoach from "./coach/ActivateCoach"
-import AddCourtMaintainence from "./announcement/addCourtMaintainence"
-import AddEvent from "./announcement/addEvent"
-import AddAnnouncement from "./announcement/addAnnouncement"
-import getAnnouncement from "./announcement/getAnnouncement"
-import getProfile from "./dashboard/profile"
-import getPeakBookingHour from "./bookings/peakBookingHour"
-import getTotalBookings from "./bookings/totalBookings"
-import getaveragePeakBookingHour from "./bookings/averagepeakBookingMonth"
-import CancelBooking from "./bookings/cancelbooking"
-import bookingDetails from "./bookings/bookingDetails"
-import bookingDetail from "./bookings/getbookingDetail"
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
+import update from "./application/update";
+import getaveragePeakBookingHour from "./bookings/averagepeakBookingMonth";
+import bookingDetails from "./bookings/bookingDetails";
+import CancelBooking from "./bookings/cancelbooking";
+import bookingDetail from "./bookings/getbookingDetail";
+import getPeakBookingHour from "./bookings/peakBookingHour";
+import getTotalBookings from "./bookings/totalBookings";
 
 type ApiHandler<T, U> = (baseHttpClient: typeof ky, params: U) => Promise<T>;
 
@@ -85,21 +60,14 @@ const {
 } = siteConfig;
 export class BehrainClient {
   // API services to expose on the client.
-<<<<<<< HEAD
   public auth;
   public dashboard;
   public members;
   public reports;
+  public coach;
+  public bookings;
+  public announcement;
   public application;
-=======
- public auth
- public dashboard
- public members
- public reports
- public coach
- public announcement
- public bookings
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
 
   constructor(
     req: NextApiRequest,
@@ -117,14 +85,9 @@ export class BehrainClient {
       hooks: {
         beforeRequest: [
           (request) => {
-<<<<<<< HEAD
             request.headers.set("Content-type", "application/json-patch+json");
-            request.headers.set("accept", "*/*");
-=======
-            request.headers.set("Content-type", "application/json-patch+json")
-          
-            request.headers.set("accept", "/")
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
+
+            request.headers.set("accept", "/");
             if (opts.overrideLanguage) {
               request.headers.set("Accept-Language", opts.overrideLanguage);
             }
@@ -143,7 +106,7 @@ export class BehrainClient {
               throw new Error("missing valid session");
             }
 
-            request.headers.set("Authorization", `${accessToken}`);
+            request.headers.set("Authorization", ` ${accessToken}`);
           },
         ],
       },
@@ -155,24 +118,9 @@ export class BehrainClient {
         return handler(baseHttpClient, params);
       };
 
-<<<<<<< HEAD
     this.auth = {
       login: withApiClient(login),
     };
-=======
-  this.auth ={
-    login:withApiClient(login)
-  }
- 
-  this.dashboard ={
-    totalMembers : withApiClient(getTotalMembers),
-    totalRevenue:withApiClient(getTotalRevenue),
-    getMembershipGrowth : withApiClient(getMembershipGrowth),
-    yearlyGrowth : withApiClient(getYearlyGrowth),
-    getBookingGrowth : withApiClient(getBookingGrowth),
-    getProfile  :withApiClient(getProfile)
-  }
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
 
     this.dashboard = {
       totalMembers: withApiClient(getTotalMembers),
@@ -180,15 +128,32 @@ export class BehrainClient {
       getMembershipGrowth: withApiClient(getMembershipGrowth),
       yearlyGrowth: withApiClient(getYearlyGrowth),
       getBookingGrowth: withApiClient(getBookingGrowth),
+      getProfile: withApiClient(getProfile),
     };
 
-<<<<<<< HEAD
     this.members = {
       getMembersList: withApiClient(getMembersList),
       getMemberDetail: withApiClient(getMemberDetail),
       getSuccessBookings: withApiClient(getSuccessBookings),
       getCancelledBookings: withApiClient(getCancelledBookings),
       ActivateMember: withApiClient(ActivateMember),
+    };
+
+    this.application = {
+      getApprove: withApiClient(getApprove),
+      getApplication: withApiClient(getApplication),
+      getPendings: withApiClient(getPending),
+      getRejected: withApiClient(getRejected),
+      getDetails: withApiClient(getDetails),
+      update: withApiClient(update),
+      rejected: withApiClient(rejected),
+    };
+
+    this.coach = {
+      getCoach: withApiClient(getCoach),
+      AddCoach: withApiClient(AddCoach),
+      getCoachDetail: withApiClient(getCoachDetail),
+      ActivateCoach: withApiClient(ActivateCoach),
     };
 
     this.reports = {
@@ -199,50 +164,22 @@ export class BehrainClient {
       coachDropdown: withApiClient(coachDropdown),
       exportCoachReports: withApiClient(exportCoachReports),
     };
-    this.application = {
-      getApprove: withApiClient(getApprove),
-      getApplication: withApiClient(getApplication),
-      getPendings: withApiClient(getPending),
-      getRejected: withApiClient(getRejected),
-      getDetails: withApiClient(getDetails),
-      update: withApiClient(update),
-      rejected: withApiClient(rejected),
+
+    this.bookings = {
+      getCancelledBookings: withApiClient(getCancelledBookings),
+      getPeakBookingHour: withApiClient(getPeakBookingHour),
+      getTotalBookings: withApiClient(getTotalBookings),
+      getaveragePeakBookingHour: withApiClient(getaveragePeakBookingHour),
+      CancelBooking: withApiClient(CancelBooking),
+      bookingDetails: withApiClient(bookingDetails),
+      getbookingDetail: withApiClient(bookingDetail),
     };
-=======
-  this.coach = {
-    getCoach : withApiClient(getCoach),
-    AddCoach : withApiClient(AddCoach),
-    getCoachDetail : withApiClient(getCoachDetail),
-    ActivateCoach : withApiClient(ActivateCoach)
-  }
 
-  this.reports = {
-    getCourtReports : withApiClient(getCourtReports),
-    courtDropdown : withApiClient(courtDropdown),
-    exportCourtReports : withApiClient(exportCourtReports),
-    getCoachReports : withApiClient(getCoachReports),
-    coachDropdown : withApiClient(coachDropdown),
-    exportCoachReports : withApiClient(exportCoachReports)
-  }
-
-  this.bookings = {
-    getCancelledBookings : withApiClient(getCancelledBookings),
-    getPeakBookingHour : withApiClient(getPeakBookingHour),
-    getTotalBookings : withApiClient(getTotalBookings),
-    getaveragePeakBookingHour: withApiClient(getaveragePeakBookingHour),
-    CancelBooking: withApiClient(CancelBooking),
-    bookingDetails:withApiClient(bookingDetails),
-    getbookingDetail:withApiClient(bookingDetail)
-  }
-
-
-  this.announcement = {
-    AddCourtMaintainence  :withApiClient(AddCourtMaintainence),
-    AddEvent : withApiClient(AddEvent),
-    AddAnnouncement : withApiClient(AddAnnouncement),
-    getAnnouncement : withApiClient(getAnnouncement)
-  }
-    
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
+    this.announcement = {
+      AddCourtMaintainence: withApiClient(AddCourtMaintainence),
+      AddEvent: withApiClient(AddEvent),
+      AddAnnouncement: withApiClient(AddAnnouncement),
+      getAnnouncement: withApiClient(getAnnouncement),
+    };
   }
 }

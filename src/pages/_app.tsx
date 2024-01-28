@@ -40,23 +40,6 @@ export default function App(props: AppProps) {
         "An error occurred while fetching the data."
       );
 
-<<<<<<< HEAD
-      if (res.status === 401) {
-        const forgotPasswordPageURL = "/forgot";
-        const currentLocation = window.location.toString();
-        if (!currentLocation.endsWith(forgotPasswordPageURL)) {
-          const returnToPath =
-            currentLocation.replace(new URL(currentLocation).origin, "") || "/";
-          await router.replace(
-            `/login?returnTo=${encodeURIComponent(returnToPath)}`
-          );
-          return;
-        }
-      }
-      error.info = await res.json();
-      error.status = res.status;
-      throw error;
-=======
        if (res.status === 401) {
          const forgotPasswordPageURL = "/forgot"
          const currentLocation = window.location.toString()
@@ -74,7 +57,6 @@ export default function App(props: AppProps) {
       error.info = await res.json()
       error.status = res.status
       throw error
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
     }
     if (res.status === 204) {
       return null;

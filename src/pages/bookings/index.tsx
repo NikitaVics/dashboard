@@ -1,24 +1,3 @@
-<<<<<<< HEAD
-import { Center, Heading } from "@chakra-ui/react";
-import Layout from "../components/Layout";
-import PageContainer from "../components/PageContainer";
-
-const Bookings = () => {
-  return (
-    <>
-      <Layout title={""} description={""}>
-        <PageContainer>
-          <Center>
-            <Heading>Bookings Page</Heading>
-          </Center>
-        </PageContainer>
-      </Layout>
-    </>
-  );
-};
-
-export default Bookings;
-=======
 import {
     Avatar,
     AvatarGroup,
@@ -529,4 +508,3 @@ const toast=useToast()
   
   
   
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9

@@ -11,7 +11,7 @@ module.exports = {
       "/announcement":["announcement"],
       "/coach":["coach"],
       "/bookings":["bookings"],
-      "/application":["application"]
+      "/application":["members", "application"],
      
     },
     loadLocaleFrom: async (lang, ns) => {

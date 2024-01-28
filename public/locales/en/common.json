@@ -8,7 +8,9 @@
     "download": "Download",
     "schedule": "Schedule",
     "send": "Send",
-    "addCoach": "Add Coach"
+    "addCoach": "Add Coach",
+    "approve": "Approve",
+    "reject": "Reject"
   },
   "status": {
     "approved": "Approved",

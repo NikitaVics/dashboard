@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Box,
   Button,
   Flex,
   Grid,
@@ -8,7 +7,6 @@ import {
   HStack,
   Hide,
   Show,
-  Stack,
   Text,
   useColorModeValue,
   useToast,
@@ -21,7 +19,7 @@ import useTranslation from "next-translate/useTranslation";
 import React from "react";
 import * as Yup from "yup";
 import { CustomInput } from "../Input/customInput";
-import useSWR, { mutate } from "swr";
+import { mutate } from "swr";
 
 type FormItems = {
   // eslint-disable-next-line
@@ -35,6 +33,7 @@ type FormItems = {
     image: string;
     phoneNo: string;
     email: string;
+    imageID: string;
     memberSince: string;
     membershipExpirationCountDown: string;
   };
@@ -47,13 +46,7 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
   const router = useRouter();
   const { id } = router.query;
 
-  const color2 = useColorModeValue(
-    "rgba(67, 67, 69, 1)",
-    "rgba(224, 224, 226, 1)"
-  );
-
-  const imageUrl =
-    "https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?cs=srgb&dl=pexels-james-wheeler-414612.jpg&fm=jpg";
+  
 
   const handleDeactivate = async (memberId: string | undefined) => {
     if (memberId) {
@@ -397,9 +390,10 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
             </GridItem>
             <GridItem rowSpan={1} colSpan={2}>
               <Image
-                src={imageUrl}
+                src={memberData?.imageID}
                 alt={"ss"}
                 cursor="pointer"
+                height={"146px"}
                 maxWidth="100%"
               />
               <Flex>
@@ -408,10 +402,6 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
                 </Text>
               </Flex>
             </GridItem>
-
-            {/* <GridItem rowSpan={2} colSpan={2}>
-                
-              </GridItem> */}
           </Grid>
 
           <Flex mt={15} gap={4} maxW="full">

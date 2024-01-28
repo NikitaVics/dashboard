@@ -71,15 +71,9 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
 };
 
 const MonthTabs: React.FC = () => {
-<<<<<<< HEAD
-  const { data: yearlyGraph } = useSWR<YearlyGraphItem[]>(
-    "/api/dashboard/yearlyGrowth"
-  );
-=======
 
 
   const { data: yearlyGraph } = useSWR<YearlyGraphItem[]>("/api/bookings/peakBookingHour");
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
 
   const monthData: MonthData[] = [
     { month: "", value: 0 },
@@ -89,20 +83,11 @@ const MonthTabs: React.FC = () => {
     })),
   ];
 
-<<<<<<< HEAD
-  const color2 = useColorModeValue(
-    "rgba(67, 67, 69, 1)",
-    "rgba(224, 224, 226, 1)"
-  );
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-=======
   
 
   const color2 = useColorModeValue("rgba(67, 67, 69, 1)","rgba(224, 224, 226, 1)")
  
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
   const chartRef = useRef<any>(null);
 
   const { t } = useTranslation("dashboard");
@@ -125,14 +110,9 @@ const MonthTabs: React.FC = () => {
             interval={0}
             textAnchor="end"
             dy={20}
-<<<<<<< HEAD
-            tick={{ fill: color2 }}
-          />
-=======
             tick={{ fill: color2 }} 
           
             />
->>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
           <YAxis hide={true} />
           <Tooltip
             content={<CustomTooltip active={false} />}
