@@ -20,6 +20,13 @@ import coachDropdown from "./reports/getCoachDropdown";
 import getCoachReports from "./reports/getCoachReport";
 import exportCoachReports from "./reports/exportCoachReport";
 import getApproved from "./bookings/getApproved";
+import getApplication from "./application/getApplication";
+import getDetails from "./application/getDetails";
+import getApprove from "./application/getApprove";
+import getPending from "./application/getPending";
+import getRejected from "./application/getRejected";
+import update from "./application/update";
+import rejected from "./application/rejected";
 
 type ApiHandler<T, U> = (baseHttpClient: typeof ky, params: U) => Promise<T>;
 
@@ -122,7 +129,13 @@ export class BehrainClient {
       exportCoachReports: withApiClient(exportCoachReports),
     };
     this.application = {
-      getApproved: withApiClient(getApproved),
+      getApprove: withApiClient(getApprove),
+      getApplication: withApiClient(getApplication),
+      getPendings: withApiClient(getPending),
+      getRejected: withApiClient(getRejected),
+      getDetails: withApiClient(getDetails),
+      update: withApiClient(update),
+      rejected: withApiClient(rejected),
     };
   }
 }

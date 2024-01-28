@@ -9,7 +9,7 @@ module.exports = {
     "/members": ["members"],
     "/reports": ["reports"],
     "/announcement": ["announcement"],
-    "/application": ["application"],
+    "/application": ["application", "members"],
   },
   loadLocaleFrom: async (lang, ns) => {
     const translations = await import(`./public/locales/${lang}/${ns}.json`);

@@ -12,7 +12,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   async function getApproved() {
     try {
-      const response = await client.application.getApproved()
+      const response = await client.application.getApprove()
       res.status(200).json(response)
     } catch (error) {
       console.log(error)
@@ -22,3 +22,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 export default handler
+

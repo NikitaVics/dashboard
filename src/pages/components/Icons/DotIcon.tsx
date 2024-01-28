@@ -1,7 +1,7 @@
-import { chakra, HTMLChakraProps, useColorModeValue } from "@chakra-ui/react"
+import { chakra, HTMLChakraProps, useColorModeValue } from "@chakra-ui/react";
 
 export const DotIcon = (props: HTMLChakraProps<"svg">) => {
-  const fillColor = useColorModeValue("#4C4E64", "#EAEAFF")
+  const fillColor = useColorModeValue("#4C4E64", "#EAEAFF");
   return (
     <chakra.svg
       width="24px !important"
@@ -22,7 +22,7 @@ export const DotIcon = (props: HTMLChakraProps<"svg">) => {
         </clipPath>
       </defs>
     </chakra.svg>
-  )
-}
+  );
+};
 
-export default DotIcon
+export default DotIcon;
