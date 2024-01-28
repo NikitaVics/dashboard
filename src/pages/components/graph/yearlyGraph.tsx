@@ -50,19 +50,6 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
         <Flex justifyContent="center" alignItems="center" height="100%">
           <Text>{`${point.value}`}</Text>
         </Flex>
-        {/* <Box
-          className="custom-arrow"
-          
-          position="absolute"
-          bottom="-15px"
-          left="50%"
-          width=""
-          height="0"
-          borderLeft="8px solid transparent"
-          borderRight="8px solid transparent"
-          borderTop="15px solid transparent"
-          transform="translateX(-50%)"
-        /> */}
       </Box>
     );
   }
@@ -71,9 +58,9 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
 };
 
 const MonthTabs: React.FC = () => {
-
-
-  const { data: yearlyGraph } = useSWR<YearlyGraphItem[]>("/api/bookings/peakBookingHour");
+  const { data: yearlyGraph } = useSWR<YearlyGraphItem[]>(
+    "/api/dashboard/yearlyGraph"
+  );
 
   const monthData: MonthData[] = [
     { month: "", value: 0 },
@@ -83,11 +70,12 @@ const MonthTabs: React.FC = () => {
     })),
   ];
 
-  
+  const color2 = useColorModeValue(
+    "rgba(67, 67, 69, 1)",
+    "rgba(224, 224, 226, 1)"
+  );
 
-  const color2 = useColorModeValue("rgba(67, 67, 69, 1)","rgba(224, 224, 226, 1)")
- 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const chartRef = useRef<any>(null);
 
   const { t } = useTranslation("dashboard");
@@ -110,9 +98,8 @@ const MonthTabs: React.FC = () => {
             interval={0}
             textAnchor="end"
             dy={20}
-            tick={{ fill: color2 }} 
-          
-            />
+            tick={{ fill: color2 }}
+          />
           <YAxis hide={true} />
           <Tooltip
             content={<CustomTooltip active={false} />}
@@ -139,8 +126,7 @@ const MonthTabs: React.FC = () => {
                 stopColor="rgba(75,200,110,0.14)"
                 stopOpacity={0.1}
               />
-              {/* <stop offset="70%" stopColor="rgba(255,255,255,1)" stopOpacity={1} /> */}
-              {/* <stop offset="100%" stopColor="#fff" stopOpacity={1} /> */}
+          
             </linearGradient>
           </defs>
           <Area
