@@ -9,6 +9,7 @@ module.exports = {
       "/members":["members"],
       "/reports":["reports"],
       "/announcement":["announcement"],
+      "/coach":["coach"],
       "/bookings":["bookings"]
      
     },

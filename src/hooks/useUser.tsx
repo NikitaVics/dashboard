@@ -50,9 +50,9 @@ function UserProvider({
     (path) => router.asPath?.includes(path),
   )
 
-  const { data: user, error } = useSWR<User>(shouldFetch ? "/api/user" : null)
+  const { data: user, error } = useSWR<User>(shouldFetch ? "" : null)
 
-  const isLoading = !user && !error
+  const isLoading = !error
 
   return (
     <Fragment>

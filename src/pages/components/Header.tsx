@@ -1,12 +1,12 @@
 import {
     Avatar,
-    AvatarBadge,
     Flex,
 
     HStack,
 
     HTMLChakraProps,
     MenuButton,
+    Stack,
     Text,
     useColorMode,
   } from "@chakra-ui/react"
@@ -17,6 +17,7 @@ import {
 
   import ChakraMenu from "./Menu"
 import TorchIcon from "./Icons/torchIcon"
+import useSWR from "swr"
   
   export interface HeaderProps extends HTMLChakraProps<"header"> {
     understood?: boolean
@@ -29,19 +30,17 @@ import TorchIcon from "./Icons/torchIcon"
   
   export function Header({title} : HeaderProps) {
     const { t } = useTranslation("")
+
+
+    const { data : profile} = useSWR(`/api/profile`)
+  
     const { toggleColorMode } = useColorMode()
     const router = useRouter()
   
     const settings = [
-      {
-        name: t("common:settings.profile"),
-      },
-      {
-        name: t("common:settings.change"),
-        onClick: async () => {
-          router.push(`/components/changePassword`)
-        },
-      },
+      // {
+      //   name: t("common:settings.profile"),
+      // },
       {
         name: t("common:settings.logout"),
         onClick: async () => {
@@ -81,17 +80,22 @@ import TorchIcon from "./Icons/torchIcon"
             <TorchIcon  onClick={toggleColorMode} />
           
             <ChakraMenu items={settings}>
-              <MenuButton
+             <Flex gap={4} align={"center"}>
+             <MenuButton
                 as={Avatar}
+                src={profile?.imageUrl}
                 aria-label="Options"
-                size={{ base: "sm", sm: "md" }}
+                // size={{ base: "md", sm: "md" }}
+                size = "lg"
               >
                 {" "}
-                <AvatarBadge
-                  boxSize={{ base: "14px", sm: "20px" }}
-                  bg={"rgba(114, 225, 40, 1)"}
-                />{" "}
+               
               </MenuButton>
+              <Stack gap={0}>
+                <Text fontSize={"18px"} fontWeight={"700"}>{profile?.name}</Text>
+                <Text fontSize={"13px"} fontWeight={"400"}>{profile?.email}</Text>
+              </Stack>
+             </Flex>
             </ChakraMenu>
             </HStack>
   

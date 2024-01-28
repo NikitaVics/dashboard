@@ -15,8 +15,11 @@ export type User = {
     messages: string[]
     source: string
     exception: string
+    errors:string[]
+    ScheduledDateTime:string
     errorId: string
     supportMessage: string
+    title:string
     statusCode: number
   }
 
@@ -63,5 +66,31 @@ export type ReportProps = {
   export type getMember = {
     searchTerm : string
     bookingDate:string
+  }
+
+  export type getAnnouncementProps = {
+    announcementType : string
+  }
+
+  export type CourtMaintainence = {
+    scheduledDateTime: string
+    message : string
+    scheduledTime : string
+    courtNames:string
+    images  : string
+  }
+
+  export type AddCoachProps = {
+  name:string
+  coachId?: string
+  firstName:string
+  lastName:string
+  phoneNumber:string
+  exp:string
+  phoneNo:string
+  email:string
+  gender:string
+  experience:string
+  image : File
   }
 

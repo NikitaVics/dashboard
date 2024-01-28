@@ -83,6 +83,8 @@ const MonthTabs: React.FC = () => {
     })),
   ];
 
+  
+
   const color2 = useColorModeValue("rgba(67, 67, 69, 1)","rgba(224, 224, 226, 1)")
  
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -103,6 +105,7 @@ const MonthTabs: React.FC = () => {
             textAnchor="end"
             dy={20}
             tick={{ fill: color2 }} 
+          
             />
           <YAxis hide={true} />
           <Tooltip content={<CustomTooltip active={false} />} cursor={{stroke:"rgba(78, 203, 113, 1)" ,strokeWidth:"2px", strokeDasharray :"5 5"}} />

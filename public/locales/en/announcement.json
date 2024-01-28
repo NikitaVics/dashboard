@@ -13,6 +13,12 @@
         "court5":"Court 5",
         "court6":"Court 6",
         "placeholder":"Type Message....",
-        "eventAnnoun":"Event Announcement"
+        "eventAnnoun":"Event Announcement",
+        "type":"Announcement Type",
+        "message" : "Message",
+        "date" : "Date",
+        "time" : "Scheduled Time",
+        "status" : "Status"
+
     }
 }

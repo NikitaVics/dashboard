@@ -26,6 +26,12 @@ import CancelBooking from "./bookings/cancelbooking"
 import bookingDetails from "./bookings/bookingDetails"
 
 import bookingDetail from "./bookings/getbookingDetail"
+import getCoach from "./coach/getCoach"
+import AddCoach from "./coach/addCoach"
+import getCoachDetail from "./coach/getCoachDetails"
+import ActivateCoach from "./coach/ActivateCoach"
+
+import getProfile from "./dashboard/profile"
 
 
 
@@ -52,6 +58,8 @@ export class BehrainClient {
  public members
  public reports
  public bookings
+ public coach
+ 
 
   constructor(
     req: NextApiRequest,
@@ -70,7 +78,8 @@ export class BehrainClient {
         beforeRequest: [
           (request) => {
             request.headers.set("Content-type", "application/json-patch+json")
-            request.headers.set("accept", "/")
+          
+            request.headers.set("accept", "*/*")
             if (opts.overrideLanguage) {
               request.headers.set("Accept-Language", opts.overrideLanguage)
             }
@@ -110,7 +119,8 @@ export class BehrainClient {
     totalRevenue:withApiClient(getTotalRevenue),
     getMembershipGrowth : withApiClient(getMembershipGrowth),
     yearlyGrowth : withApiClient(getYearlyGrowth),
-    getBookingGrowth : withApiClient(getBookingGrowth)
+    getBookingGrowth : withApiClient(getBookingGrowth),
+    getProfile  :withApiClient(getProfile)
   }
 
   this.members = {
@@ -119,6 +129,13 @@ export class BehrainClient {
     getSuccessBookings : withApiClient(getSuccessBookings),
     getCancelledBookings : withApiClient(getCancelledBookings),
     ActivateMember: withApiClient(ActivateMember)
+  }
+
+  this.coach = {
+    getCoach : withApiClient(getCoach),
+    AddCoach : withApiClient(AddCoach),
+    getCoachDetail : withApiClient(getCoachDetail),
+    ActivateCoach : withApiClient(ActivateCoach)
   }
 
   this.reports = {

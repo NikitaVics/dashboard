@@ -1,23 +1,24 @@
 import {  Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody,  useColorModeValue, Heading, Flex } from "@chakra-ui/react";
 import React from "react";
-import MembersDetails from "./Forms/membersDetails";
-import { MemberProps } from "@/service/types";
+import { AddCoachProps } from "@/service/types";
 import useSWR from "swr";
+import CoachDetails from "./Forms/coachDetails";
 
 
-type MemberFormProps = {
+type CoachFormProps = {
     isOpen: boolean
     onClose: () => void
-    memberId: string
-    memberData: MemberProps
+    coachId: string
+    coachData: AddCoachProps
   }
 
-const MembersForm = (props: MemberFormProps) => {
-    const { isOpen, onClose, memberId } = props
+const CoachForm = (props: CoachFormProps) => {
+    const { isOpen, onClose, coachId } = props
 
-    const { data: memberData, isValidating } = useSWR<MemberProps>(
-      `/api/members/member-detail?id=${memberId}`,
+    const { data: coachData, isValidating } = useSWR<AddCoachProps>(
+      `/api/coach/coach-details?name=${coachId}`,
     )
+
   const color = useColorModeValue("dark.100","dark.500")
 
   return (
@@ -26,7 +27,7 @@ const MembersForm = (props: MemberFormProps) => {
       <DrawerContent bgColor={color}>
 
         <DrawerCloseButton  h="40px" w="40px" mt={3} bgColor="rgba(0, 0, 0, 0.08)"/>
-        <DrawerHeader fontSize="28px" fontWeight="700">Members Details</DrawerHeader>
+        <DrawerHeader fontSize="28px" fontWeight="700">Coach Details</DrawerHeader>
 
         <DrawerBody>
         {isValidating ? (
@@ -34,8 +35,8 @@ const MembersForm = (props: MemberFormProps) => {
             <Heading>Loading...</Heading>
           </Flex>
           ) : (
-         <MembersDetails memberId={memberId} onClose={onClose} memberData={memberData} status={undefined}  />
-      
+       
+      <CoachDetails status={undefined}  coachData={coachData} coachId={coachId}/>
           )}
         </DrawerBody>
       </DrawerContent>
@@ -43,4 +44,4 @@ const MembersForm = (props: MemberFormProps) => {
   );
 };
 
-export default MembersForm;
+export default CoachForm;

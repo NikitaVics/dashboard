@@ -1,6 +1,5 @@
 import {
     Avatar,
-    AvatarBadge,
     Flex,
     HTMLChakraProps,
     MenuButton,
@@ -19,6 +18,7 @@ import Logo from "./Icons/Logo"
 import { InputControl } from "@/components/Input/Input"
 import { SearchIcon } from "@chakra-ui/icons"
 import { Formik } from "formik"
+import useSWR from "swr"
   
   export interface HeaderProps extends HTMLChakraProps<"header"> {
     understood?: boolean
@@ -32,23 +32,17 @@ import { Formik } from "formik"
   export function MobileHeader({title} : HeaderProps) {
     const { t } = useTranslation("")
     const router = useRouter()
+
+    const { data : profile} = useSWR(`/api/profile`)
   
     const settings = [
-      {
-        name: t("common:settings.profile"),
-      },
-      {
-        name: t("common:settings.change"),
-        onClick: async () => {
-          router.push(`/components/changePassword`)
-        },
-      },
+    
       {
         name: t("common:settings.logout"),
         onClick: async () => {
-          const res = await ky.put("")
+          const res = await ky.put("/api/logout")
           if (res) {
-            router.push("")
+            router.push("/login")
           }
         },
       },
@@ -78,14 +72,12 @@ import { Formik } from "formik"
                <ChakraMenu items={settings}>
               <MenuButton
                 as={Avatar}
+                src={profile?.imageUrl}
                 aria-label="Options"
-                size="md"
+                size="lg"
               >
                 {" "}
-                <AvatarBadge
-                  boxSize={{ base: "18px", sm: "20px" }}
-                  bg={"rgba(114, 225, 40, 1)"}
-                />{" "}
+              
               </MenuButton>
             </ChakraMenu>
 

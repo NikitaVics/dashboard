@@ -18,8 +18,6 @@ import {
   } from "@chakra-ui/react"
   import useTranslation from "next-translate/useTranslation"
   import React, { FunctionComponent, ReactElement, useState } from "react"
-  
-  import useStore from "@/hooks/useStore"
   import Behrain from "../Icons/Behrain"
   import DashboardIcon from "../Icons/Dashboard"
   import BookingsIcon from "../Icons/Bookings"
@@ -50,17 +48,12 @@ import { CloseIcon } from "@chakra-ui/icons"
   
   
   function MobileDrawer() {
-    const [isDrawerOpen, setIsDrawerOpen] = useStore((state) => [
-      state.isDrawerOpen,
-      state.setIsDrawerOpen,
-    ])
+ 
     
     const hoverColor = useColorModeValue("#fff","black")
     const iconColor = useColorModeValue("rgba(252, 252, 252, 1)","black")
   
-    const { isOpen, onOpen, onClose } = useDisclosure({
-      defaultIsOpen: isDrawerOpen,
-    })
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const { t } = useTranslation("home")
   
 
@@ -114,7 +107,7 @@ import { CloseIcon } from "@chakra-ui/icons"
           >
             <ListIcon
               as={icon}
-              mx={isDrawerOpen ? 5 : 4}
+             
               justifyContent="center"
               stroke={isHovered ? iconColor : "rgba(124, 124, 125, 1)"}
               alignItems="center"
@@ -144,7 +137,7 @@ import { CloseIcon } from "@chakra-ui/icons"
       leftIcon?: ReactElement
       text: string
     }) => (
-      <Flex     ml={isDrawerOpen ? 4 : ""} 
+      <Flex     
       px="5" py="3" alignItems="center">
         {leftIcon}
         { (
