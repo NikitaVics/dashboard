@@ -1,0 +1,18 @@
+{
+    "coach" : {
+        "title" : "Coach Management",
+        "addTitle":"Add Coach",
+        "placeholder":"Search",
+        "name":"User Name",
+        "email":"E-Mail",
+        "from":"Coach From",
+        "phone":"Phone Number",
+        "gender":"Gender",
+        "experience":"Experience",
+        "status":"Status",
+        "action":"Action",
+        "firstName":"First Name",
+        "name1":"Name",
+        "lastName":"Last Name"
+    }
+}

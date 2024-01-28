@@ -78,4 +78,8 @@ const PageContainer = React.forwardRef<HTMLDivElement, PageContainerProps>(
   }
 );
 
+<<<<<<< HEAD
 export default PageContainer;
+=======
+export default PageContainer
+>>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9

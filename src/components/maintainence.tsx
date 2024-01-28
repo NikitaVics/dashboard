@@ -1,19 +1,5 @@
-import {
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  DrawerHeader,
-  DrawerBody,
-  useColorModeValue,
-  Heading,
-  Flex,
-} from "@chakra-ui/react";
+import {  Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody,  useColorModeValue, Heading, Flex } from "@chakra-ui/react";
 import React from "react";
-import MembersDetails from "./Forms/membersDetails";
-import { MemberProps } from "@/service/types";
-import useSWR from "swr";
-import ImageSelector from "./Forms/maintainence";
 import useTranslation from "next-translate/useTranslation";
 import CourtMaintainence from "./Forms/maintainence";
 
@@ -43,7 +29,9 @@ const MaintainenceForm = (props: MaintainenceProps) => {
         </DrawerHeader>
 
         <DrawerBody>
-          <CourtMaintainence />
+       
+       <CourtMaintainence />
+        
         </DrawerBody>
       </DrawerContent>
     </Drawer>

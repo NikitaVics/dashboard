@@ -96,8 +96,14 @@ const BookingsGraph: React.FC = () => {
             interval={0}
             textAnchor="end"
             dy={20}
+<<<<<<< HEAD
             tick={{ fill: color2 }}
           />
+=======
+            tick={{ fill: color2 }} 
+          
+            />
+>>>>>>> 7ba26a094e95714352b40b20db2a2c02f042f9e9
           <YAxis hide={true} />
           <Tooltip
             content={<CustomTooltip active={false} />}

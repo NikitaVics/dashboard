@@ -37,6 +37,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       );
 
       if (response.body !== null) {
+         // eslint-disable-next-line
         //@ts-ignore
         const readableStream = Readable.from(response.body);
 

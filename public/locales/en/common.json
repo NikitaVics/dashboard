@@ -2,15 +2,14 @@
   "buttons": {
     "login": "Login",
     "view": "View Details",
+    "views": "View Booking",
     "inActivate": "In Activate",
     "activate": "Activate",
     "download": "Download",
     "schedule": "Schedule",
     "send": "Send",
-    "approve": "Approve",
-    "reject": "Reject"
+    "addCoach": "Add Coach"
   },
-
   "status": {
     "approved": "Approved",
     "rejected": "Rejected",

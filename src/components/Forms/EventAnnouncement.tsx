@@ -13,29 +13,32 @@ import useTranslation from "next-translate/useTranslation";
 import PlusIcon from "@/pages/components/Icons/PlusIcon";
 
 const EventAnnouncement = () => {
-  const { t } = useTranslation("announcement");
-  const bgColor = useColorModeValue("light.200", "dark.300");
-  return (
-    <Formik
-      initialValues={{
-        firstName: "",
-      }}
-      onSubmit={() => {}}
-    >
-      {({ setFieldTouched, values }) => (
-        <Form noValidate>
-          <Grid
-            templateRows="repeat(1, 1fr)"
-            templateColumns={{
-              base: "repeat(1, 1fr)",
-              md: "repeat(2, 1fr)",
-            }}
-            gap="8"
-            mt={10}
-            pt={7}
-            pl={4}
-            borderRadius={"20px"}
-          >
+
+    const {t} = useTranslation("announcement")
+    const bgColor = useColorModeValue("light.200","dark.300")
+    return (
+        <Formik
+        initialValues={{
+            firstName: "",
+          }}
+          onSubmit={() => {}}
+        >
+          {() => (
+            <Form noValidate>
+
+      
+        <Grid
+        templateRows="repeat(1, 1fr)"
+        templateColumns={{
+          base: "repeat(1, 1fr)",
+          md: "repeat(2, 1fr)",
+        }}
+        gap="8"
+        mt={10}
+       
+        pt={7}
+        pl={4}
+        borderRadius={"20px"}>
             <GridItem rowSpan={1} colSpan={2}>
               <InputControl
                 name="eventName"

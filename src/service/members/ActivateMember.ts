@@ -9,7 +9,7 @@ const ActivateMember = async (
 ) => {
   const id = params.memberId
   return httpClient
-    .post(`ManagementMember/${id}/toggle-status`, {
+    .post(`Management/Member/${id}/toggle-status`, {
       json: params,
     })
     .json()

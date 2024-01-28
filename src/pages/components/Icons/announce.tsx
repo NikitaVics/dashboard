@@ -3,9 +3,9 @@ import { chakra, HTMLChakraProps } from "@chakra-ui/react";
 export const Announce = (props: HTMLChakraProps<"svg">) => {
   return (
     <chakra.svg
-      width="131px !important"
-      height="131px !important"
-      viewBox="0 9 131 131"
+      width="117px !important"
+      height="115px !important"
+      viewBox="0 9 117 115"
       fill="none"
       {...props}
     >
