@@ -29,7 +29,7 @@ export type User = {
   }
 
   export type MemberProps ={
-
+bookingId:string
     image:string
    memberId : string
    gender:string
@@ -44,6 +44,18 @@ export type User = {
       membershipExpirationCountDown:string
    
   }
+  export type BookingsProps={
+    memberId : string
+    image:string
+    name: string
+    bookingId: string
+    bookingDate: string
+    slot: string
+    teamMembers: string
+    status?: string;
+
+   
+  }
 
 export type ReportProps = {
   bookingDate : string
@@ -53,6 +65,7 @@ export type ReportProps = {
 
   export type getMember = {
     searchTerm : string
+    bookingDate:string
   }
 
   export type getAnnouncementProps = {
