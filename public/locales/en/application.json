@@ -1,0 +1,29 @@
+{
+  "application": {
+    "title": "Application Management",
+    "totalMembers": "Approved",
+    "totalRevenue": "Approval Pending",
+    "members": "Rejected Membership",
+    "details": "View",
+    "bookings": "Memberships",
+    "reports": "Todays Reports",
+    "application": "Membership Application",
+    "view": "View",
+    "membersList": "Members",
+    "bookingsGrowth": "Bookings Growth",
+    "membershipGrowth": "Membership Growth",
+    "year": "This Year",
+    "month": "This Month"
+  },
+  "members": {
+    "title": "Member Management",
+    "userName": "User Name",
+    "email": "E-Mail",
+    "phone": "Phone Number",
+    "gender": "Gender",
+    "member": "Member Since",
+    "name": "Name",
+    "status": "Status",
+    "search": "Search"
+  }
+}

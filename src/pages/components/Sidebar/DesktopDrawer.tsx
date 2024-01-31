@@ -10,85 +10,92 @@ import {
   Text,
   useColorModeValue,
   useDisclosure,
-} from "@chakra-ui/react"
-import useTranslation from "next-translate/useTranslation"
-import React, { FunctionComponent, ReactElement, useState } from "react"
+} from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 
-import useStore from "@/hooks/useStore"
-import MenuIcon from "../Icons/MenuIcon"
-import Behrain from "../Icons/Behrain"
-import DashboardIcon from "../Icons/Dashboard"
-import BookingsIcon from "../Icons/Bookings"
-import ReportsIcon from "../Icons/reports"
-import ApplicationIcon from "../Icons/Application"
-import MembersIcon from "../Icons/Members"
-import CoachIcon from "../Icons/CoachI"
-import AnnouncementIcon from "../Icons/Announcement"
-import { routePath } from "@/utils/routes"
+import useStore from "@/hooks/useStore";
+import MenuIcon from "../Icons/MenuIcon";
+import Behrain from "../Icons/Behrain";
+import DashboardIcon from "../Icons/Dashboard";
+import BookingsIcon from "../Icons/Bookings";
+import ReportsIcon from "../Icons/reports";
+import ApplicationIcon from "../Icons/Application";
+import MembersIcon from "../Icons/Members";
+import CoachIcon from "../Icons/CoachI";
+import AnnouncementIcon from "../Icons/Announcement";
+import { routePath } from "@/utils/routes";
 interface NavLink {
-  name: string
-  path: string
-  icon: React.FC<HTMLChakraProps<"svg">>
+  name: string;
+  path: string;
+  icon: React.FC<HTMLChakraProps<"svg">>;
 }
 
 export const dashboards: Array<NavLink> = [
   { name: "dashbords", path: routePath.dashboard, icon: DashboardIcon },
   { name: "bookings", path: routePath.booking, icon: BookingsIcon },
   { name: "reports", path: routePath.reports, icon: ReportsIcon },
-  { name: "application", path:  routePath.application, icon: ApplicationIcon },
+  { name: "application", path: routePath.application, icon: ApplicationIcon },
   { name: "members", path: routePath.members, icon: MembersIcon },
   { name: "coach", path: routePath.coach, icon: CoachIcon },
-  { name: "announcement", path: routePath.announcement, icon: AnnouncementIcon },
-]
-
-
+  {
+    name: "announcement",
+    path: routePath.announcement,
+    icon: AnnouncementIcon,
+  },
+];
 
 function DesktopDrawer() {
   const [isDrawerOpen, setIsDrawerOpen] = useStore((state) => [
     state.isDrawerOpen,
     state.setIsDrawerOpen,
-  ])
-  
-  const hoverColor = useColorModeValue("#fff","black")
-  const iconColor = useColorModeValue("rgba(252, 252, 252, 1)","black")
+  ]);
+
+  const hoverColor = useColorModeValue("#fff", "black");
+  const iconColor = useColorModeValue("rgba(252, 252, 252, 1)", "black");
 
   const { isOpen, onOpen, onClose } = useDisclosure({
     defaultIsOpen: isDrawerOpen,
-  })
-  const { t } = useTranslation("home")
+  });
+  const { t } = useTranslation("home");
 
   // const menuTitleBg = useColorModeValue("#e6e6e6", "#53577a")
   const openDrawer = React.useCallback(() => {
-    onOpen()
-    setIsDrawerOpen(true)
-  }, [onOpen, setIsDrawerOpen])
+    onOpen();
+    setIsDrawerOpen(true);
+  }, [onOpen, setIsDrawerOpen]);
 
   const closeDrawer = React.useCallback(() => {
-    onClose()
-    setIsDrawerOpen(false)
-  }, [onClose, setIsDrawerOpen])
+    onClose();
+    setIsDrawerOpen(false);
+  }, [onClose, setIsDrawerOpen]);
 
   const toggleDrawer = React.useCallback(() => {
     if (isOpen) {
-      closeDrawer()
+      closeDrawer();
     } else {
-      openDrawer()
+      openDrawer();
     }
-  }, [closeDrawer, isOpen, openDrawer])
+  }, [closeDrawer, isOpen, openDrawer]);
 
   const MenuItem = ({
     name,
     icon,
     path,
   }: {
-    name: string
-    icon: FunctionComponent<HTMLChakraProps<"svg">>
-    path: string
+    name: string;
+    icon: FunctionComponent<HTMLChakraProps<"svg">>;
+    path: string;
   }) => {
     const [isHovered, setIsHovered] = useState(false);
     return (
-      <ListItem mt="0 !important" key={path} listStyleType="none"  onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}>
+      <ListItem
+        mt="0 !important"
+        key={path}
+        listStyleType="none"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <Link
           href={path}
           cursor="pointer"
@@ -103,13 +110,12 @@ function DesktopDrawer() {
           _hover={{
             bgColor: "green.500",
             color: hoverColor,
-           
           }}
           _focus={{
             outline: "none",
           }}
           _activeLink={{
-            color:hoverColor,
+            color: hoverColor,
             bgColor: "gray.850",
             _before: {
               content: '""',
@@ -128,10 +134,9 @@ function DesktopDrawer() {
             stroke={isHovered ? iconColor : "rgba(124, 124, 125, 1)"}
             alignItems="center"
             textAlign="center"
-         
           />
-         
-         {isDrawerOpen && (
+
+          {isDrawerOpen && (
             <Box
               fontSize="sm"
               width="full"
@@ -143,20 +148,19 @@ function DesktopDrawer() {
           )}
         </Link>
       </ListItem>
-    )
-  }
+    );
+  };
 
   const Title = ({
     leftIcon,
     text,
   }: {
-    leftIcon?: ReactElement
-    text: string
+    leftIcon?: ReactElement;
+    text: string;
   }) => (
-    <Flex     ml={isDrawerOpen ? 4 : ""} 
-    px="5" py="3" alignItems="center">
+    <Flex ml={isDrawerOpen ? 4 : ""} px="5" py="3" alignItems="center">
       {leftIcon}
-      { (
+      {
         <Text
           fontSize="sm"
           fontWeight="400"
@@ -165,10 +169,10 @@ function DesktopDrawer() {
         >
           {text}
         </Text>
-      )}
+      }
     </Flex>
-  )
-const bgColor = useColorModeValue("#fff","rgba(14, 14, 14, 1)")
+  );
+  const bgColor = useColorModeValue("#fff", "rgba(14, 14, 14, 1)");
   return (
     <Box
       aria-label="leftNavigation"
@@ -186,26 +190,22 @@ const bgColor = useColorModeValue("#fff","rgba(14, 14, 14, 1)")
           justifyContent="space-around"
           alignItems="end"
           height="64px"
-        >
-          
-         
-        </HStack>
-        <Flex ><MenuIcon ml={10}  onClick={toggleDrawer}/>{isDrawerOpen ?  <Behrain mt={2}/> : "" }</Flex>
+        ></HStack>
+        <Flex>
+          <MenuIcon ml={10} onClick={toggleDrawer} />
+          {isDrawerOpen ? <Behrain mt={2} /> : ""}
+        </Flex>
 
         <List as="ul" spacing="2" styleType="none" flex="1" overflow="auto">
-      
-        <Title text={t("sideMenus.title")}  />
-    
-          {
-            dashboards.map(({ path, icon, name }) => {
-              return <MenuItem key={path} name={name} icon={icon} path={path} />
-            })}
-         
-         
+          <Title text={t("sideMenus.title")} />
+
+          {dashboards.map(({ path, icon, name }) => {
+            return <MenuItem key={path} name={name} icon={icon} path={path} />;
+          })}
         </List>
       </Flex>
     </Box>
-  )
+  );
 }
 
-export default DesktopDrawer
+export default DesktopDrawer;
