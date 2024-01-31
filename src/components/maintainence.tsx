@@ -26,7 +26,7 @@ const MaintainenceForm = (props: MaintainenceProps) => {
 
         <DrawerBody>
        
-       <CourtMaintainence  />
+       <CourtMaintainence message={undefined} onClose={onClose}  />
         
         </DrawerBody>
       </DrawerContent>

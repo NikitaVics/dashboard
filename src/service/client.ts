@@ -126,6 +126,8 @@ export class BehrainClient {
     ActivateMember: withApiClient(ActivateMember)
   }
 
+  
+
   this.coach = {
     getCoach : withApiClient(getCoach),
     AddCoach : withApiClient(AddCoach),

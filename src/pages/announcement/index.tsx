@@ -201,8 +201,8 @@ const Announcemnet = () => {
          gap="5"
          mt="10">
         <GridItem rowSpan={1} colSpan={1}>
-        <Box  bgColor={bgColor} h="127px"   borderRadius="20px" px={6} py={6}>
-            <Flex gap={20} >
+        <Box  bgColor={bgColor} h="150px"   borderRadius="20px" px={3} py={8}>
+            <Flex justifyContent={"space-between"} >
             <Maintanence  />
               <Stack gap={4} >
             <Text  fontSize={"18px"} fontWeight={"700"} >{t(`announce.maintain`)}</Text>
@@ -217,8 +217,8 @@ const Announcemnet = () => {
        
        
         <GridItem rowSpan={1} colSpan={1}>
-        <Box  bgColor={bgColor} h="127px"   borderRadius="20px" px={6} py={6} pr={30}>
-        <Flex gap={20}>
+        <Box  bgColor={bgColor} h="150px"   borderRadius="20px" px={3} py={8} >
+        <Flex justifyContent={"space-between"}>
         <Event />
               <Stack gap={4}>
             <Text  fontSize={"20px"} fontWeight={"700"}>{t(`announce.event`)}</Text>
@@ -231,8 +231,8 @@ const Announcemnet = () => {
         </Box>
         </GridItem>
         <GridItem rowSpan={1} colSpan={1}>
-         <Box  bgColor={bgColor} h="127px"   borderRadius="20px" px={6} py={6}>
-        <Flex gap={20} >
+         <Box  bgColor={bgColor} h="150px"   borderRadius="20px" px={3} py={8}>
+        <Flex justifyContent={"space-between"} >
              
            <Announce />
             <Stack gap={4}>
@@ -263,7 +263,7 @@ const Announcemnet = () => {
                       {...(isDesktopView && { width: "30%" })}
                       inputProps={{
                         type: "text",
-                        placeholder: t(`members.search`),
+                        placeholder: t(`announce.search`),
                         fontSize: "md",
                         fontWeight: "medium",
                         color: "gray.500",

@@ -14,7 +14,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
   async function createCourt(params: CourtMaintainence) {
     try {
-      console.log(params)
+    
       const response = await client.announcement.AddCourtMaintainence(params)
       res.status(200).json(response)
     } catch (error) {
