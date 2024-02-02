@@ -156,120 +156,67 @@ const Announcemnet = () => {
         {isLoading ? (
           <TableSkeleton />
         ) : (
-          <>
-            <Grid
-              templateRows="repeat(1, 1fr)"
-              templateColumns={{
-                //  base: "repeat(1, 1fr)",
-                lg: "repeat(3, 1fr)",
-                md: "repeat(2, 1fr)",
-                sm: "repeat(1, 1fr)",
-              }}
-              gap="5"
-              mt="10"
-            >
-              <GridItem rowSpan={1} colSpan={1}>
-                <Box
-                  bgColor={bgColor}
-                  h="150px"
-                  borderRadius="20px"
-                  px={3}
-                  py={8}
-                >
-                  <Flex justifyContent={"space-between"}>
-                    <Maintanence />
-                    <Stack gap={4}>
-                      <Text fontSize={"18px"} fontWeight={"700"}>
-                        {t(`announce.maintain`)}
-                      </Text>
-                      <Button
-                        bg="none"
-                        color="rgba(78, 203, 113, 1)"
-                        borderRadius={"51px"}
-                        border="1px solid  rgba(78, 203, 113, 1)"
-                        fontWeight={"500"}
-                        fontSize="14px"
-                        cursor="pointer"
-                        onClick={() => handleEditModalOpen()}
-                        leftIcon={<PlusIcon />}
-                      >
-                        {t(`announce.create`)}
-                      </Button>
-                    </Stack>
-                  </Flex>
-                </Box>
-              </GridItem>
-
-              <GridItem rowSpan={1} colSpan={1}>
-                <Box
-                  bgColor={bgColor}
-                  h="150px"
-                  borderRadius="20px"
-                  px={3}
-                  py={8}
-                >
-                  <Flex justifyContent={"space-between"}>
-                    <Event />
-                    <Stack gap={4}>
-                      <Text fontSize={"20px"} fontWeight={"700"}>
-                        {t(`announce.event`)}
-                      </Text>
-                      <Button
-                        bg="none"
-                        color="rgba(78, 203, 113, 1)"
-                        borderRadius={"51px"}
-                        textAlign={"center"}
-                        border="1px solid  rgba(78, 203, 113, 1)"
-                        fontWeight={"500"}
-                        fontSize="14px"
-                        cursor="pointer"
-                        onClick={() => handleEventModalOpen()}
-                        leftIcon={<PlusIcon />}
-                      >
-                        {t(`announce.create`)}
-                      </Button>
-                    </Stack>
-                  </Flex>
-                </Box>
-              </GridItem>
-              <GridItem rowSpan={1} colSpan={1}>
-                <Box
-                  bgColor={bgColor}
-                  h="150px"
-                  borderRadius="20px"
-                  px={3}
-                  py={8}
-                >
-                  <Flex justifyContent={"space-between"}>
-                    <Announce />
-                    <Stack gap={4}>
-                      <Text fontSize={"20px"} fontWeight={"700"}>
-                        {t(`announce.announce`)}
-                      </Text>
-                      <Button
-                        bg="none"
-                        color="rgba(78, 203, 113, 1)"
-                        borderRadius={"51px"}
-                        border="1px solid  rgba(78, 203, 113, 1)"
-                        fontWeight={"500"}
-                        fontSize="14px"
-                        cursor="pointer"
-                        onClick={() => handleAnnouncementOpen()}
-                        leftIcon={<PlusIcon />}
-                      >
-                        {t(`announce.create`)}
-                      </Button>
-                    </Stack>
-                  </Flex>
-                </Box>
-              </GridItem>
-            </Grid>
-            <PageContainer
-              as="section"
-              maxW="full"
-              p="3"
-              mt={{ base: 8, md: 18, lg: 8 }}
-            >
+        <>
+        <Grid
+         templateRows="repeat(1, 1fr)"
+         templateColumns={{
+          //  base: "repeat(1, 1fr)",
+          lg :"repeat(3, 1fr)",
+           md: "repeat(2, 1fr)",
+           sm: "repeat(1, 1fr)",
+         }}
+         gap="5"
+         mt="10">
+        <GridItem rowSpan={1} colSpan={1}>
+        <Box  bgColor={bgColor} h="150px"   borderRadius="20px" px={3} py={8}>
+            <Flex justifyContent={"space-between"} >
+            <Maintanence  />
+              <Stack gap={4} >
+            <Text  fontSize={"18px"} fontWeight={"700"} >{t(`announce.maintain`)}</Text>
+            <Button bg="none" color="rgba(78, 203, 113, 1)" borderRadius={"51px"} border="1px solid  rgba(78, 203, 113, 1)"
+             fontWeight={"500"} fontSize="14px" cursor="pointer" onClick={()=>handleEditModalOpen()} leftIcon={<PlusIcon />}>{t(`announce.create`)}</Button>
+            </Stack>
+          
+            </Flex>
+           
+        </Box>
+        </GridItem>
+       
+       
+        <GridItem rowSpan={1} colSpan={1}>
+        <Box  bgColor={bgColor} h="150px"   borderRadius="20px" px={3} py={8} >
+        <Flex justifyContent={"space-between"}>
+        <Event />
+              <Stack gap={4}>
+            <Text  fontSize={"20px"} fontWeight={"700"}>{t(`announce.event`)}</Text>
+            <Button bg="none" color="rgba(78, 203, 113, 1)" borderRadius={"51px"}  textAlign={"center"}
+             border="1px solid  rgba(78, 203, 113, 1)" fontWeight={"500"} fontSize="14px" cursor="pointer"  onClick={()=>handleEventModalOpen()} leftIcon={<PlusIcon />}>{t(`announce.create`)}</Button>
+            </Stack>
+         
+            </Flex>
+           
+        </Box>
+        </GridItem>
+        <GridItem rowSpan={1} colSpan={1}>
+         <Box  bgColor={bgColor} h="150px"   borderRadius="20px" px={3} py={8}>
+        <Flex justifyContent={"space-between"} >
+             
+           <Announce />
+            <Stack gap={4}>
+            <Text  fontSize={"20px"} fontWeight={"700"}>{t(`announce.announce`)}</Text>
+            <Button bg="none" color="rgba(78, 203, 113, 1)" borderRadius={"51px"} border="1px solid  rgba(78, 203, 113, 1)"
+             fontWeight={"500"} fontSize="14px" cursor="pointer" onClick={()=>handleAnnouncementOpen()} leftIcon={<PlusIcon />}>{t(`announce.create`)}</Button>
+            </Stack> 
+            </Flex>
+           
+        </Box>
+        </GridItem>
+        
+      </Grid>
+      <PageContainer    as="section"
+            maxW="full"
+            p="3"
+            mt={{ base: 8, md: 18, lg: 8 }}>
               <Stack py={{ base: 3, md: 5 }}>
                 <Formik
                   initialValues={{

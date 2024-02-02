@@ -1,8 +1,9 @@
 import ky from "ky"
 import { User } from "../types"
 
-const getCancelledBookings = async (httpClient: typeof ky) => {
-  return httpClient.get(`Management/BookingManagement/totalCancelledBookingsToday`).json<User>()
+const getCancelled = async (httpClient: typeof ky) => {
+  return httpClient.get(`Management/BookingManagement/CancelledBookingsToday`).json<User>()
 }
 
-export default getCancelledBookings
+export default getCancelled
+

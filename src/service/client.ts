@@ -37,10 +37,11 @@ import rejected from "./application/rejected";
 import update from "./application/update";
 import getaveragePeakBookingHour from "./bookings/averagepeakBookingMonth";
 import bookingDetails from "./bookings/bookingDetails";
-import CancelBooking from "./bookings/cancelbooking";
 import bookingDetail from "./bookings/getbookingDetail";
 import getPeakBookingHour from "./bookings/peakBookingHour";
 import getTotalBookings from "./bookings/totalBookings";
+import getCancelled from "./bookings/cancelledBookings";
+import DeActivateBooking from "./bookings/deactivateBooking";
 
 type ApiHandler<T, U> = (baseHttpClient: typeof ky, params: U) => Promise<T>;
 
@@ -131,6 +132,14 @@ export class BehrainClient {
       getProfile: withApiClient(getProfile),
     };
 
+  
+
+  this.coach = {
+    getCoach : withApiClient(getCoach),
+    AddCoach : withApiClient(AddCoach),
+    getCoachDetail : withApiClient(getCoachDetail),
+    ActivateCoach : withApiClient(ActivateCoach)
+  }
     this.members = {
       getMembersList: withApiClient(getMembersList),
       getMemberDetail: withApiClient(getMemberDetail),
@@ -149,6 +158,15 @@ export class BehrainClient {
       rejected: withApiClient(rejected),
     };
 
+  this.bookings = {
+    getPeakBookingHour : withApiClient(getPeakBookingHour),
+    getTotalBookings : withApiClient(getTotalBookings),
+    getaveragePeakBookingHour: withApiClient(getaveragePeakBookingHour),
+    bookingDetails:withApiClient(bookingDetails),
+    getbookingDetail:withApiClient(bookingDetail),
+    getCancelledBookings:withApiClient(getCancelled),
+    cancelBookings : withApiClient(DeActivateBooking)
+  }
     this.coach = {
       getCoach: withApiClient(getCoach),
       AddCoach: withApiClient(AddCoach),
@@ -165,21 +183,13 @@ export class BehrainClient {
       exportCoachReports: withApiClient(exportCoachReports),
     };
 
-    this.bookings = {
-      getCancelledBookings: withApiClient(getCancelledBookings),
-      getPeakBookingHour: withApiClient(getPeakBookingHour),
-      getTotalBookings: withApiClient(getTotalBookings),
-      getaveragePeakBookingHour: withApiClient(getaveragePeakBookingHour),
-      CancelBooking: withApiClient(CancelBooking),
-      bookingDetails: withApiClient(bookingDetails),
-      getbookingDetail: withApiClient(bookingDetail),
-    };
-
-    this.announcement = {
-      AddCourtMaintainence: withApiClient(AddCourtMaintainence),
-      AddEvent: withApiClient(AddEvent),
-      AddAnnouncement: withApiClient(AddAnnouncement),
-      getAnnouncement: withApiClient(getAnnouncement),
-    };
+  this.announcement = {
+  
+    AddCourtMaintainence  :withApiClient(AddCourtMaintainence),
+    AddEvent : withApiClient(AddEvent),
+    AddAnnouncement : withApiClient(AddAnnouncement),
+    getAnnouncement : withApiClient(getAnnouncement)
+  }
+    
   }
 }

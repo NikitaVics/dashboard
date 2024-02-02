@@ -60,10 +60,10 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
 };
 
 
-const PeakBooking: React.FC = () => {
+const DailyBooking: React.FC = () => {
 
 
-  const { data: bookingyearlyGraph } = useSWR("/api/bookings/peakBookingHour");
+  const { data: bookingyearlyGraph } = useSWR("/api/bookings/averageBooking");
  
 const yearlyGraph=bookingyearlyGraph?.result;
 
@@ -71,7 +71,7 @@ const monthData: MonthData[] = [
     { month: '', value: 0 },
     ...(yearlyGraph || []).map((item: YearlyGraphItem) => ({
       month: item.monthName,
-      value: item.peakDailyBooking,
+      value: item.averagePeakHour,
     })),
   ];
 
@@ -115,4 +115,4 @@ const monthData: MonthData[] = [
   );
 };
 
-export default PeakBooking;
+export default DailyBooking;

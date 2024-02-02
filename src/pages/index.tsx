@@ -11,8 +11,9 @@ function Home() {
   return (
     <>
       <Layout  description={t("page.description")} title={""}>
+        
        <PageContainer
-         isLoading={isLoading}
+        //  isLoading={isLoading}
          as="section"
          maxW="full"
          height="100vh"
@@ -20,7 +21,7 @@ function Home() {
          mt={{ base: 8, md: 8, lg: 0 }}
          filter={isLoading ? "blur(3px)" : "none"}
         > 
-          
+        
         </PageContainer> 
       
       </Layout>

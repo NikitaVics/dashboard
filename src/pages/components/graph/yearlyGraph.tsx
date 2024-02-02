@@ -58,9 +58,9 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
 };
 
 const MonthTabs: React.FC = () => {
-  const { data: yearlyGraph } = useSWR<YearlyGraphItem[]>(
-    "/api/dashboard/yearlyGraph"
-  );
+
+
+  const { data: yearlyGraph } = useSWR<YearlyGraphItem[]>("/api/dashboard/yearlyGrowth");
 
   const monthData: MonthData[] = [
     { month: "", value: 0 },
