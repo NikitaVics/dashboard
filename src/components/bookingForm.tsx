@@ -18,7 +18,7 @@ const BookingForm = (props: BookingFormProps) => {
     const { data: memberData, isValidating } = useSWR<BookingsProps>(
       `/api/bookings/getbookingDetail?id=${memberId}`,
     )
-    console.log(memberData)
+
   const color = useColorModeValue("dark.100","dark.500")
 
   return (
@@ -35,7 +35,7 @@ const BookingForm = (props: BookingFormProps) => {
             <Heading>Loading...</Heading>
           </Flex>
           ) : (
-         <BookingDetails memberId={memberId} onClose={onClose} memberData={memberData} status={false} />
+         <BookingDetails memberId={memberId} onClose={onClose} memberData={memberData}  />
           )}
         </DrawerBody>
       </DrawerContent>

@@ -19,7 +19,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         bookingDate:bookingDate as string
       } as getMember
       const response = await client.bookings.bookingDetails(params)
-      console.log(response)
       res.status(200).json(response)
     } catch (error) {
       console.log(error)

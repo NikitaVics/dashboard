@@ -34,7 +34,7 @@ const AnnouncementForm = ({Data}:FormItems) => {
       
       
       if (values.message) {
-        formData.append("Message", values.message);
+        formData.append("message", values.message);
       } else {
         console.error("Error: Message is empty or undefined");
         return; 

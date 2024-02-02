@@ -8,7 +8,8 @@
        "download":"Download",
        "schedule":"Schedule",
        "send":"Send",
-       "addCoach":"Add Coach"
+       "addCoach":"Add Coach",
+       "cancel":"Cancel Booking"
     },
     "status":{
         "active":"Active",

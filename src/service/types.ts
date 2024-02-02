@@ -23,6 +23,10 @@ export type User = {
     statusCode: number
   }
 
+  export type BookingMessage = {
+    message : string
+  }
+
   export type Session = {
     result: string[]
     token: string
@@ -45,16 +49,22 @@ bookingId:string
    
   }
   export type BookingsProps={
-    memberId : string
-    image:string
-    name: string
-    bookingId: string
-    bookingDate: string
-    slot: string
-    teamMembers: string
-    status?: string;
-
-   
+  
+         bookingStatus?: string
+          userName : string
+          userImage : string
+          bookingId: string
+          slot: string
+          bookingDate:string
+          tennisCourt?:{
+            name:string
+            courtImages : string
+          },
+          teamMembers?:{
+            name:string
+            imageUrl : string
+          }
+    
   }
 
 export type ReportProps = {

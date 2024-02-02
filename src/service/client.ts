@@ -31,9 +31,10 @@ import getProfile from "./dashboard/profile"
 import getPeakBookingHour from "./bookings/peakBookingHour"
 import getTotalBookings from "./bookings/totalBookings"
 import getaveragePeakBookingHour from "./bookings/averagepeakBookingMonth"
-import CancelBooking from "./bookings/cancelbooking"
 import bookingDetails from "./bookings/bookingDetails"
 import bookingDetail from "./bookings/getbookingDetail"
+import DeActivateBooking from "./bookings/deactivateBooking"
+import getCancelled from "./bookings/cancelledBookings"
 
 
 
@@ -152,17 +153,18 @@ export class BehrainClient {
   }
 
   this.bookings = {
-    getCancelledBookings : withApiClient(getCancelledBookings),
     getPeakBookingHour : withApiClient(getPeakBookingHour),
     getTotalBookings : withApiClient(getTotalBookings),
     getaveragePeakBookingHour: withApiClient(getaveragePeakBookingHour),
-    CancelBooking: withApiClient(CancelBooking),
     bookingDetails:withApiClient(bookingDetails),
-    getbookingDetail:withApiClient(bookingDetail)
+    getbookingDetail:withApiClient(bookingDetail),
+    getCancelledBookings:withApiClient(getCancelled),
+    cancelBookings : withApiClient(DeActivateBooking)
   }
 
 
   this.announcement = {
+  
     AddCourtMaintainence  :withApiClient(AddCourtMaintainence),
     AddEvent : withApiClient(AddEvent),
     AddAnnouncement : withApiClient(AddAnnouncement),

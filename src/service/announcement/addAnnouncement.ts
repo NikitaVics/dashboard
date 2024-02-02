@@ -8,7 +8,7 @@ const AddAnnouncement = async (
 
   params.message = "Testing"
   const form = new FormData();
-  form.append("Message", params.message);
+  form.append("Message", "g jjhh");
 
   console.log("Form :", form);
 return httpClient

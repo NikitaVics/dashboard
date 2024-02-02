@@ -14,12 +14,8 @@ import {
     MenuButton,
     MenuItem,
     MenuList,
+    Stack,
     Text,
-    
-    
-    
-    // useBreakpointValue,
-    
     useColorModeValue,
     useToast,
       } from "@chakra-ui/react"
@@ -32,7 +28,6 @@ import {
   import CalenderIcon from "../components/Icons/calenderIcon"
   import router from "next/router"
   import MoreVertIcon from "../components/Icons/MoreVertIcon"
-  import { EditIcon, SearchIcon } from "@chakra-ui/icons"
   import InActivateIcon from "../components/Icons/InActivate"
 
 
@@ -46,6 +41,10 @@ import { useDebounce } from "use-debounce"
 import BookingForm from "@/components/bookingForm"
 import PeakBooking from "../components/graph/peakbookingHour"
 import PageContainer from "../components/PageContainer"
+import ClockIcon from "../components/Icons/clockIcon"
+import DailyBooking from "../components/graph/dailyBooking"
+import EditIcon from "../components/Icons/EditIcon"
+import SearchIcon from "../components/Icons/searchIcon"
 
 
 type EditTaxDetailsProps = {
@@ -67,15 +66,6 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
       setMemberId(bookingId); 
     }
   }
-
-  const [memberId, setMemberId] = useState("")
-  const [searchInput, setSearchInput] = useState("")
-  const [debouncedSearchInput] = useDebounce(searchInput, 800)
-  const { data: responseData } = useSWR(
-    `/api/bookings/bookingDetails?searchTerm=${debouncedSearchInput}`,
-  )
-
-
   const [selectedDate, setSelectedDate] = useState("");
 
   const handleDateChange =(event: ChangeEvent<HTMLInputElement>) => {
@@ -85,42 +75,44 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
     setSelectedDate(reversedDate);
   };
   
+  
+  const [memberId, setMemberId] = useState("")
+  const [searchInput, setSearchInput] = useState("")
+  const [debouncedSearchInput] = useDebounce(searchInput, 800)
+  const { data: responseData } = useSWR(
+    `/api/bookings/bookingDetails?searchTerm=${debouncedSearchInput}&bookingDate=${selectedDate}`,
+  )
 
-  //const menuBg = useColorModeValue("","rgba(20, 20, 20, 1)")
+
+ 
+
+
   
      const { data: totalbookingsList } = useSWR("/api/bookings/totalBookings")
      const totalbookings=totalbookingsList?.result
   
-     const { data: cancelbookingsList } = useSWR("/api/bookings/cancelledBookings")
+     const { data: cancelbookingsList } = useSWR(`/api/bookings/bookings`)
+    
       const cancelbooking=cancelbookingsList?.result
-    //   console.log("cancel",cancelbookingsList)
-  
-    // const { data: peakbookingsHour } = useSWR("/api/bookings/peakBookingHour")
-    // const peakbookhour=peakbookingsHour?.result
-  
-    // const { data: averagepeakbookhour } = useSWR("/api/bookings/averagepeakookingMonth")
-    // const averagepeakbookHour=averagepeakbookhour?.result
-   
 
-    //  const { data: responseData } = useSWR(
-    //    `/api/bookings/bookingDetails`,
-    //  )
+  
     const background = useColorModeValue("#fff","#0D0D0D")
 
-//     const [ setSelectedComponent] = useState('membershipGrowth');
 
-//   const handleMenuItemClick = (component: string) => {
-//     setSelectedComponent(component);
-//   };
 
  
     const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818;")
+
+
      const columnConfig = [
       {
         Header: t(`bookings.bookingName`),
         // eslint-disable-next-line
-  Cell: ({ row: { original } }: any) => (
+  Cell: ({ row: { original } }: any) => { 
+    return (
+
     <HStack align="center" spacing={2}>
+      
       {original.bookingPersonImage ? (
         <Avatar src={original.bookingPersonImage} size="md" />
       ) : (
@@ -128,7 +120,7 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
       )}
       <Text>{original.bookingPerson}</Text>
     </HStack>
-  ),
+  ) } 
       },
       {
         Header: t(`bookings.team`),
@@ -241,27 +233,18 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
                 >
                   {t("common:buttons.view")}
                 </MenuItem>
-                {row?.original?.status === true ? 
-                <MenuItem
-                  icon={<InActivateIcon />}
-                 
-                  bgColor={background}
-                  _hover = {{bgColor : hover}}
-                  color = "rgba(235, 87, 87, 1)"
-                //   onClick={() => handleActivate(row?.original?.memberId)}
-                >
-                  {t("common:buttons.inActivate")}
-                </MenuItem> : 
+                {row?.original?.status === "Booked" ? 
+               
                  <MenuItem
-                //  icon={<InActivateIcon />}
+                 icon={<InActivateIcon />}
                 
                  bgColor={background}
                  _hover = {{bgColor : hover}}
-                 color = "rgba(39, 174, 96, 1)"
-                 onClick={() => handleDeactivate(row?.original?.memberId)}
+                 color = "rgba(235, 87, 87, 1)"
+                 onClick={() => handleDeactivate(row?.original?.bookingId)}
                >
-                 {t("common:buttons.activate")}
-               </MenuItem>
+                 {t("common:buttons.cancel")}
+               </MenuItem> : ""
                  }
               
               </MenuList>
@@ -274,14 +257,14 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
       
     ]
       
-const toast=useToast()
-    const handleDeactivate = async (memberId: string) => {
-        if (memberId) {
+const toast = useToast()
+    const handleDeactivate = async (bookingId: string) => {
+        if (bookingId) {
           try {
-            const updatedValues = { memberId }
-            if (memberId) {
-              const response = await ky.post(
-                `/api/members/Activate/${memberId}`,
+            const updatedValues = { bookingId }
+            if (bookingId) {
+              const response = await ky.put(
+                `/api/bookings/DeActivate/${bookingId}`,
                 {
                   json: updatedValues,
                 },
@@ -289,13 +272,13 @@ const toast=useToast()
     
               if (response) {
                 toast({
-                  description: "Successfully Activated",
+                  description: "Successfully DeActivated",
                   status: "success",
                   position: "top",
                   duration: 3000,
                   isClosable: true,
                 })
-                await mutate(`/api/members`)
+                await mutate(`/api/bookings/bookingDetails`)
               }
             }
           } catch (error) {
@@ -321,7 +304,7 @@ const toast=useToast()
       }
   
     const isLoading = !responseData
-     //const isDesktopView = useBreakpointValue({ base: false, md: false, xl: true })
+   
   
     const bgColor = useColorModeValue("light.300","dark.600")
     const color  = useColorModeValue("dark.700","light.400")
@@ -330,11 +313,13 @@ const toast=useToast()
     const handleClearDate = () => {
         setSelectedDate("");
       };
-    
 
-//   function setSearchInput(value: string): void {
-//     throw new Error("Function not implemented.")
-//   }
+      const [showPeakBooking, setShowPeakBooking] = useState(true);
+
+      const handleClockIconClick = () => {
+        setShowPeakBooking(!showPeakBooking);
+      };
+
 
     return (
       <>
@@ -347,8 +332,9 @@ const toast=useToast()
           ) : (
 
 
-            
+           
            <Box >
+            
             <Grid
             templateRows="repeat(1, 1fr)"
             templateColumns={{
@@ -359,107 +345,103 @@ const toast=useToast()
             gap="5"
             mt="10">
            <GridItem rowSpan={1} colSpan={1}>
-           <Box  bgColor={bgColor} h="200px"   borderRadius="20px" px={6} py={6}>
-               <Flex justify="space-between">
+           <Box  bgColor={bgColor} h="170px"   borderRadius="20px" px={6} py={6}>
+              <Stack>
+              <Flex justify="space-between">
                <Text color={color}>{t(`bookings.totalBookings`)}</Text>
                <CalenderIcon />
                </Flex>
-               <Flex justify={"space-between"} mt={10}>
+               <Flex justify={"space-between"} mt={14}>
                  <HStack>
-                  <Text fontSize={"16px"} fontWeight={"700"}>{totalbookings}</Text> 
+                  <Text fontSize={"32px"} fontWeight={"700"}>{totalbookings}</Text> 
                  <Text fontSize={"13px"} fontWeight="400" color={color2}>{t(`bookings.day`)}</Text>
                  </HStack>
              
                  <Button color="rgba(78, 203, 113, 1)" p={"0"}  onClick={()=>router.push("/bookings")} fontSize={"14px"} fontWeight={"700"} background={"none"} _hover={{bg:"none"}}>{t(`bookings.view`)}</Button>
                </Flex>
+              </Stack>
               
            </Box>
            </GridItem>
           
           
            <GridItem rowSpan={1} colSpan={1}>
-           <Box  bgColor={bgColor} h="200px"   borderRadius="20px" px={6} py={6}>
+           <Box  bgColor={bgColor} h="170px"   borderRadius="20px" px={6} py={6}>
+            <Stack>
+
+
                <Flex justify="space-between">
                <Text color={color}>{t(`bookings.cancelledBookings`)}</Text>
                 <CalenderIcon /> 
                </Flex>
-               <Flex justify={"space-between"} mt={10}>
+               <Flex justify={"space-between"} mt={14}>
                <HStack>
-                   <Text fontSize={"16px"} fontWeight={"700"}>${cancelbooking}</Text>   
+                   <Text fontSize={"32px"} fontWeight={"700"} color={"rgba(235, 87, 87, 1)"}>{cancelbooking}</Text>   
                  <Text fontSize={"13px"} fontWeight="400" color="red.200">{t(`bookings.day`)}</Text>
                  </HStack>
              
                  <Button color="red.200"p={"0"}   fontSize={"14px"} fontWeight={"700"} background={"none"} _hover={{bg:"none"}}>{t(`bookings.view`)}</Button>
                </Flex>
-              
+               </Stack>
            </Box>
            </GridItem>
-        
-          <GridItem rowSpan={1} colSpan={1}>
-           <Box bgColor={bgColor} h="200px"   borderRadius="20px" px={6} py={6}>
-               <Flex justify="space-between">
-               <Text color={color}>{t(`bookings.members`)}</Text>
-                {/* <GrowthIcon />  */}
-               </Flex>
-              
-               <PeakBooking />
-           </Box>
+           <GridItem rowSpan={1} colSpan={1}>
+      <Box bgColor={bgColor} h="170px" borderRadius="20px" px={6} py={6}>
+        <Flex justify="space-between">
+          <Text color={color}>{showPeakBooking ? t(`bookings.members`) : t(`bookings.daily`)}</Text>
+          <ClockIcon onClick={handleClockIconClick} />
+        </Flex>
 
-          
-           </GridItem> 
+        {showPeakBooking ? <PeakBooking /> : <DailyBooking />} 
+      </Box>
+    </GridItem>
        
            
          </Grid>
         
-              
-         {/* <Box px={5}>
-                      <InputControl
-                     // {...(isDesktopView && { width: "30%" })}
-                      inputProps={{
-                        type: "text",
-                        placeholder: t(`members.search`),
-                        fontSize: "md",
-                        fontWeight: "medium",
-                        color: "gray.500",
-                        h:"64px",
-                        // value: searchInput,
-                        // onChange: (e) => setSearchInput(e.target.value),
-                      }}
-                      name="description"
-                      inputRightElement={<SearchIcon />} 
-                    /> 
-                    </Box> */}
+        
 
-<Formik
+
+                  <PageContainer  as="section"
+            maxW="full"
+            px="0"
+            mt={{ base: 8, md: 18, lg: 10 }}>
+               <Stack py={{ base: 3, md: 5 }}>
+              <Formik
                     initialValues={{
                       firstName: "",
                     }}
                     onSubmit={() => {}}
                     
                  >
-                  <PageContainer maxWidth={"full"}>
-                   <Flex justify={"space-between"} mt={"15px"}>
+              
+              <HStack justifyContent="space-between" my={{ base: 3, md: 5 }} mx="10px">
                     
-<Box px={5} >
+              <Formik
+                  initialValues={{
+                    firstName: "",
+                  }}
+                  onSubmit={() => {}}
+                >
                     <InputControl
-                   // {...(isDesktopView && { width: "full" })}
+              
                       inputProps={{
                         type: "text",
                         placeholder: t(`bookings.search`),
                         fontSize: "md",
                         fontWeight: "medium",
                         color: "gray.500",
-                        h:"64px",
+                        h:"61px",
                         value: searchInput,
                         onChange: (e) => setSearchInput(e.target.value),
                       }}
                       name="description"
                       inputRightElement={<SearchIcon />}
                     />
-                    </Box>
+                    </Formik>
                   
 
-                  <HStack>
+           
                     
      <Input
         placeholder="Select Date"
@@ -475,23 +457,26 @@ const toast=useToast()
           <CloseButton />
         </IconButton>
       )}
-     </HStack>
+   
     
-     </Flex>
-     </PageContainer>
+     </HStack>
      </Formik>
+     <Box mt={5}>
+                    
+                    <Table columns={columnConfig} data={responseData} />
+                  </Box>
+                   {isEditModalOpen && (
+                  <><BookingForm
+                        isOpen={isEditModalOpen}
+                        onClose={() => setIsEditModalOpen(false)} memberId={memberId} memberData={memberData} /></>
+                  )} 
+                 </Stack>
+     </PageContainer>
+    
      
             
 
-                <Box mt={5}>
-                    
-                  <Table columns={columnConfig} data={responseData} />
-                </Box>
-                 {isEditModalOpen && (
-                <><BookingForm
-                      isOpen={isEditModalOpen}
-                      onClose={() => setIsEditModalOpen(false)} memberId={memberId} memberData={memberData} /></>
-                )} 
+               
               
           
                 </Box>
