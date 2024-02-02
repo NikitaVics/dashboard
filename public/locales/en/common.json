@@ -1,47 +1,52 @@
 {
-    "buttons":{
-        "login" : "Login",
-        "view":"View Details",
-        "views":"View Booking",
-        "inActivate":"In Activate",
-       "activate":"Activate",
-       "download":"Download",
-       "schedule":"Schedule",
-       "send":"Send",
-       "addCoach":"Add Coach",
-       "cancel":"Cancel Booking"
-    },
-    "status":{
-        "active":"Active",
-        "inActive":"In Active",
-        "booked":"Booked",
-        "pending":"Pending",
-        "cancel":"Cancelled"
-    },
-    "menu":{
-        "status":"Status",
-        "action":"Action"
-    },
-    "settings":{
-        "profile": "Profile",
-        "change": "Change Password",
-        "logout":"Logout",
-        "search":"Search"
-    },
-    "errors":{
-        "requiredError": "This field is required",
-        "shouldBe100Char":"The value must be at most 100 characters",
-        "shouldBe225Char":"The value must be at most 255 characters",
-        "phoneNumberLengthMax":"The value must be at most {{digit}} digits",
-        "emailError": "Enter a valid email",
-        "invalidEmail":"Invalid Email Address",
-        "numberAllowed": "Only numbers are allowed",
-        "password":"Your Password must contain at least one capital letter, one number, one special character, and one lowercase letter",
-        "match":"passwords-match",
-        "confirmPassword":"Your Passwords must match to setPassword",
-        "website":"Invalid Web Address"
-    },
-    "":{
-        "": ""
-    }
+  "buttons": {
+    "login": "Login",
+    "view": "View Details",
+    "views": "View Booking",
+    "inActivate": "In Activate",
+    "activate": "Activate",
+    "download": "Download",
+    "schedule": "Schedule",
+    "send": "Send",
+    "addCoach": "Add Coach",
+    "approve": "Approve",
+    "reject": "Reject",
+    "cancel":"Cancel Booking"
+    
+  },
+  "status": {
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "active": "Active",
+    "inActive": "In Active",
+    "booked": "Booked",
+    "pending": "Pending",
+    "cancel": "Cancelled"
+  },
+  "menu": {
+    "status": "Status",
+    "action": "Action"
+  },
+  "settings": {
+    "profile": "Profile",
+    "change": "Change Password",
+    "logout": "Logout",
+    "search": "Search"
+  },
+  "errors": {
+    "requiredError": "This field is required",
+    "shouldBe100Char": "The value must be at most 100 characters",
+    "shouldBe225Char": "The value must be at most 255 characters",
+    "phoneNumberLengthMax": "The value must be at most {{digit}} digits",
+    "emailError": "Enter a valid email",
+    "invalidEmail": "Invalid Email Address",
+    "numberAllowed": "Only numbers are allowed",
+    "password": "Your Password must contain at least one capital letter, one number, one special character, and one lowercase letter",
+    "match": "passwords-match",
+    "confirmPassword": "Your Passwords must match to setPassword",
+    "website": "Invalid Web Address"
+  },
+  "": {
+    "": ""
+  }
 }

@@ -1,49 +1,44 @@
-import "@fontsource/inter/500.css"
-import React from "react"
+import "@fontsource/inter/500.css";
+import React from "react";
 
-import type { AppProps } from "next/app"
-import { useRouter } from "next/router"
-import { SWRConfig } from "swr"
+import type { AppProps } from "next/app";
+import { useRouter } from "next/router";
+import { SWRConfig } from "swr";
 
-
-import CustomChakraProvider from "./components/CustomChakraProvider"
-import UserProvider from "@/hooks/useUser"
+import CustomChakraProvider from "./components/CustomChakraProvider";
+import UserProvider from "@/hooks/useUser";
 export class CustomError extends Error {
-  info
-  status
+  info;
+  status;
   constructor(
     message: string,
     info?: {
-      [key: string]: string
+      [key: string]: string;
     },
-    status?: number,
+    status?: number
   ) {
-    super(message)
-    this.status = status
-    this.info = info
-    Object.setPrototypeOf(this, CustomError.prototype)
+    super(message);
+    this.status = status;
+    this.info = info;
+    Object.setPrototypeOf(this, CustomError.prototype);
   }
 }
 
 export default function App(props: AppProps) {
-  const { Component, pageProps } = props
+  const { Component, pageProps } = props;
 
-  const router = useRouter()
-
-  // SWR data fetcher method
+  const router = useRouter();
   const fetcher = async (url: string, queryParams: string) => {
-    let urlWithParams = url
+    let urlWithParams = url;
 
     if (queryParams) {
-      urlWithParams = url + queryParams
+      urlWithParams = url + queryParams;
     }
-    const res = await fetch(urlWithParams)
-
-    // If the status code is not in the range 200-299,
+    const res = await fetch(urlWithParams);
     if (!res.ok) {
       const error = new CustomError(
-        "An error occurred while fetching the data.",
-      )
+        "An error occurred while fetching the data."
+      );
 
        if (res.status === 401) {
          const forgotPasswordPageURL = "/forgot"
@@ -63,23 +58,19 @@ export default function App(props: AppProps) {
       error.status = res.status
       throw error
     }
-
-    // If the response is 204 (No Content), return null.
     if (res.status === 204) {
-      return null
+      return null;
     }
 
-    return res.json()
-  }
+    return res.json();
+  };
   return (
     <SWRConfig value={{ fetcher }}>
       <CustomChakraProvider>
         <UserProvider>
-         
           <Component {...pageProps} />
-    
         </UserProvider>
       </CustomChakraProvider>
     </SWRConfig>
-  )
+  );
 }

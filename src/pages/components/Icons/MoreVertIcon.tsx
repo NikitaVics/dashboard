@@ -1,7 +1,7 @@
-import { chakra, HTMLChakraProps, useColorModeValue } from "@chakra-ui/react"
+import { chakra, HTMLChakraProps, useColorModeValue } from "@chakra-ui/react";
 
 export const MoreVertIcon = (props: HTMLChakraProps<"svg">) => {
-  const fillColor = useColorModeValue("#4C4E64", "#EAEAFF")
+  const fillColor = useColorModeValue("#4C4E64", "#EAEAFF");
   return (
     <chakra.svg
       width="24px !important"
@@ -27,7 +27,7 @@ export const MoreVertIcon = (props: HTMLChakraProps<"svg">) => {
         </clipPath>
       </defs>
     </chakra.svg>
-  )
-}
+  );
+};
 
-export default MoreVertIcon
+export default MoreVertIcon;

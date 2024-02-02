@@ -1,29 +1,29 @@
-import { BehrainClient } from "@/service/client"
-import { ReportProps } from "@/service/types"
-import type { NextApiRequest, NextApiResponse } from "next"
+import { BehrainClient } from "@/service/client";
+import { ReportProps } from "@/service/types";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const client = new BehrainClient(req, res)
+  const client = new BehrainClient(req, res);
   if (req.method === "GET") {
-    await getCoachReports()
+    await getCoachReports();
   } else {
-    res.status(405).end(`Method ${req.method} Not Allowed`)
+    res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
   async function getCoachReports() {
     try {
-      const { bookingDate = "",coach = ""} = req.query
+      const { bookingDate = "", coach = "" } = req.query;
       const params = {
         bookingDate: bookingDate as string,
-        coach : coach as string
-      } as ReportProps
-      const response = await client.reports.getCoachReports(params)
-      res.status(200).json(response)
+        coach: coach as string,
+      } as ReportProps;
+      const response = await client.reports.getCoachReports(params);
+      res.status(200).json(response);
     } catch (error) {
-      console.log(error)
-      res.status(401).end()
+      console.log(error);
+      res.status(401).end();
     }
   }
 }
 
-export default handler
+export default handler;

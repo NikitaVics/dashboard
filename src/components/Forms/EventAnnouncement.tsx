@@ -1,10 +1,16 @@
-import { Button, Grid, GridItem, Input, Text, Textarea, useColorModeValue } from "@chakra-ui/react"
-import { Form, Formik } from "formik"
-import { InputControl } from "../Input/Input"
-import useTranslation from "next-translate/useTranslation"
-import PlusIcon from "@/pages/components/Icons/PlusIcon"
-
-
+import {
+  Button,
+  Grid,
+  GridItem,
+  Input,
+  Text,
+  Textarea,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { Form, Formik } from "formik";
+import { InputControl } from "../Input/Input";
+import useTranslation from "next-translate/useTranslation";
+import PlusIcon from "@/pages/components/Icons/PlusIcon";
 
 const EventAnnouncement = () => {
 
@@ -34,72 +40,93 @@ const EventAnnouncement = () => {
         pl={4}
         borderRadius={"20px"}>
             <GridItem rowSpan={1} colSpan={2}>
-            <InputControl name="eventName" inputProps={{
-                bgColor:bgColor
-            }} />
-           
+              <InputControl
+                name="eventName"
+                inputProps={{
+                  bgColor: bgColor,
+                }}
+              />
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-                <Input  type="date"  bgColor={bgColor}/>
+              <Input type="date" bgColor={bgColor} />
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-                <Input  type="time"  bgColor={bgColor} />
-            </GridItem>
-
-            <GridItem rowSpan={1} colSpan={2} >
-            <div style={{ border: '1px solid black', borderRadius: '4px',height:"120px",backgroundColor : bgColor }}>
-                                <label htmlFor="attachment" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '4px 8px' }}>
-                                    <Input
-                                        type="file"
-                                        id="attachment"
-                                        
-                                        name="attachment"
-                                        // onChange={(e) => setFieldValue('attachment', e.currentTarget.files[0])}
-                                        display="none"
-                                       
-                                        
-                                    />
-                                    <PlusIcon w={24} /> 
-                                    <Text ml={2} color="gray.500">Upload File</Text>
-                                </label>
-                            </div>
+              <Input type="time" bgColor={bgColor} />
             </GridItem>
 
             <GridItem rowSpan={1} colSpan={2}>
-            <Textarea h={'174px'} mt={10} placeholder={t(`announce.placeholder`)}  bgColor={bgColor} />
+              <div
+                style={{
+                  border: "1px solid black",
+                  borderRadius: "4px",
+                  height: "120px",
+                  backgroundColor: bgColor,
+                }}
+              >
+                <label
+                  htmlFor="attachment"
+                  style={{
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "4px 8px",
+                  }}
+                >
+                  <Input
+                    type="file"
+                    id="attachment"
+                    name="attachment"
+                    display="none"
+                  />
+                  <PlusIcon w={24} />
+                  <Text ml={2} color="gray.500">
+                    Upload File
+                  </Text>
+                </label>
+              </div>
+            </GridItem>
+
+            <GridItem rowSpan={1} colSpan={2}>
+              <Textarea
+                h={"174px"}
+                mt={10}
+                placeholder={t(`announce.placeholder`)}
+                bgColor={bgColor}
+              />
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
-          <Button
-            w="full"
-            bg="none"
-            variant={'outline'}
-            borderColor="rgba(78, 203, 113, 1)"
-            border="1px solid"
-            color="rgba(78, 203, 113, 1)"
-            h="80px"
-            // onClick={handleSubmit}
-          >
-            {t(`common:buttons.schedule`)}
-          </Button>
-        </GridItem>
-        <GridItem rowSpan={1} colSpan={1}>
-          <Button
-            w="full"
-            bgColor="rgba(78, 203, 113, 1)"
-            color="#fff"
-            h="80px"
-            _hover={{ bg: 'none', color: 'rgba(78, 203, 113, 1)', border: '1px solid rgba(78, 203, 113, 1)' }}
-            // onClick={handleSubmit}
-          >
-               {t(`common:buttons.send`)}
-          </Button>
-        </GridItem>
-        </Grid>
+              <Button
+                w="full"
+                bg="none"
+                variant={"outline"}
+                borderColor="rgba(78, 203, 113, 1)"
+                border="1px solid"
+                color="rgba(78, 203, 113, 1)"
+                h="80px"
+              >
+                {t(`common:buttons.schedule`)}
+              </Button>
+            </GridItem>
+            <GridItem rowSpan={1} colSpan={1}>
+              <Button
+                w="full"
+                bgColor="rgba(78, 203, 113, 1)"
+                color="#fff"
+                h="80px"
+                _hover={{
+                  bg: "none",
+                  color: "rgba(78, 203, 113, 1)",
+                  border: "1px solid rgba(78, 203, 113, 1)",
+                }}
+              >
+                {t(`common:buttons.send`)}
+              </Button>
+            </GridItem>
+          </Grid>
         </Form>
-          )}
-        </Formik>
-    )
-}
+      )}
+    </Formik>
+  );
+};
 
-
-export default EventAnnouncement
+export default EventAnnouncement;
