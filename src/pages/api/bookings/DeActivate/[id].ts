@@ -1,6 +1,5 @@
 import { BehrainClient } from "@/service/client"
-import { AddCoachProps, BookingsProps, ErrorResponse } from "@/service/types"
-import { HTTPError } from "ky"
+import { BookingsProps } from "@/service/types"
 import type { NextApiRequest, NextApiResponse } from "next"
 
 

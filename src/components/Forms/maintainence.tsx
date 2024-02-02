@@ -16,7 +16,6 @@ import {
   Text,
   Textarea,
   useColorModeValue,
-  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import Court1 from "@/pages/components/Icons/court1";
@@ -27,7 +26,6 @@ import Court5 from "@/pages/components/Icons/court5";
 import Court6 from "@/pages/components/Icons/court6";
 import useTranslation from "next-translate/useTranslation";
 import { Form, Formik } from "formik";
-import { InputControl } from "../Input/Input";
 import ky, { HTTPError } from "ky";
 import Scheduled from "@/pages/components/Icons/scheduled";
 
@@ -187,7 +185,7 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData, onClose }: FormItem
     }
   };
 
-  const handleSchedule = async (values: FormItems) => {
+  const handleSchedule = async () => {
     try {
       const selectedImages = images.filter((image) => image.selected);
       const courtNames = selectedImages.map((image) => t(`announce.${image.name.toLowerCase()}`)).join(", ");

@@ -16,7 +16,6 @@ import {
     Stack
   } from "@chakra-ui/react"
   import { Form, Formik } from "formik"
-  import { format } from 'date-fns';
 
   import ky, { HTTPError } from "ky"
   import useTranslation from "next-translate/useTranslation"
@@ -46,7 +45,7 @@ import { mutate } from "swr"
     onClose?: () => void
   }
   
-  function BookingDetails({ memberData,memberId,onClose  }: FormItems) {
+  function BookingDetails({ memberData,onClose  }: FormItems) {
     const { t } = useTranslation("bookings")
     const toast = useToast()
 
@@ -104,10 +103,8 @@ import { mutate } from "swr"
     const handleSubmit = async (values: FormItems) => {
     
         try {
-          const response = await ky
-            .post("", { json: values })
-            .json()
-         
+          
+         console.log(values)
         } catch (error) {
           if (error instanceof HTTPError && error.response.status === 500) {
             const errorResponse = await error.response.json()
@@ -142,13 +139,7 @@ import { mutate } from "swr"
    const bgColor = useColorModeValue("light.200","dark.300")
    const color  = useColorModeValue("light.50","dark.400")
 
-   const formattedBookingDate = memberData?.bookingDate
-   ? format(new Date(memberData.bookingDate), 'dd-MM-yyyy')
-   : '';
-
-   const formattedBookingTime = memberData?.bookingDate
-   ? format(new Date(memberData.bookingDate), 'HH:mm:ss')
-   : '';
+ 
 
    console.log("user :",memberData?.userImage)
     return (

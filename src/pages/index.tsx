@@ -4,7 +4,6 @@ import React from "react"
 import Layout from "./components/Layout"
 import PageContainer from "./components/PageContainer"
 import { useUser } from "@/hooks/useUser"
-import { Image,Flex,Text } from "@chakra-ui/react"
 
 function Home() {
   const { t } = useTranslation("")

@@ -24,7 +24,7 @@ interface CustomTooltipProps {
 }
 
 interface YearlyGraphItem {
-  peakDailyBooking: any;
+  peakDailyBooking: number;
   monthName: string;
   averagePeakHour: number;
  
