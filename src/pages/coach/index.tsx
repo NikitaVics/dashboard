@@ -366,8 +366,8 @@ const Coach = ({ coaches }: EditCoachProps) => {
                     {t(`coach.addTitle`)}
                   </DrawerHeader>
 
-                  <DrawerBody>
-                    <CoachAddForm image={undefined} />
+                  <DrawerBody px={8}>
+                    <CoachAddForm image={undefined} onClose={onClose}/>
                   </DrawerBody>
                 </DrawerContent>
               </Drawer>

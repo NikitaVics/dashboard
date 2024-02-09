@@ -1,9 +1,9 @@
 import {  Button,  Flex,  Grid, GridItem,  Input,  Select, Text, useColorModeValue, useToast } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { InputControl } from "../Input/Input";
 import useTranslation from "next-translate/useTranslation";
-import PlusIcon from "@/pages/components/Icons/PlusIcon";
 import ky, { HTTPError } from "ky";
+import { ChangeEvent, useState } from "react";
+import { mutate } from "swr";
 
 type FormItems = {
       // eslint-disable-next-line
@@ -18,37 +18,99 @@ type FormItems = {
     experience  :string
     image : string
   }
+  onClose?: () => void;
 }
 
-const CoachAddForm = ({coachData}:FormItems) => {
-  const { t } = useTranslation("coach");
 
-  const bgColor = useColorModeValue("light.200","dark.300")
+
+const CoachAddForm = ({coachData,onClose}:FormItems) => {
+  const { t } = useTranslation("coach");
+  const color = useColorModeValue("rgba(254, 254, 254, 1)","rgba(14, 14, 14, 1)")
+  const borderColor = useColorModeValue("rgba(211, 211, 211, 1)","rgba(57, 57, 57, 1)")
+  const bgColor = useColorModeValue("light.200", "dark.300");
 const toast = useToast()
 
+   const [firstName,setFirstName] = useState("")
+   const [lastName,setLastName] = useState("")
+   const [email,setEmail] = useState("")
+   const [gender,setGender] = useState("")
+   const [phone,setPhone] = useState("")
+   const [experience,setExperience] = useState("")
 
+   const handleFirstChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setFirstName(e.target.value);
+  
+  };
 
-  const handleSubmit = async (values: FormItems) => {
-    console.log("Values",values)
+  const handleLastChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setLastName(e.target.value);
+  };
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+  const handleGenderChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setGender(e.target.value); 
+  };
+
+  const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPhone(e.target.value);
+  };
+
+  const handleExperienceChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setExperience(e.target.value);
+  };
+
+  const [image, setImage] = useState<File | string>("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.type === 'file' && e.target.files) {
+      const selectedImage = e.target.files[0];
+      setImage(selectedImage);
+    }
+  };
+  
+
+  
+
+  const handleSubmit = async () => {
+   
    
 
-      try {
-        const response = await ky.post(`/api/coach/AddCoach`, {
-          json: values,
-        })
+    try {
+       
+       
+      const data = new FormData();
+      data.append('FirstName', firstName);
+      data.append('LastName', lastName);
+      data.append('Gender', gender);
+      data.append('Experience', experience);
+      data.append('PhoneNumber', phone);
+      data.append('Email', email);
+      data.append('Image', image);
 
-        if (response) {
-          toast({
-            description: "Successfully added",
-            status: "success",
-            position: "top",
-            duration: 3000,
-            isClosable: true,
-          })
-         
-         
-        }
-      } catch (error) {
+      
+      
+
+    
+  
+      const response = await ky.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Coach`, {
+        body: data,
+       
+      });
+
+      if (response) {
+        toast({
+          description: "Successfully added",
+          status: "success",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        onClose?.();
+        await mutate(`/api/coach`)
+      
+      }
+    } catch (error) {
         if (error instanceof HTTPError && error.response.status === 400) {
           const errorResponse = await error.response.json()
           const messages = errorResponse.error.messages
@@ -84,139 +146,98 @@ const toast = useToast()
       // validationSchema={}
       onSubmit={handleSubmit}
     >
-      {({  setFieldTouched,setFieldValue,values }) => (
+      {(  ) => (
         <Form noValidate>
           <Grid
-            templateRows="repeat(3, 1fr)"
+            templateRows="repeat(1, 1fr)"
             templateColumns={{
               base: "repeat(1, 1fr)",
-              md: "repeat(2, 1fr)",
+              md: "repeat(1, 1fr)",
             }}
-            gap="8"
-            mt={5}
+            gap="3"
+           
           >
             <GridItem rowSpan={2} colSpan={2}>
-              <InputControl
-                inputProps={{
-                  type: "text",
-                  placeholder: t(`coach.firstName`),
-                  fontSize: "md",
-                  fontWeight: "medium",
-                  color: "gray.500",
-                  h: "60px",
-                }}
-                name="firstName"
-                onKeyUp={() => setFieldTouched("firstName")}
-              />
+              
+              <Input name="firstName" value={firstName} h="60px"   placeholder={t(`coach.firstName`)}
+ onChange={handleFirstChange}  bgColor={bgColor} focusBorderColor="rgba(78, 203, 113, 1)" borderRadius={"10px"}/>
             </GridItem>
             <GridItem rowSpan={2} colSpan={2}>
-              <InputControl
-                inputProps={{
-                  type: "text",
-                  placeholder: t(`coach.lastName`),
-                  fontSize: "md",
-                  fontWeight: "medium",
-                  color: "gray.500",
-                  h: "60px",
-                }}
-                name="lastName"
-                onKeyUp={() => setFieldTouched("lastName")}
-              />
+             
+                <Input name="lastName" value={lastName} h="60px" borderRadius={"10px"}  placeholder={t(`coach.lastName`)} onChange={handleLastChange}  bgColor={bgColor} focusBorderColor="rgba(78, 203, 113, 1)"/>
             </GridItem>
             <GridItem rowSpan={2} colSpan={2}>
-              <InputControl
-                inputProps={{
-                  type: "text",
-                  placeholder: t(`coach.email`),
-                  fontSize: "md",
-                  fontWeight: "medium",
-                  color: "gray.500",
-                  h: "60px",
-                }}
-                name="email"
-                onKeyUp={() => setFieldTouched("email")}
-              />
+           
+               <Input name="email" value={email} h="60px" borderRadius={"10px"}   placeholder={t(`coach.email`)} onChange={handleEmailChange}  bgColor={bgColor} focusBorderColor="rgba(78, 203, 113, 1)"/>
             </GridItem>
             <GridItem rowSpan={2} colSpan={2}>
-              <InputControl
-                inputProps={{
-                  type: "text",
-                  placeholder: t(`coach.phone`),
-                  fontSize: "md",
-                  fontWeight: "medium",
-                  color: "gray.500",
-                  h: "60px",
-                }}
-                name="phoneNumber"
-                onKeyUp={() => setFieldTouched("phoneNumber")}
-              />
+            
+               <Input name="phoneNumber" value={phone} borderRadius={"10px"} onChange={handlePhoneChange} h="60px"   placeholder={t(`coach.phone`)}  bgColor={bgColor} focusBorderColor="rgba(78, 203, 113, 1)"/>
             </GridItem>
             <GridItem rowSpan={2} colSpan={2}>
               <Select
-                placeholder="Select Gender"
-                h="60px"
-                onChange={(e) => setFieldValue("gender", e.target.value)} 
+               h="60px"   
+               placeholder={t(`coach.gender`)}
+                value={gender}
+                onChange={handleGenderChange} 
+                bgColor={bgColor}
+                borderRadius={"10px"}
+                focusBorderColor="rgba(78, 203, 113, 1)"
               >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
               </Select>
             </GridItem>
             <GridItem rowSpan={1} colSpan={2}>
-            {/* <Input
-                type="Date"
-                h="60px"
-                onChange={(e) => setFieldValue("experience", e.target.value)} 
-              /> */}
-              <InputControl
-                inputProps={{
-                  type: "text",
-                  placeholder: t(`coach.from`),
-                  fontSize: "md",
-                  fontWeight: "medium",
-                  color: "gray.500",
-                  h: "60px",
-                }}
-                name="experience"
-                onKeyUp={() => setFieldTouched("experience")}
-              />
+               <Input name="experience" value={experience} h="60px" borderRadius={"10px"}  placeholder={t(`coach.from`)} onChange={handleExperienceChange}  bgColor={bgColor} focusBorderColor="rgba(78, 203, 113, 1)"/>
             </GridItem>
             <GridItem rowSpan={1} colSpan={2}>
-            <Flex
-  alignItems="center"
-  justifyContent="center"
-  border="1px solid gra.500"
-  borderRadius="4px"
-  height="120px"
-  backgroundColor={bgColor}
+            <div
+  style={{
+    border: `1px solid ${borderColor}`,
+    borderRadius: "4px",
+    height: "120px",
+    backgroundColor: color,
+    display: "flex",
+    alignItems: "center", 
+    justifyContent: "center",
+  }}
 >
-  <label htmlFor="image" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '4px 8px' }}>
+  <label
+    htmlFor="attachment"
+    style={{
+      cursor: "pointer",
+      display: "flex",
+      alignItems: "center",
+      padding: "4px 8px",
+    }}
+  >
     <Input
       type="file"
-      id="image"
-      name="image"
-      onChange={(e) => {
-        const file = e.currentTarget.files?.[0];
-        if (file) {
-          setFieldValue('image', file);
-        }
-      }}
-      style={{ display: 'none' }}
+      id="attachment"
+      name="attachment"
+      display="none"
+      onChange={handleChange}
+      h="120px"
     />
-    <PlusIcon />
-    <Text ml={2} color="gray.500">Images</Text>
+   <Flex>
+  
+  </Flex>
+    <Text ml={2} color={"rgba(124, 124, 125, 1)"}>
+     + Images
+    </Text>
   </label>
-  {values.image && (
-    <Text ml={2} color="gray.500">{values.image.name}</Text>
-  )}
-</Flex>
+</div>
 
             </GridItem>
             <GridItem rowSpan={1} colSpan={2}>
             <Button
-            w="full"
+            mt={20}
+            w={{ base: "100%", md: "450px" }} 
             bgColor="rgba(78, 203, 113, 1)"
             color="#fff"
             h="80px"
+          
             _hover={{ bg: 'none', color: 'rgba(78, 203, 113, 1)', border: '1px solid rgba(78, 203, 113, 1)' }}
             type="submit"
           >

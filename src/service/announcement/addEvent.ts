@@ -11,7 +11,7 @@ const AddEvent = async (
       json: {
         Message : params.message,
         ScheduledDateTime : params.scheduledTime,
-        Images : params.images,
+        // Images : params.images,
         
       }
     })

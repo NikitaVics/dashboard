@@ -1,15 +1,16 @@
 // FileAttachTextarea.tsx
-import React, { useRef, ChangeEvent } from "react";
-import { Textarea, IconButton, Tooltip, useColorModeValue } from "@chakra-ui/react";
+import React, { useRef, ChangeEvent, useState } from "react";
+import { Input, IconButton, Tooltip, useColorModeValue } from "@chakra-ui/react";
 import { AttachmentIcon } from "@chakra-ui/icons";
 
 interface FileAttachTextareaProps {
   name: string;
-  onFileAttach: (file: File) => void;
+  onFileAttach: (file: File, message: string) => void;
 }
 
 const FileAttachTextarea: React.FC<FileAttachTextareaProps> = ({ name, onFileAttach, ...textareaProps }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [message, setMessage] = useState<string>("");
 
   const bgColor = useColorModeValue("light.200", "dark.300");
 
@@ -22,13 +23,27 @@ const FileAttachTextarea: React.FC<FileAttachTextareaProps> = ({ name, onFileAtt
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      onFileAttach(file);
+      // Pass both file and message to onFileAttach
+      onFileAttach(file, message);
     }
+  };
+
+  const handleMessageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setMessage(e.target.value);
   };
 
   return (
     <>
-      <Textarea h="174px" placeholder="Type Message ..." paddingLeft="40px" bgColor={bgColor} {...textareaProps} />
+      <Input
+        h="174px"
+        placeholder="Type Message ..."
+        paddingLeft="40px"
+        bgColor={bgColor}
+        onChange={handleMessageChange}
+        value={message}
+        {...textareaProps}
+        name="message"
+      />
       <input
         type="file"
         name={name}

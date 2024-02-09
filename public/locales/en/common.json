@@ -11,7 +11,9 @@
     "addCoach": "Add Coach",
     "approve": "Approve",
     "reject": "Reject",
-    "cancel":"Cancel Booking"
+    "cancel":"Cancel Booking",
+    "reSchedule" : "Re-Schedule",
+    "cancelSchedule" : "Cancel Schedule"
     
   },
   "status": {

@@ -10,7 +10,7 @@ interface LoginResponse {
   };
 }
 
-async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function loginHandler(req: NextApiRequest, res: NextApiResponse) {
   const cookie = new Cookies(req, res);
   try {
     const client = new BehrainClient(req, res, {
@@ -45,4 +45,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default handler;
+export default loginHandler;

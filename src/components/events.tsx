@@ -1,15 +1,23 @@
-import {  Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody,  useColorModeValue } from "@chakra-ui/react";
+import {  Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody,  useColorModeValue, Heading, Flex } from "@chakra-ui/react";
 import React from "react";
 import useTranslation from "next-translate/useTranslation";
 import EventAnnouncement from "./Forms/EventAnnouncement";
+import useSWR from "swr";
 
 type MaintainenceProps = {
   isOpen: boolean;
   onClose: () => void;
+  id : string
 };
 
 const EventsForm = (props: MaintainenceProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose ,id} = props;
+
+  const { data: Data, isValidating } = useSWR(
+    `/api/announcement/announcement-detail?id=${id}`,
+  )
+
+const responseData = Data?.result
 
   const color = useColorModeValue("rgba(248, 248, 248, 1)", "dark.500");
   const { t } = useTranslation("announcement");
@@ -29,7 +37,14 @@ const EventsForm = (props: MaintainenceProps) => {
         </DrawerHeader>
 
         <DrawerBody>
-          <EventAnnouncement />
+
+        {isValidating ? (
+            <Flex alignItems="center" justifyContent="center" height="full">
+            <Heading>Loading...</Heading>
+          </Flex>
+          ) : (
+          <EventAnnouncement  onClose={onClose} eventData={responseData} id={id}/>
+          )}
         </DrawerBody>
       </DrawerContent>
     </Drawer>
