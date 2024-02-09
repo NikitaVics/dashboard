@@ -87,7 +87,18 @@ export type ReportProps = {
     message : string
     scheduledTime : string
     courtNames:string
-    images  : string
+    image? : string;
+    Message:string
+  }
+
+  export type AnnouncementProps = {
+    id:string
+    message : string
+    images : File[];
+    date  : string
+    time : string
+    scheduledDateTime : string
+    // images : FileList 
   }
 
   export type AddCoachProps = {
@@ -96,6 +107,7 @@ export type ReportProps = {
   firstName:string
   lastName:string
   phoneNumber:string
+  successfulBookings:string
   exp:string
   phoneNo:string
   email:string

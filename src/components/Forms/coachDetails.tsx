@@ -28,7 +28,7 @@ import  { mutate } from "swr"
       name: string
       coachId?:string
       gender:string
-      
+      successfulBookings : string
       status?: string
       image: File | string;
      phoneNo : string
@@ -333,9 +333,9 @@ import  { mutate } from "swr"
               borderRadius={"20px"}
             >
          
-             <GridItem rowSpan={1} colSpan={2}  bgColor={bgColor} h={"75px"} borderRadius={"12px"} px={4} py={3} >
-              <HStack>
-              {/* <Text fontSize={"43px"} fontWeight={"700"} color="green.300">{succesData}</Text> */}
+             <GridItem rowSpan={1} colSpan={2}  bgColor={bgColor} h={"75px"} borderRadius={"12px"} px={4} py={2} >
+              <HStack gap={2}>
+              <Text fontSize={"43px"} fontWeight={"700"} color="rgba(39, 174, 96, 1)">{coachData?.successfulBookings}</Text>
               <Text fontSize={"14px"} color={color2}>Succesfull Booking</Text>
               </HStack>
               

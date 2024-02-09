@@ -42,6 +42,8 @@ import getPeakBookingHour from "./bookings/peakBookingHour";
 import getTotalBookings from "./bookings/totalBookings";
 import getCancelled from "./bookings/cancelledBookings";
 import DeActivateBooking from "./bookings/deactivateBooking";
+import getAnnouncementDetail from "./announcement/getDetails";
+import DeleteSchedule from "./announcement/deleteSchedule";
 
 type ApiHandler<T, U> = (baseHttpClient: typeof ky, params: U) => Promise<T>;
 
@@ -87,7 +89,6 @@ export class BehrainClient {
         beforeRequest: [
           (request) => {
             request.headers.set("Content-type", "application/json-patch+json");
-
             request.headers.set("accept", "/");
             if (opts.overrideLanguage) {
               request.headers.set("Accept-Language", opts.overrideLanguage);
@@ -188,7 +189,9 @@ export class BehrainClient {
     AddCourtMaintainence  :withApiClient(AddCourtMaintainence),
     AddEvent : withApiClient(AddEvent),
     AddAnnouncement : withApiClient(AddAnnouncement),
-    getAnnouncement : withApiClient(getAnnouncement)
+    getAnnouncement : withApiClient(getAnnouncement),
+    getDetails : withApiClient(getAnnouncementDetail),
+    DeleteSchedule : withApiClient(DeleteSchedule)
   }
     
   }

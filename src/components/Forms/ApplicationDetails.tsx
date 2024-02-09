@@ -10,11 +10,9 @@ import {
   Text,
   useColorModeValue,
   useToast,
-  Image,
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import ky, { HTTPError } from "ky";
-import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import React from "react";
 import * as Yup from "yup";
@@ -43,8 +41,7 @@ type FormItems = {
 function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
   const { t } = useTranslation("members");
   const toast = useToast();
-  const router = useRouter();
-  const { id } = router.query;
+ 
 
   
 
@@ -141,82 +138,13 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
   };
 
   const handleSubmit = async (values: FormItems) => {
-    if (id) {
+   
       try {
-        const response = await ky
-          .post("/api/roles/create-role", {
-            json: {
-              ...values,
-              id: router.query.id,
-            },
-          })
-          .json();
-        if (response) {
-          toast({
-            description: t("forms.role.update"),
-            status: "success",
-            position: "top",
-            duration: 3000,
-            isClosable: true,
-          });
-          router.push("/roles");
-        }
+        console.log(values)
       } catch (error) {
-        if (error instanceof HTTPError && error.response.status === 500) {
-          const errorResponse = await error.response.json();
-          const messages = errorResponse.error.messages;
-
-          toast({
-            description: (
-              <>
-                {messages.map((message: string, index: number) => (
-                  <Text key={index}>{message}</Text>
-                ))}
-              </>
-            ),
-            status: "error",
-            position: "top",
-            duration: 3000,
-            isClosable: true,
-          });
-        }
+       console.log(error)
       }
-    } else {
-      try {
-        const response = await ky
-          .post("/api/roles/create-role", { json: values })
-          .json();
-        if (response) {
-          toast({
-            description: t("forms.role.success"),
-            status: "success",
-            position: "top",
-            duration: 3000,
-            isClosable: true,
-          });
-          router.push("/roles");
-        }
-      } catch (error) {
-        if (error instanceof HTTPError && error.response.status === 500) {
-          const errorResponse = await error.response.json();
-          const messages = errorResponse.error.messages;
-
-          toast({
-            description: (
-              <>
-                {messages.map((message: string, index: number) => (
-                  <Text key={index}>{message}</Text>
-                ))}
-              </>
-            ),
-            status: "error",
-            position: "top",
-            duration: 3000,
-            isClosable: true,
-          });
-        }
-      }
-    }
+    
   };
 
   const validationSchema = Yup.object().shape({
@@ -388,7 +316,7 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
                 onKeyUp={() => setFieldTouched("status")}
               />
             </GridItem>
-            <GridItem rowSpan={1} colSpan={2}>
+            {/* <GridItem rowSpan={1} colSpan={2}>
               <Image
                 src={memberData?.imageID}
                 alt={"ss"}
@@ -401,14 +329,15 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
                   Document
                 </Text>
               </Flex>
-            </GridItem>
+            </GridItem> */}
           </Grid>
 
-          <Flex mt={15} gap={4} maxW="full">
+          <Flex  mt={40} gap={4} maxW="full">
             <Button
               variant="outline"
               colorScheme="red"
               w="full"
+             
               h={"80px"}
               onClick={() => handleDeactivate(memberId)}
             >
