@@ -187,15 +187,7 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
               <Text>{memberData?.name}</Text>
             </Flex>
 
-            <Button
-              bg="none"
-              fontSize="16px"
-              color="green.100"
-              _hover={{ bg: "none" }}
-              fontWeight={"400"}
-            >
-              Edit Profile
-            </Button>
+          
           </HStack>
 
           <Grid
@@ -207,9 +199,10 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
             gap="8"
             mt={10}
             bgColor={bgColor}
-            pt={7}
+            
             pl={4}
             borderRadius={"20px"}
+           pt={12}
           >
             <GridItem rowSpan={2} colSpan={1}>
               <CustomInput
@@ -334,8 +327,7 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
 
           <Flex  mt={40} gap={4} maxW="full">
             <Button
-              variant="outline"
-              colorScheme="red"
+              bgColor={"rgba(253, 238, 238, 1)"} color="rgba(238, 116, 116, 1)" border="1px solid rgba(238, 116, 116, 1)"
               w="full"
              
               h={"80px"}

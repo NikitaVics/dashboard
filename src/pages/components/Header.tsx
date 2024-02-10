@@ -3,10 +3,12 @@ import {
   Flex,
   HStack,
   HTMLChakraProps,
+  IconButton,
   MenuButton,
   Stack,
   Text,
   useColorMode,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import ky from "ky";
 import { useRouter } from "next/router";
@@ -16,6 +18,7 @@ import React from "react";
 import ChakraMenu from "./Menu";
 import TorchIcon from "./Icons/torchIcon";
 import useSWR from "swr";
+import LightIcon from "./Icons/lightMode";
 
 export interface HeaderProps extends HTMLChakraProps<"header"> {
   understood?: boolean;
@@ -31,7 +34,7 @@ export function Header({ title }: HeaderProps) {
 
   const { data: profile } = useSWR(`/api/profile`);
 
-  const { toggleColorMode } = useColorMode();
+  const { colorMode,toggleColorMode } = useColorMode();
   const router = useRouter();
 
   const settings = [
@@ -48,7 +51,7 @@ export function Header({ title }: HeaderProps) {
       },
     },
   ];
-
+  const bgColor = useColorModeValue("light.300", "dark.600");
   return (
     <Flex
       align="center"
@@ -66,8 +69,10 @@ export function Header({ title }: HeaderProps) {
         {title}
       </Text>
 
-      <HStack>
-        <TorchIcon onClick={toggleColorMode} />
+      <HStack gap={10}>
+      <IconButton aria-label="Toggle Dark Mode" bgColor={bgColor} p={1} py={6} onClick={toggleColorMode}>
+      {colorMode === "light" ? <LightIcon ml={2}/> : <TorchIcon ml={2}/>}
+    </IconButton>
 
         <ChakraMenu items={settings}>
           <Flex gap={4} align={"center"}>
@@ -76,7 +81,7 @@ export function Header({ title }: HeaderProps) {
               src={profile?.imageUrl}
               aria-label="Options"
               // size={{ base: "md", sm: "md" }}
-              size="lg"
+              size="md"
             >
               {" "}
             </MenuButton>

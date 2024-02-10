@@ -25,6 +25,7 @@ import MembersIcon from "../Icons/Members";
 import CoachIcon from "../Icons/CoachI";
 import AnnouncementIcon from "../Icons/Announcement";
 import { routePath } from "@/utils/routes";
+import { useRouter } from "next/router";
 interface NavLink {
   name: string;
   path: string;
@@ -88,6 +89,8 @@ function DesktopDrawer() {
     path: string;
   }) => {
     const [isHovered, setIsHovered] = useState(false);
+    const router = useRouter()
+    const isActive = path ? router.pathname.includes(path) : false
     return (
       <ListItem
         mt="0 !important"
@@ -106,9 +109,9 @@ function DesktopDrawer() {
           pl="2"
           py="3"
           ml="4"
-          borderRadius="4px"
+          borderRadius="10px"
           _hover={{
-            bgColor: "green.500",
+            bgColor: "green.100",
             color: hoverColor,
           }}
           _focus={{
@@ -116,7 +119,7 @@ function DesktopDrawer() {
           }}
           _activeLink={{
             color: hoverColor,
-            bgColor: "gray.850",
+            bgColor: "green.500",
             _before: {
               content: '""',
               position: "absolute",
@@ -125,16 +128,21 @@ function DesktopDrawer() {
               height: 8,
             },
           }}
-          // {...(isActive && { background: "blue.500", color: "light.100" })}
+          {...(isActive && { background: "green.100", color: hoverColor })}
         >
-          <ListIcon
-            as={icon}
-            mx={isDrawerOpen ? 5 : 4}
-            justifyContent="center"
-            stroke={isHovered ? iconColor : "rgba(124, 124, 125, 1)"}
-            alignItems="center"
-            textAlign="center"
-          />
+        <ListIcon
+  as={icon}
+  mx={isDrawerOpen ? 5 : 4}
+  justifyContent="center"
+  stroke={
+    isHovered || isActive ? iconColor : "rgba(124, 124, 125, 1)"
+  }
+  alignItems="center"
+  textAlign="center"
+  _hover={{ stroke: iconColor }}
+  _active={{ stroke: iconColor }}
+/>
+
 
           {isDrawerOpen && (
             <Box
@@ -176,8 +184,9 @@ function DesktopDrawer() {
   return (
     <Box
       aria-label="leftNavigation"
+      px={3}
       as="nav"
-      w={isDrawerOpen ? "270px" : "120px"}
+      w={isDrawerOpen ? "285px" : "140px"}
       transition="width 300ms cubic-bezier(0.2, 0, 0, 1) 0s"
       position="fixed"
       h="100vh"

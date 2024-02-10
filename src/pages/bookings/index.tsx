@@ -225,13 +225,13 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
                
               >
                 <MenuItem
-                  icon={<EditIcon />}
+                 icon={<EditIcon />}
                  
                   bgColor={background}
                   _hover = {{bgColor : hover}}
                   onClick={() => handleEditModalOpen(row?.original?.bookingId)}
                 >
-                  {t("common:buttons.view")}
+                  View Booking
                 </MenuItem>
                 {row?.original?.status === "Booked" ? 
                

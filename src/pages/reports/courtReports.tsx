@@ -247,6 +247,8 @@ function CourtReportDetails() {
                   variant="outline"
                   color="green.400"
                   borderColor="green.400"
+                  fontWeight={500}
+                  borderRadius={"8px"}
                   rightIcon={<DownloadIcon />}
                 >
                   {t(`common:buttons.download`)}

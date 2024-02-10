@@ -279,14 +279,21 @@ import { mutate } from "swr"
     base: "repeat(1, 1fr)",
     md: "repeat(2, 1fr)",
   }}
-  gap="8"
-  bgColor={"white"}
+  gap="5"
+
   p={5}
   mt={5}
   borderRadius = {"15px"}
+  bgColor={bgColor}
 >
+
+<GridItem rowSpan={1} colSpan={2}>
+<Text fontSize="18px" fontWeight={"700"}>Team</Text>
+  </GridItem>
+
   <GridItem rowSpan={1} colSpan={1}>
-<Flex align={"center"} justify={"space-between"}>
+   
+<Flex align={"center"} gap={5}>
 <Avatar
   src={memberData?.userImage} 
   size="md" 
@@ -299,7 +306,7 @@ import { mutate } from "swr"
   {Array.isArray(memberData?.teamMembers) &&
     memberData.teamMembers.map((teamMember, index) => (
       <GridItem key={index} rowSpan={1} colSpan={1}>
-        <Flex  align="center" justify={"space-between"}>
+        <Flex  align="center" gap={5}>
           <Avatar src={teamMember.imageUrl} name={teamMember.name} />
           <Text mt={2}>{teamMember.name}</Text>
         </Flex>
@@ -312,7 +319,7 @@ import { mutate } from "swr"
            
   <Box maxW="full" mt={20}>
 
-    <Button variant="outline" colorScheme="red" w="full" h={"80px"} onClick={() => handleDeActivate(memberData?.bookingId)}>
+    <Button bgColor={"rgba(253, 238, 238, 1)"} color="rgba(238, 116, 116, 1)" border="1px solid rgba(238, 116, 116, 1)" w="full" h={"80px"} onClick={() => handleDeActivate(memberData?.bookingId)}>
       Cancel Bookings
     </Button>
 
