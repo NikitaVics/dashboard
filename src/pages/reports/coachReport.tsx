@@ -251,7 +251,9 @@ function CoachReportDetails() {
                   onClick={handleExport}
                   variant="outline"
                   color="green.400"
+                  fontWeight={500}
                   borderColor="green.400"
+                  borderRadius={"8px"}
                   rightIcon={<DownloadIcon />}
                 >
                   {t(`common:buttons.download`)}

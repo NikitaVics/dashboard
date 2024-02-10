@@ -1,6 +1,7 @@
-import { chakra, HTMLChakraProps } from "@chakra-ui/react";
+import { chakra, HTMLChakraProps,  useColorModeValue } from "@chakra-ui/react";
 
 export const MenuIcon = (props: HTMLChakraProps<"svg">) => {
+  const color = useColorModeValue("black","rgba(255, 255, 255, 1)")
   return (
     <chakra.svg
       width="50px !important"
@@ -13,7 +14,7 @@ export const MenuIcon = (props: HTMLChakraProps<"svg">) => {
         y1="14"
         x2="24"
         y2="14"
-        stroke="black"
+        stroke={color}
         strokeWidth="2"
         strokeLinecap="round"
       />
@@ -22,7 +23,7 @@ export const MenuIcon = (props: HTMLChakraProps<"svg">) => {
         y1="22"
         x2="24"
         y2="22"
-        stroke="black"
+        stroke={color}
         strokeWidth="2"
         strokeLinecap="round"
       />
@@ -31,7 +32,7 @@ export const MenuIcon = (props: HTMLChakraProps<"svg">) => {
         y1="30"
         x2="24"
         y2="30"
-        stroke="black"
+        stroke={color}
         strokeWidth="2"
         strokeLinecap="round"
       />

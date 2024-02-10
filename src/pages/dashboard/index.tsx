@@ -78,7 +78,7 @@ const Dashboard = () => {
               </Flex>
               <Flex justify={"space-between"} mt={10}>
                 <HStack>
-                  <Text fontSize={"16px"} fontWeight={"700"}>
+                  <Text fontSize={"24px"} fontWeight={"700"}>
                     {membersList}
                   </Text>
                   <Text fontSize={"13px"} fontWeight="400" color={color2}>
@@ -109,7 +109,7 @@ const Dashboard = () => {
               </Flex>
               <Flex justify={"space-between"} mt={10}>
                 <HStack>
-                  <Text fontSize={"16px"} fontWeight={"700"}>
+                  <Text fontSize={"24px"} fontWeight={"700"}>
                     ${revenueList}
                   </Text>
                   <Text fontSize={"13px"} fontWeight="400" color={color2}>
@@ -139,7 +139,7 @@ const Dashboard = () => {
               </Flex>
               <Flex justify={"space-between"} mt={10}>
                 <HStack>
-                  <Text fontSize={"16px"} fontWeight={"700"}>
+                  <Text fontSize={"24px"} fontWeight={"700"}>
                     {membershipGrowth}
                   </Text>
                   <Text fontSize={"13px"} fontWeight="400" color={color2}>
@@ -171,7 +171,10 @@ const Dashboard = () => {
                   rightIcon={<DownArrowIcon />}
                   mt={"10px"}
                   backgroundColor={menuBg}
+                  fontWeight={500}
+                  fontSize="16px"
                 >
+
                   {selectedComponent === "membershipGrowth"
                     ? t(`dashboard.membershipGrowth`)
                     : t(`dashboard.bookingsGrowth`)}

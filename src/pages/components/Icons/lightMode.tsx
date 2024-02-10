@@ -1,6 +1,6 @@
 import { chakra, HTMLChakraProps,  useColorModeValue } from "@chakra-ui/react";
 
-export const TorchIcon = (
+export const LightIcon = (
   props: HTMLChakraProps<"div"> & { isLight?: boolean }
 ) => {
   const stroke =  useColorModeValue("#434345","rgba(224, 224, 226, 1)")
@@ -22,27 +22,18 @@ export const TorchIcon = (
         />
       </svg>
 
-      <svg width="9" height="19" viewBox="0 0 9 19" fill="none">
-        <defs>
-          <linearGradient
-            id="paint0_linear_2998_591"
-            x1="0.5"
-            y1="9"
-            x2="9"
-            y2="9"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#62D181" />
-            <stop offset="1" stopColor="#62D181" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M0.5 4.22222L8.5 0V19L0.5 14.7778V4.22222Z"
-          fill="url(#paint0_linear_2998_591)"
-        />
-      </svg>
+      <svg width="9" height="19" viewBox="0 0 9 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0.5 4.22222L8.5 0V19L0.5 14.7778V4.22222Z" fill="url(#paint0_linear_4861_470)"/>
+<defs>
+<linearGradient id="paint0_linear_4861_470" x1="0.5" y1="9" x2="9" y2="9" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EBFF00"/>
+<stop offset="1" stop-color="#EBFF00" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>
+
     </chakra.div>
   );
 };
 
-export default TorchIcon;
+export default LightIcon;
