@@ -209,15 +209,20 @@ const Announcemnet = () => {
         let textColor = "";
 
         if (value === "Sent") {
-          statusColor = "green.50";
+          statusColor = sentColor;
           borderColor = "rgba(39, 174, 96, 1)";
           textColor = "green.300";
           statusText = "sent";
         } else if (value === "Scheduled") {
-          statusColor = "rgba(254, 245, 237, 1)";
+          statusColor = scheduleColor;
           borderColor = "rgba(244, 170, 105, 1)";
           textColor = "rgba(244, 170, 105, 1)";
           statusText = "Scheduled";
+        } else {
+          statusColor = cancelColor;
+          borderColor = "rgba(238, 110, 110, 1)";
+          textColor = "rgba(238, 110, 110, 1)";
+          statusText = "Cancelled";
         }
 
         return (
@@ -285,9 +290,13 @@ const Announcemnet = () => {
     },
   ];
 
+  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)","")
 
+const sentColor = useColorModeValue("green.50","")
 
+const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
 
+const borderColor = useColorModeValue("rgba(211, 211, 211, 1)","rgba(57, 57, 57, 1)")
 
 
   return (
@@ -391,7 +400,8 @@ const Announcemnet = () => {
         _hover={{ bg: "none" }}
         h={"55px"}
         w={"60px"}
-        border="1px solid rgba(211, 211, 211, 1)"
+        border="1px solid "
+        borderColor={borderColor}
       />
       <MenuList
         left="0"

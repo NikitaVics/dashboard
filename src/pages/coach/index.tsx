@@ -108,7 +108,7 @@ const Coach = ({ coaches }: EditCoachProps) => {
         value === true ? (
           <Flex
             h="34px"
-            bgColor="green.50"
+            bgColor={sentColor}
             maxW="90px"
             alignItems="center"
             justify="center"
@@ -122,7 +122,7 @@ const Coach = ({ coaches }: EditCoachProps) => {
         ) : (
           <Flex
             h="34px"
-            bgColor="red.50"
+            bgColor={cancelColor}
             maxW="90px"
             alignItems="center"
             justify="center"
@@ -193,6 +193,10 @@ const Coach = ({ coaches }: EditCoachProps) => {
       textAlign: "center",
     },
   ];
+
+  const sentColor = useColorModeValue("green.50","")
+
+const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
 
   const toast = useToast();
 

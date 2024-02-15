@@ -29,6 +29,7 @@ import AnnouncementIcon from "../Icons/Announcement"
 import { routePath } from "@/utils/routes"
 import HamburgerIcon from "../Icons/HamburgerIcon"
 import { CloseIcon } from "@chakra-ui/icons"
+import { useRouter } from "next/router"
 interface NavLink {
   name: string
   path: string
@@ -69,7 +70,9 @@ function MobileDrawer() {
     icon: FunctionComponent<HTMLChakraProps<"svg">>
     path: string
   }) => {
+    const router = useRouter();
     const [isHovered, setIsHovered] = useState(false);
+    const isActive = path ? router.pathname.includes(path) : false
     return (
       <ListItem mt="0 !important" key={path} listStyleType="none"  onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}>
@@ -85,7 +88,7 @@ function MobileDrawer() {
           ml="4"
           borderRadius="4px"
           _hover={{
-            bgColor: "green.500",
+            bgColor: "green.100",
             color: hoverColor,
            
           }}
@@ -103,7 +106,7 @@ function MobileDrawer() {
               height: 8,
             },
           }}
-          // {...(isActive && { background: "blue.500", color: "light.100" })}
+          {...(isActive && { background: "green.100", color: hoverColor })}
         >
           <ListIcon
             as={icon}

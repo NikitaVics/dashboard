@@ -20,18 +20,20 @@ import { CustomInput } from "../Input/customInput";
 import { mutate } from "swr";
 
 type FormItems = {
+  
   // eslint-disable-next-line
-  status: any;
+  membershipStatus: any;
   memberId?: string;
   memberData?: {
     name: string;
     memberId?: string;
     gender: string;
-    status?: string;
+    membershipStatus?: string;
     image: string;
     phoneNo: string;
     email: string;
     imageID: string;
+    age:string;
     memberSince: string;
     membershipExpirationCountDown: string;
   };
@@ -166,7 +168,8 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
         email: memberData?.email || "",
         phoneNo: memberData?.phoneNo || "",
         memberSince: memberData?.memberSince || "",
-        status: memberData?.status || "",
+        membershipStatus: memberData?.membershipStatus || "",
+        age : memberData?.age || "",
         membershipExpirationCountDown:
           memberData?.membershipExpirationCountDown || "",
       }}
@@ -274,15 +277,15 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
               <CustomInput
                 inputProps={{
                   type: "text",
-                  placeholder: t(`members.member`),
+                  placeholder: t(`members.age`),
                   fontSize: "md",
                   fontWeight: "medium",
                   color: { color },
                   border: "none",
                   h: "45px",
                 }}
-                name="memberSince"
-                onKeyUp={() => setFieldTouched("memberSince")}
+                name="age"
+                onKeyUp={() => setFieldTouched("age")}
               />
             </GridItem>
 
@@ -296,13 +299,20 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
                   color: { color },
                   border: "none",
                   h: "45px",
-                  value: values.status === true ? "Active" : "In-Active",
-                  style: {
-                    color:
-                      values.status === true
-                        ? "rgba(39, 174, 96, 1)"
-                        : "rgba(235, 87, 87, 1)",
-                  },
+                  value:
+                  values.membershipStatus === "Pending"
+                    ? "Pending"
+                    : values.membershipStatus === "Approved"
+                    ? "Approved"
+                    : "Rejected",
+                    style: {
+                      color:
+                        values.membershipStatus === "Pending"
+                          ? "rgba(242, 153, 74, 1)"
+                          : values.membershipStatus === "Approved"
+                          ? "rgba(39, 174, 96, 1)"
+                          : "rgba(235, 87, 87, 1)",
+                    },
                 }}
                 name="status"
                 isReadOnly

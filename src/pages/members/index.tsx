@@ -94,7 +94,7 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
         value === true ? (
           <Flex
             h="34px"
-            bgColor="green.50"
+            bgColor={sentColor}
             maxW="90px"
             alignItems="center"
             justify="center"
@@ -108,7 +108,7 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
         ) : (
           <Flex
             h="34px"
-            bgColor="red.50"
+            bgColor={cancelColor}
             maxW="90px"
             alignItems="center"
             justify="center"
@@ -179,6 +179,10 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
       textAlign: "center",
     },
   ]
+
+  const sentColor = useColorModeValue("green.50","")
+
+  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
  
   const toast = useToast()
  

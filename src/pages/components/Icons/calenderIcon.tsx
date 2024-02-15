@@ -7,6 +7,7 @@ export const CalenderIcon = (props: HTMLChakraProps<"svg">) => {
       height="24px !important"
       viewBox="0 0 24 24"
       fill="none"
+     
       {...props}
     >
       <path
