@@ -23,6 +23,7 @@ import {
   import * as Yup from "yup"
 import { CustomInput } from "../Input/customInput"
 import { mutate } from "swr"
+import BookingsIcon from "@/pages/components/Icons/Bookings"
 
   type FormItems = {
      memberId?:string
@@ -194,9 +195,10 @@ import { mutate } from "swr"
   mt={10}
   bgColor={bgColor}
   p={7}
+  
   borderRadius="20px"
 >
-  <Stack gap={10}>
+  <Stack gap={10} pt={8}>
     <CustomInput
       inputProps={{
         type: "text",
@@ -261,7 +263,7 @@ import { mutate } from "swr"
     />
   </Stack>
 
-  <Box>
+  <Box pt={8}>
     {Array.isArray(memberData?.tennisCourt?.courtImages) && (
       <>
         {memberData.tennisCourt.courtImages.map((image, index) => (
@@ -299,6 +301,8 @@ import { mutate } from "swr"
   size="md" 
 />   
 <Text>{memberData?.userName}</Text>
+
+<BookingsIcon  stroke={"rgba(78, 203, 113, 1)"}/>
 </Flex>
   </GridItem>
   

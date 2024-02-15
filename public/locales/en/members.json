@@ -8,7 +8,7 @@
         "member":"Member Since",
         "name":"Name",
         "status":"Status",
-        "search":"Search"
-
+        "search":"Search",
+        "age":"Age"
     }
 }

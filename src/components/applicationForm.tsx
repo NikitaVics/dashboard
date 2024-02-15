@@ -53,10 +53,9 @@ const ApplicationForm = (props: MemberFormProps) => {
             </Flex>
           ) : (
             <ApplicationDetails
-              memberId={memberId}
-              onClose={onClose}
-              memberData={memberData}
-              status={undefined}
+                memberId={memberId}
+                onClose={onClose}
+                memberData={memberData} membershipStatus={undefined}            
             />
           )}
         </DrawerBody>

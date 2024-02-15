@@ -5,6 +5,9 @@ import ky, { HTTPError } from "ky";
 import { ChangeEvent, useState } from "react";
 import { mutate } from "swr";
 
+import * as Yup from "yup";
+import { InputControl } from "../Input/Input";
+
 type FormItems = {
       // eslint-disable-next-line
   image: any;
@@ -131,6 +134,17 @@ const toast = useToast()
       }
 
     }
+   
+
+const validationSchema = Yup.object().shape({
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  gender: Yup.string().required("Gender is required"),
+  phoneNumber: Yup.string().required("Phone number is required"),
+  experience: Yup.string().required("Experience is required"),
+});
+
 
   return (
     <Formik
@@ -143,7 +157,7 @@ const toast = useToast()
           experience  :coachData?.experience || "",
           image : coachData?.image || ""
       }}
-      // validationSchema={}
+      validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
       {(  ) => (
@@ -159,20 +173,23 @@ const toast = useToast()
           >
             <GridItem rowSpan={2} colSpan={2}>
               
-              <Input name="firstName" value={firstName} h="60px"   placeholder={t(`coach.firstName`)}
- onChange={handleFirstChange}  bgColor={bgColor} focusBorderColor="rgba(78, 203, 113, 1)" borderRadius={"10px"}/>
+              <InputControl name="firstName" inputProps = {
+                 {
+                  value : firstName, h :"60px" ,  placeholder : t(`coach.firstName`),
+                 onChange : handleFirstChange , bgColor : bgColor, focusBorderColor : "rgba(78, 203, 113, 1)" ,borderRadius : "10px"
+                 } }/>
             </GridItem>
             <GridItem rowSpan={2} colSpan={2}>
              
-                <Input name="lastName" value={lastName} h="60px" borderRadius={"10px"}  placeholder={t(`coach.lastName`)} onChange={handleLastChange}  bgColor={bgColor} focusBorderColor="rgba(78, 203, 113, 1)"/>
+                <InputControl name="lastName" inputProps = {{  value : lastName , h:"60px", borderRadius : "10px" , placeholder : t(`coach.lastName`) ,onChange : handleLastChange,  bgColor :bgColor, focusBorderColor : "rgba(78, 203, 113, 1)" }}/>
             </GridItem>
             <GridItem rowSpan={2} colSpan={2}>
            
-               <Input name="email" value={email} h="60px" borderRadius={"10px"}   placeholder={t(`coach.email`)} onChange={handleEmailChange}  bgColor={bgColor} focusBorderColor="rgba(78, 203, 113, 1)"/>
+               <InputControl name="email" inputProps = {{ value : email, h :"60px", borderRadius : "10px", placeholder : t(`coach.email`), onChange : handleEmailChange,  bgColor : bgColor, focusBorderColor : "rgba(78, 203, 113, 1)"}}/>
             </GridItem>
             <GridItem rowSpan={2} colSpan={2}>
             
-               <Input name="phoneNumber" value={phone} borderRadius={"10px"} onChange={handlePhoneChange} h="60px"   placeholder={t(`coach.phone`)}  bgColor={bgColor} focusBorderColor="rgba(78, 203, 113, 1)"/>
+               <InputControl name="phoneNumber" inputProps = {{ value : phone, borderRadius : "10px", onChange : handlePhoneChange, h:"60px",   placeholder:t(`coach.phone`), bgColor:bgColor, focusBorderColor :"rgba(78, 203, 113, 1)"}}/>
             </GridItem>
             <GridItem rowSpan={2} colSpan={2}>
               <Select
@@ -189,7 +206,7 @@ const toast = useToast()
               </Select>
             </GridItem>
             <GridItem rowSpan={1} colSpan={2}>
-               <Input name="experience" value={experience} h="60px" borderRadius={"10px"}  placeholder={t(`coach.from`)} onChange={handleExperienceChange}  bgColor={bgColor} focusBorderColor="rgba(78, 203, 113, 1)"/>
+               <InputControl name="experience" inputProps = {{value:experience, h:"60px", borderRadius:"10px",  placeholder:t(`coach.from`), onChange:handleExperienceChange, bgColor:bgColor, focusBorderColor:"rgba(78, 203, 113, 1)"}}/>
             </GridItem>
             <GridItem rowSpan={1} colSpan={2}>
             <div
