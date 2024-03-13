@@ -15,11 +15,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   async function getbookingDetail(id: string) {
     try {
       const response = await client.bookings.getbookingDetail(id as string)
-     
       res.status(200).json(response)
     } catch (error) {
       console.log(error)
-      res.status(401).end()
+     
     }
   }
 }

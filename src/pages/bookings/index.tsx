@@ -68,12 +68,20 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
   }
   const [selectedDate, setSelectedDate] = useState("");
 
-  const handleDateChange =(event: ChangeEvent<HTMLInputElement>) => {
+  const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedDates = event.target.value;
     const [year, month, day] = selectedDates.split("-");
-    const reversedDate = `${year}-${month}-${day}`;
-    setSelectedDate(reversedDate);
+  
+   
+    if (year && month && day) {
+      const reversedDate = `${year}-${month}-${day}`;
+      setSelectedDate(reversedDate);
+    } else {
+     
+      setSelectedDate("");
+    }
   };
+  
   
   
   const [memberId, setMemberId] = useState("")
