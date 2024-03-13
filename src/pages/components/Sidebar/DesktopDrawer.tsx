@@ -201,7 +201,7 @@ function DesktopDrawer() {
           height="64px"
         ></HStack>
         <Flex>
-          <MenuIcon ml={10} onClick={toggleDrawer} />
+          <MenuIcon ml={10} onClick={toggleDrawer}  _hover={{ stroke: "#4ECB71" }} cursor={"pointer"} />
           {isDrawerOpen ? <Behrain mt={2} /> : ""}
         </Flex>
 

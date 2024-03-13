@@ -8,13 +8,14 @@ export const MenuIcon = (props: HTMLChakraProps<"svg">) => {
       height="45 !important"
       viewBox="0 0 50 45"
       {...props}
+      stroke={color}
     >
       <line
         x1="1"
         y1="14"
         x2="24"
         y2="14"
-        stroke={color}
+      
         strokeWidth="2"
         strokeLinecap="round"
       />
@@ -23,7 +24,7 @@ export const MenuIcon = (props: HTMLChakraProps<"svg">) => {
         y1="22"
         x2="24"
         y2="22"
-        stroke={color}
+      
         strokeWidth="2"
         strokeLinecap="round"
       />
@@ -32,7 +33,7 @@ export const MenuIcon = (props: HTMLChakraProps<"svg">) => {
         y1="30"
         x2="24"
         y2="30"
-        stroke={color}
+     
         strokeWidth="2"
         strokeLinecap="round"
       />
