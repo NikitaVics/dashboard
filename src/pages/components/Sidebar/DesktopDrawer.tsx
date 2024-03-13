@@ -192,6 +192,7 @@ function DesktopDrawer() {
       h="100vh"
       bgColor={bgColor}
       color={"rgba(124, 124, 125, 1)"}
+      mt={"-20px"}
     >
       <Flex flexDirection="column" h="full">
         <HStack

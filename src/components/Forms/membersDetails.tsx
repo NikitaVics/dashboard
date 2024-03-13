@@ -161,6 +161,19 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
 
   const bgColor = useColorModeValue("light.200", "dark.300");
   const color = useColorModeValue("light.50", "dark.400");
+
+
+  function formatDate(dateString: string) {
+    const date = new Date(dateString);
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: '2-digit',
+    };
+    return date.toLocaleDateString(undefined, options);
+  }
+  
+  
   return (
     <Formik
       initialValues={{
@@ -169,7 +182,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
         gender: memberData?.gender || "",
         email: memberData?.email || "",
         phoneNo: memberData?.phoneNo || "",
-        memberSince: memberData?.memberSince || "",
+        memberSince: formatDate(memberData?.memberSince || ""), 
         status: memberData?.status || "",
         membershipExpirationCountDown:
           memberData?.membershipExpirationCountDown || "",
@@ -324,7 +337,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
               <CustomInput
                 inputProps={{
                   type: "text",
-                  placeholder: t(`members.name`),
+                  placeholder: t(`members.membership`),
                   fontSize: "md",
                   fontWeight: "medium",
                   color: "rgba(244, 166, 98, 1)",
@@ -336,10 +349,6 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
                 onKeyUp={() => setFieldTouched("membershipExpirationCountDown")}
               />
             </GridItem>
-
-            {/* <GridItem rowSpan={2} colSpan={2}>
-              
-            </GridItem> */}
           </Grid>
 
           <Grid
