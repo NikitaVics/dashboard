@@ -2,7 +2,6 @@ import {
     Avatar,
     AvatarGroup,
     Box,
-    Button,
     CloseButton,
     Flex,
     Grid,
@@ -26,7 +25,6 @@ import {
   import TableSkeleton from "@/components/Skeleton/TableSkeleton"
   import Layout from "../components/Layout"
   import CalenderIcon from "../components/Icons/calenderIcon"
-  import router from "next/router"
   import MoreVertIcon from "../components/Icons/MoreVertIcon"
   import InActivateIcon from "../components/Icons/InActivate"
 
