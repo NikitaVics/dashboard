@@ -166,6 +166,48 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData, onClose,courtId }: 
     }
   };
 
+  const handleDelete = async (id: string) => {
+    if (id) {
+      try {
+        const updatedValues = { id };
+        if (id) {
+          const response = await ky.put(`/api/announcement/delete/${id}`, {
+            json: updatedValues,
+          });
+
+          if (response) {
+            toast({
+              description: "Successfully Deleted",
+              status: "success",
+              position: "top",
+              duration: 3000,
+              isClosable: true,
+            });
+            await mutate(`/api/announcement/getAnnouncement`);
+          }
+        }
+      } catch (error) {
+        if (error instanceof HTTPError && error.response.status === 400) {
+          const errorResponse = await error.response.json();
+          const messages = errorResponse.error.messages;
+          toast({
+            description: (
+              <>
+                {messages.map((message: string, index: number) => (
+                  <Text key={index}>{message}</Text>
+                ))}
+              </>
+            ),
+            status: "error",
+            position: "top",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      }
+    }
+  };
+
   const handleSchedule = async () => {
     try {
       const selectedImages = images.filter((image) => image.selected);
@@ -325,6 +367,7 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData, onClose,courtId }: 
      
       color="#fff"
       h="80px"
+      
       _hover={{
         bg: "none",
         color: "rgba(78, 203, 113, 1)",

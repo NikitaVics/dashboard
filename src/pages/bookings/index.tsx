@@ -78,12 +78,11 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
   
   const [memberId, setMemberId] = useState("")
   const [searchInput, setSearchInput] = useState("")
-  const [debouncedSearchInput] = useDebounce(searchInput, 800)
+  const [debouncedSearchInput] = useDebounce(searchInput, 900)
+  const [debouncedateInput] = useDebounce(selectedDate, 1000)
   const { data: responseData } = useSWR(
-    `/api/bookings/bookingDetails?searchTerm=${debouncedSearchInput}&bookingDate=${selectedDate}`,
+    `/api/bookings/bookingDetails?searchTerm=${debouncedSearchInput}&bookingDate=${debouncedateInput}`,
   )
-
-
  
 
 
@@ -204,9 +203,16 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
       },
       {
         Header:  t("common:menu.action"),
+      
          // eslint-disable-next-line
         Cell: ({ row }: any) => {
+          const bookingDate = new Date(row.original.bookingDate);
+          const currentDate = new Date();
+    
+          
+          const isPastDate = bookingDate < currentDate;
           return (
+            
             <Menu >
               <MenuButton
                 as={IconButton}
@@ -233,20 +239,17 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
                 >
                   View Booking
                 </MenuItem>
-                {row?.original?.status === "Booked" ? 
-               
-                 <MenuItem
-                 icon={<InActivateIcon />}
-                
-                 bgColor={background}
-                 _hover = {{bgColor : hover}}
-                 color = "rgba(235, 87, 87, 1)"
-                 onClick={() => handleDeactivate(row?.original?.bookingId)}
-               >
-                 {t("common:buttons.cancel")}
-               </MenuItem> : ""
-                 }
-              
+                {row?.original?.status === "Booked" && !isPastDate && (
+              <MenuItem
+                icon={<InActivateIcon />}
+                bgColor={background}
+                _hover={{ bgColor: hover }}
+                color="rgba(235, 87, 87, 1)"
+                onClick={() => handleDeactivate(row?.original?.bookingId)}
+              >
+                {t("common:buttons.cancel")}
+              </MenuItem>
+            )}
               </MenuList>
             </Menu>
           )
@@ -284,7 +287,7 @@ const toast = useToast()
                   duration: 3000,
                   isClosable: true,
                 })
-                await mutate(`/api/bookings/bookingDetails`)
+               await mutate(`/api/bookings/bookingDetails?searchTerm=${debouncedSearchInput}&bookingDate=${selectedDate}`)
               }
             }
           } catch (error) {
@@ -395,7 +398,7 @@ const toast = useToast()
       <Box bgColor={bgColor} h="170px" borderRadius="20px" px={6} py={6}>
         <Flex justify="space-between">
           <Text color={color}>{showPeakBooking ? t(`bookings.members`) : t(`bookings.daily`)}</Text>
-          <ClockIcon onClick={handleClockIconClick} />
+          <ClockIcon onClick={handleClockIconClick} cursor="pointer"/>
         </Flex>
 
         {showPeakBooking ? <PeakBooking /> : <DailyBooking />} 

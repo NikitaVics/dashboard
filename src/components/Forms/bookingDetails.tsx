@@ -74,7 +74,7 @@ import BookingsIcon from "@/pages/components/Icons/Bookings"
                 duration: 3000,
                 isClosable: true,
               })
-              await mutate(`/api/bookings/bookingDetails`)
+              await mutate(`/api/bookings/bookingDetails?searchTerm=${``}&bookingDate=${``}`)
              onClose?.()
              
             }
@@ -142,8 +142,8 @@ import BookingsIcon from "@/pages/components/Icons/Bookings"
 
  
 
-   console.log("user :",memberData?.userImage)
-    return (
+   const isBookingDatePast = new Date(memberData?.bookingDate ?? "") < new Date();
+ return (
       <Formik
         initialValues={{
           bookingId: memberData?.bookingId || "",
@@ -320,15 +320,21 @@ import BookingsIcon from "@/pages/components/Icons/Bookings"
 
 
   
-           
+{!isBookingDatePast && memberData?.bookingStatus === "Booked" && (
   <Box maxW="full" mt={20}>
-
-    <Button bgColor={"rgba(253, 238, 238, 1)"} color="rgba(238, 116, 116, 1)" border="1px solid rgba(238, 116, 116, 1)" w="full" h={"80px"} onClick={() => handleDeActivate(memberData?.bookingId)}>
+    <Button
+      bgColor={"rgba(253, 238, 238, 1)"}
+      color="rgba(238, 116, 116, 1)"
+      border="1px solid rgba(238, 116, 116, 1)"
+      w="full"
+      h={"80px"}
+      onClick={() => handleDeactivate(memberData?.bookingId)}
+    >
       Cancel Bookings
     </Button>
-
-     
   </Box>
+)}
+
 
 
 
