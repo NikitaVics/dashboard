@@ -15,7 +15,7 @@ import { Box } from "@chakra-ui/react";
 import { Checkbox, FormControl } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/react";
 import { Formik } from "formik";
-import ky, { HTTPError } from "ky";
+import ky from "ky";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import React, { useEffect, useRef, useState } from "react";
@@ -30,8 +30,8 @@ function LoginScreen() {
   const toast = useToast();
 
   const color3 = useColorModeValue("light.500", "light.100");
-  const color4 = useColorModeValue("dark.50", "light.100");
-  const color5 = useColorModeValue("dark.200", "light.100");
+  const color4 = useColorModeValue("dark.50", "dark.200");
+  const color5 = useColorModeValue("dark.200", "dark.200");
 
   const router = useRouter();
   const [show, setShow] = useState(false);
@@ -118,9 +118,8 @@ function LoginScreen() {
         router.push("/");
       }
     } catch (error) {
-      if (error instanceof HTTPError && error.response.status === 401) {
-        const messages = "Invalid Email or Password";
-
+      // if (error instanceof HTTPError && error.response.status === 401) {
+        const messages = "Invalid Email or Password"
         toast({
           description: messages,
           status: "error",
@@ -128,7 +127,7 @@ function LoginScreen() {
           duration: 3000,
           isClosable: true,
         });
-      }
+      // }
     }
   };
 
@@ -233,6 +232,7 @@ function LoginScreen() {
                                 bgColor: "rgba(248, 248, 248, 1)",
 
                                 placeholder: t("login.page.email.placeholder"),
+                                _placeholder: { color: color5 },
                                 onChange: (
                                   e: React.ChangeEvent<HTMLInputElement>
                                 ) => {
