@@ -328,7 +328,7 @@ import BookingsIcon from "@/pages/components/Icons/Bookings"
       border="1px solid rgba(238, 116, 116, 1)"
       w="full"
       h={"80px"}
-      onClick={() => handleDeactivate(memberData?.bookingId)}
+      onClick={() => handleDeActivate(memberData?.bookingId)}
     >
       Cancel Bookings
     </Button>
