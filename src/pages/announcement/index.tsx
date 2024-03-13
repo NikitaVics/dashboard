@@ -400,7 +400,7 @@ const borderColor = useColorModeValue("rgba(211, 211, 211, 1)","rgba(57, 57, 57,
         _hover={{ bg: "none" }}
         h={"55px"}
         w={"60px"}
-        border="1px solid "
+        border="1px solid"
         borderColor={borderColor}
       />
       <MenuList
