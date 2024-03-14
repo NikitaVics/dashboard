@@ -117,16 +117,7 @@ const Dashboard = () => {
                   </Text>
                 </HStack>
 
-                <Button
-                  color="rgba(78, 203, 113, 1)"
-                  p={"0"}
-                  fontSize={"14px"}
-                  fontWeight={"700"}
-                  background={"none"}
-                  _hover={{ bg: "none" }}
-                >
-                  {t(`dashboard.details`)}
-                </Button>
+               
               </Flex>
             </Box>
           </GridItem>
@@ -147,16 +138,7 @@ const Dashboard = () => {
                   </Text>
                 </HStack>
 
-                <Button
-                  color="rgba(78, 203, 113, 1)"
-                  p={"0"}
-                  fontSize={"14px"}
-                  fontWeight={"700"}
-                  background={"none"}
-                  _hover={{ bg: "none" }}
-                >
-                  {t(`dashboard.details`)}
-                </Button>
+            
               </Flex>
             </Box>
           </GridItem>

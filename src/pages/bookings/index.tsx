@@ -2,7 +2,6 @@ import {
     Avatar,
     AvatarGroup,
     Box,
-    Button,
     CloseButton,
     Flex,
     Grid,
@@ -26,7 +25,6 @@ import {
   import TableSkeleton from "@/components/Skeleton/TableSkeleton"
   import Layout from "../components/Layout"
   import CalenderIcon from "../components/Icons/calenderIcon"
-  import router from "next/router"
   import MoreVertIcon from "../components/Icons/MoreVertIcon"
   import InActivateIcon from "../components/Icons/InActivate"
 
@@ -374,7 +372,7 @@ const toast = useToast()
                  <Text fontSize={"13px"} fontWeight="400" color={color2}>{t(`bookings.day`)}</Text>
                  </HStack>
              
-                 <Button color="rgba(78, 203, 113, 1)" p={"0"}  onClick={()=>router.push("/bookings")} fontSize={"14px"} fontWeight={"700"} background={"none"} _hover={{bg:"none"}}>{t(`bookings.view`)}</Button>
+                
                </Flex>
               </Stack>
               
@@ -397,7 +395,6 @@ const toast = useToast()
                  <Text fontSize={"13px"} fontWeight="400" color="red.200">{t(`bookings.day`)}</Text>
                  </HStack>
              
-                 <Button color="red.200"p={"0"}   fontSize={"14px"} fontWeight={"700"} background={"none"} _hover={{bg:"none"}}>{t(`bookings.view`)}</Button>
                </Flex>
                </Stack>
            </Box>
@@ -468,9 +465,10 @@ const toast = useToast()
         mb={{ base: 4, md: 0 }} 
         maxW={{md:"352px"}}
         h="60px"
+        cursor={"pointer"} 
       />
        {selectedDate && (
-        <IconButton onClick={handleClearDate} color="red.400"  aria-label={""} bg="none">
+        <IconButton onClick={handleClearDate} color="red.400" cursor={"pointer"} aria-label={""} bg="none">
           <CloseButton />
         </IconButton>
       )}

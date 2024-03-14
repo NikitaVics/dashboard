@@ -323,7 +323,6 @@ const handleSendClick = async () => {
       onClick={handleFileAttach}
       position="absolute"
       left="10px"
-      top="10px"
       bg="transparent"
       color="gray.500"
       _hover={{ color: "gray.700" }}

@@ -23,7 +23,7 @@ const FileAttachTextarea: React.FC<FileAttachTextareaProps> = ({ name, onFileAtt
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Pass both file and message to onFileAttach
+    
       onFileAttach(file, message);
     }
   };
@@ -46,6 +46,7 @@ const FileAttachTextarea: React.FC<FileAttachTextareaProps> = ({ name, onFileAtt
       />
       <input
         type="file"
+     
         name={name}
         ref={fileInputRef}
         style={{ display: "none" }}
