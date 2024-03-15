@@ -1,5 +1,4 @@
 import {
-    FormLabel,
     FormLabelProps as ChakraFormLabelProps,
     Input as ChakraInput,
     InputGroup,
@@ -9,8 +8,6 @@ import {
     InputProps as ChakraInputProps,
     InputRightAddon,
     InputRightElement,
-    Text,
-    useColorModeValue,
   } from "@chakra-ui/react"
   import { useField } from "formik"
   import React from "react"
@@ -48,8 +45,9 @@ import {
   export function InputControl(props: InputProps) {
     const {
       name,
+      // eslint-disable-next-line
       label,
-      labelProps,
+      // labelProps,
       inputProps,
       inputGroupProps,
       inputLeftAddon,
@@ -59,14 +57,14 @@ import {
       inputLeftElementColor,
       inputRightElementColor,
       inputRightElementZIndex = "unset",
-      bottomTextLabel,
-      bottomText,
+      // bottomTextLabel,
+      // bottomText,
       ...rest
     } = props
     const [field] = useField(name)
-    const color4 = useColorModeValue("black", "#fff")
-    const color2 = useColorModeValue("#fff", "#fff")
-    const color3 = useColorModeValue("#fff", "black")
+    // const color4 = useColorModeValue("black", "#fff")
+    // const color2 = useColorModeValue("#fff", "#fff")
+    // const color3 = useColorModeValue("#fff", "black")
   
     return (
       <FormControl name={name} {...rest}>
@@ -128,7 +126,7 @@ import {
               {inputRightElement}
             </InputRightElement>
           )}
-          {inputProps && inputProps.placeholder && field.value && (
+          {/* {inputProps && inputProps.placeholder && field.value && (
             <label
               style={{
                 padding: "6px",
@@ -153,9 +151,9 @@ import {
             >
               {inputProps.placeholder}
             </label>
-          )}
+          )} */}
         </InputGroup>
-        {typeof label === "string" ? (
+        {/* {typeof label === "string" ? (
           <FormLabel
             htmlFor={name}
             color="gray.500"
@@ -172,7 +170,7 @@ import {
         ) : (
           label
         )}
-        {bottomTextLabel && <Text {...bottomText}>{bottomTextLabel}</Text>}
+        {bottomTextLabel && <Text {...bottomText}>{bottomTextLabel}</Text>} */}
       </FormControl>
     )
   }

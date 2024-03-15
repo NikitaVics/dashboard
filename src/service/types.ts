@@ -38,6 +38,7 @@ bookingId:string
    memberId : string
    gender:string
    userId : string
+   age:string
       id?:string
       value:string
       name : string

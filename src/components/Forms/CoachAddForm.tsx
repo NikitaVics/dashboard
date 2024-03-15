@@ -9,6 +9,12 @@ import * as Yup from "yup";
 import { InputControl } from "../Input/Input";
 
 type FormItems = {
+  gender: string | Blob;
+  email: string | Blob;
+  phoneNumber: string | Blob;
+  experience: string | Blob;
+  lastName: string | Blob;
+  firstName: string | Blob;
       // eslint-disable-next-line
   image: any;
   coachData?: {
@@ -33,63 +39,59 @@ const CoachAddForm = ({coachData,onClose}:FormItems) => {
   const bgColor = useColorModeValue("light.200", "dark.300");
 const toast = useToast()
 
-   const [firstName,setFirstName] = useState("")
-   const [lastName,setLastName] = useState("")
-   const [email,setEmail] = useState("")
    const [gender,setGender] = useState("")
-   const [phone,setPhone] = useState("")
-   const [experience,setExperience] = useState("")
-
-   const handleFirstChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFirstName(e.target.value);
   
+  const handleGenderChange = (e: ChangeEvent<HTMLSelectElement>, setFieldTouched: (field: string, touched?: boolean, shouldValidate?: boolean) => void) => {
+    setGender(e.target.value);
+    setFieldTouched('gender', true);
   };
-
-  const handleLastChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setLastName(e.target.value);
-  };
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-  const handleGenderChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setGender(e.target.value); 
-  };
-
-  const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPhone(e.target.value);
-  };
-
-  const handleExperienceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setExperience(e.target.value);
-  };
+  
+  
 
   const [image, setImage] = useState<File | string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.type === 'file' && e.target.files) {
       const selectedImage = e.target.files[0];
+      
+      const allowedExtensions = ['jpg', 'jpeg', 'png', 'svg'];
+      const fileNameParts = selectedImage.name.split('.');
+      const fileExtension = fileNameParts[fileNameParts.length - 1].toLowerCase();
+      
+      if (!allowedExtensions.includes(fileExtension)) {
+        toast({
+          description: "Only JPG, JPEG, PNG, and SVG files are allowed.",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        return; 
+      }
+      
       setImage(selectedImage);
     }
   };
   
+  
 
   
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (values : FormItems) => {
    
    
 
     try {
-       
-       
-      const data = new FormData();
-      data.append('FirstName', firstName);
-      data.append('LastName', lastName);
-      data.append('Gender', gender);
-      data.append('Experience', experience);
-      data.append('PhoneNumber', phone);
-      data.append('Email', email);
-      data.append('Image', image);
+    const data = new FormData();
+    data.append('FirstName', values.firstName);
+    data.append('LastName', values.lastName);
+    data.append('Gender', gender);
+    data.append('CoachFrom', values.experience);
+    data.append('PhoneNumber', values.phoneNumber);
+    data.append('Email', values.email);
+    data.append('Image', image);
+
+  
 
       
       
@@ -137,12 +139,18 @@ const toast = useToast()
    
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required("First name is required"),
-  lastName: Yup.string().required("Last name is required"),
+  firstName: Yup.string()
+    .required('First name is required')
+    .max(20, 'First name must be at most 20 characters')
+    .matches(/^[a-zA-Z ]+$/, 'First name must contain only letters and spaces'),
+    lastName: Yup.string()
+    .required('Last name is required')
+    .max(20, 'Last name must be at most 20 characters')
+    .matches(/^[a-zA-Z ]+$/, 'Last name must contain only letters and spaces'),
   email: Yup.string().email("Invalid email").required("Email is required"),
-  gender: Yup.string().required("Gender is required"),
-  phoneNumber: Yup.string().required("Phone number is required"),
-  experience: Yup.string().required("Experience is required"),
+  phoneNumber: Yup.string()
+    .matches(/^[0-9]+$/, "Phone number must contain only digits")
+    .required("Phone number is required"),
 });
 
 
@@ -160,7 +168,7 @@ const validationSchema = Yup.object().shape({
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {(  ) => (
+      {( {setFieldTouched,touched} ) => (
         <Form noValidate>
           <Grid
             templateRows="repeat(1, 1fr)"
@@ -173,80 +181,129 @@ const validationSchema = Yup.object().shape({
           >
             <GridItem rowSpan={2} colSpan={2}>
               
-              <InputControl name="firstName" inputProps = {
+              <InputControl inputProps = {
                  {
-                  value : firstName, h :"60px" ,  placeholder : t(`coach.firstName`),
-                 onChange : handleFirstChange , bgColor : bgColor, focusBorderColor : "rgba(78, 203, 113, 1)" ,borderRadius : "10px"
-                 } }/>
+                   h :"60px" ,  placeholder : t(`coach.firstName`),
+                bgColor : bgColor, focusBorderColor : "rgba(78, 203, 113, 1)" ,borderRadius : "10px"
+                 } }
+                 name="firstName" 
+                 onKeyUp={() => setFieldTouched("firstName")}
+                 />
             </GridItem>
             <GridItem rowSpan={2} colSpan={2}>
              
-                <InputControl name="lastName" inputProps = {{  value : lastName , h:"60px", borderRadius : "10px" , placeholder : t(`coach.lastName`) ,onChange : handleLastChange,  bgColor :bgColor, focusBorderColor : "rgba(78, 203, 113, 1)" }}/>
+                <InputControl  inputProps = {{    h:"60px", borderRadius : "10px" , placeholder : t(`coach.lastName`) ,  bgColor :bgColor,
+                 focusBorderColor : "rgba(78, 203, 113, 1)" }}
+                 name="lastName" 
+                 onKeyUp={() => setFieldTouched("lastName")}
+                 />
             </GridItem>
             <GridItem rowSpan={2} colSpan={2}>
            
-               <InputControl name="email" inputProps = {{ value : email, h :"60px", borderRadius : "10px", placeholder : t(`coach.email`), onChange : handleEmailChange,  bgColor : bgColor, focusBorderColor : "rgba(78, 203, 113, 1)"}}/>
+               <InputControl  inputProps = {{ h :"60px", borderRadius : "10px", placeholder : t(`coach.email`), 
+                bgColor : bgColor, focusBorderColor : "rgba(78, 203, 113, 1)"}}
+                name="email" 
+                 onKeyUp={() => setFieldTouched("email")}
+                />
             </GridItem>
             <GridItem rowSpan={2} colSpan={2}>
             
-               <InputControl name="phoneNumber" inputProps = {{ value : phone, borderRadius : "10px", onChange : handlePhoneChange, h:"60px",   placeholder:t(`coach.phone`), bgColor:bgColor, focusBorderColor :"rgba(78, 203, 113, 1)"}}/>
+               <InputControl inputProps = {{  borderRadius : "10px", h:"60px",   placeholder:t(`coach.phone`), bgColor:bgColor,
+                focusBorderColor :"rgba(78, 203, 113, 1)"}}
+                name="phoneNumber" 
+                 onKeyUp={() => setFieldTouched("phoneNumber")}
+                />
             </GridItem>
             <GridItem rowSpan={2} colSpan={2}>
-              <Select
-               h="60px"   
-               placeholder={t(`coach.gender`)}
-                value={gender}
-                onChange={handleGenderChange} 
-                bgColor={bgColor}
-                borderRadius={"10px"}
-                focusBorderColor="rgba(78, 203, 113, 1)"
-              >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </Select>
-            </GridItem>
-            <GridItem rowSpan={1} colSpan={2}>
-               <InputControl name="experience" inputProps = {{value:experience, h:"60px", borderRadius:"10px",  placeholder:t(`coach.from`), onChange:handleExperienceChange, bgColor:bgColor, focusBorderColor:"rgba(78, 203, 113, 1)"}}/>
-            </GridItem>
-            <GridItem rowSpan={1} colSpan={2}>
-            <div
-  style={{
-    border: `1px solid ${borderColor}`,
-    borderRadius: "4px",
-    height: "120px",
-    backgroundColor: color,
-    display: "flex",
-    alignItems: "center", 
-    justifyContent: "center",
-  }}
->
-  <label
-    htmlFor="attachment"
-    style={{
-      cursor: "pointer",
-      display: "flex",
-      alignItems: "center",
-      padding: "4px 8px",
-    }}
+  <Select
+    h="60px"
+    placeholder={t(`coach.gender`)}
+    value={gender}
+    onChange={(e) => handleGenderChange(e, setFieldTouched)}
+    bgColor={bgColor}
+    borderRadius={"10px"}
+    focusBorderColor="rgba(78, 203, 113, 1)"
+    isInvalid={!gender && touched.gender}
   >
-    <Input
-      type="file"
-      id="attachment"
-      name="attachment"
-      display="none"
-      onChange={handleChange}
-      h="120px"
-    />
-   <Flex>
-  
-  </Flex>
-    <Text ml={2} color={"rgba(124, 124, 125, 1)"}>
-     + Images
+    <option value="male">Male</option>
+    <option value="female">Female</option>
+  </Select>
+  {touched.gender && !gender && (
+    <Text color="red.500" fontSize="sm" mt={2}>
+    Gender is Required
     </Text>
-  </label>
-</div>
+  )}
+</GridItem>
+
+
+            <GridItem rowSpan={1} colSpan={2}>
+            <InputControl
+  inputProps={{
+    type: "date",
+    h: "60px",
+    borderRadius: "10px",
+    placeholder: t("coach.from"), 
+    bgColor: bgColor,
+    focusBorderColor: "rgba(78, 203, 113, 1)",
+  }}
+  name="experience"
+  onKeyUp={() => setFieldTouched("experience")}
+/>
 
             </GridItem>
+
+            {/* <GridItem rowSpan={1} colSpan={2}>
+  <InputControl
+    inputProps={{
+      type: "date",
+      h: "60px",
+      borderRadius: "10px",
+      placeholder: t("coach.experience"),
+      bgColor: bgColor,
+      focusBorderColor: "rgba(78, 203, 113, 1)",
+    }}
+    name="experience"
+    onKeyUp={() => setFieldTouched("experience")}
+    isInvalid={touched.experience && !values.experience}
+  />
+  {touched.experience && !values.experience && (
+    <Text color="red.500" fontSize="sm">
+      {t("coach.experienceRequired")}
+    </Text>
+  )}
+</GridItem> */}
+
+
+            <GridItem rowSpan={1} colSpan={2}>
+              <div
+                style={{
+                  border: `1px solid ${borderColor}`,
+                  borderRadius: "4px",
+                  height: "120px",
+                  backgroundColor: color,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {image ? (
+                  <img
+                    src={typeof image === "string" ? image : URL.createObjectURL(image)}
+                    alt="Uploaded"
+                    style={{ maxHeight: "100%", maxWidth: "100%" }}
+                  />
+                ) : (
+                  <label htmlFor="attachment" style={{ cursor: "pointer", display: "flex", alignItems: "center", padding: "4px 8px" }}>
+                    <Input type="file" id="attachment" name="attachment" display="none" onChange={handleChange} h="120px" />
+                    <Flex></Flex>
+                    <Text ml={2} color={"rgba(124, 124, 125, 1)"}>
+                      + Images
+                    </Text>
+                  </label>
+                )}
+              </div>
+            </GridItem>
+         
             <GridItem rowSpan={1} colSpan={2}>
             <Button
             mt={20}

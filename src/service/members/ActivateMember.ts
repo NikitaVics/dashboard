@@ -7,13 +7,12 @@ const ActivateMember = async (
   httpClient: typeof ky,
   params: MemberProps,
 ) => {
-console.log("service:," , params)
+console.log("Params :",params)
   return httpClient
     .put(`Management/Member/member-activity-update`, {
-      // searchParams : {
-      //   userId : 2,
-      //   status : false
-      // }
+    searchParams:{
+      userId : 2
+    }
     })
     .json()
 }
