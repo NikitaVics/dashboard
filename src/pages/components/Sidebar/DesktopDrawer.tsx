@@ -21,7 +21,6 @@ import DashboardIcon from "../Icons/Dashboard";
 import BookingsIcon from "../Icons/Bookings";
 import ReportsIcon from "../Icons/reports";
 import ApplicationIcon from "../Icons/Application";
-import MembersIcon from "../Icons/Members";
 import CoachIcon from "../Icons/CoachI";
 import AnnouncementIcon from "../Icons/Announcement";
 import { routePath } from "@/utils/routes";
@@ -36,8 +35,7 @@ export const dashboards: Array<NavLink> = [
   { name: "dashbords", path: routePath.dashboard, icon: DashboardIcon },
   { name: "bookings", path: routePath.booking, icon: BookingsIcon },
   { name: "reports", path: routePath.reports, icon: ReportsIcon },
-  { name: "application", path: routePath.application, icon: ApplicationIcon },
-  { name: "members", path: routePath.members, icon: MembersIcon },
+  { name: "members", path: routePath.members, icon: ApplicationIcon },
   { name: "coach", path: routePath.coach, icon: CoachIcon },
   {
     name: "announcement",
