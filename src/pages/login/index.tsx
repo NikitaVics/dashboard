@@ -115,7 +115,7 @@ function LoginScreen() {
         })
         .json();
       if (response) {
-        router.push("/");
+        router.push("/dashboard");
       }
     } catch (error) {
       // if (error instanceof HTTPError && error.response.status === 401) {

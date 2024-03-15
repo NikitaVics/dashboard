@@ -399,29 +399,27 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
             </Box>
           </Grid>
 
-          <Box maxW="full">
-            {memberData?.status ? (
-              <Button
-                variant="outline"
-                colorScheme="red"
-                w="full"
-                h={"80px"}
-                onClick={() => handleActivate(memberId)}
-              >
-                DeActivate
-              </Button>
-            ) : (
-              <Button
-                variant="outline"
-                colorScheme="green"
-                w="full"
-                h={"80px"}
-                onClick={() => handleDeactivate(memberId)}
-              >
-                Activate
-              </Button>
-            )}
-          </Box>
+          <Flex   gap={4} maxW="full">
+            <Button
+              bgColor={"rgba(253, 238, 238, 1)"} color="rgba(238, 116, 116, 1)" border="1px solid rgba(238, 116, 116, 1)"
+              w="full"
+             
+              h={"60px"}
+              onClick={() => handleDeactivate(memberId)}
+            >
+              Reject
+            </Button>
+            <Button
+              variant="outline"
+              color={"white"}
+              bgColor={"green.100"}
+              w="full"
+              h={"60px"}
+              onClick={() => handleActivate(memberId)}
+            >
+              Approve
+            </Button>
+          </Flex>
         </Form>
       )}
     </Formik>

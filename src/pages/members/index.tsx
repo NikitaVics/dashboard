@@ -31,6 +31,7 @@ import TableSkeleton from "@/components/Skeleton/TableSkeleton";
 import SearchIcon from "../components/Icons/searchIcon";
 import { InputControl } from "@/components/Input/Input";
 import { useDebounce } from "use-debounce";
+import ActivateIcon from "../components/Icons/activateIcon";
 
 type EditTaxDetailsProps = {
   memberData: MemberProps;
@@ -39,12 +40,12 @@ type EditTaxDetailsProps = {
 function Member({ memberData }: EditTaxDetailsProps) {
   const { t } = useTranslation("members");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const handleEditModalOpen = (memberId: MemberProps | undefined) => {
+  const handleEditModalOpen = (id: MemberProps | undefined) => {
     setIsEditModalOpen(true);
-    if (memberId) {
+    if (id) {
       // eslint-disable-next-line
       //@ts-ignore
-      setMemberId(memberId);
+      setMemberId(id);
     }
   };
 
@@ -54,6 +55,8 @@ function Member({ memberData }: EditTaxDetailsProps) {
   const { data: responseData } = useSWR(
     `/api/members?searchTerm=${debouncedSearchInput}`
   );
+
+  const data = responseData?.result;
 
   const background = useColorModeValue("#fff", "#0D0D0D");
 
@@ -77,19 +80,57 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
     },
     {
       Header: t(`members.phone`),
-      accessor: "phoneNo",
+      accessor: "phoneNumber",
     },
     {
       Header: t(`members.gender`),
       accessor: "gender",
     },
     {
-      Header: t(`members.member`),
-      accessor: "memberSince",
+      Header: t(`members.request`),
+      accessor: "membershipStatus",
+      Cell: ({ value }: { value: string }) => {
+        let statusColor = "";
+        let statusText = "";
+        let borderColor = "";
+        let textColor = "";
+
+        if (value === "Approved") {
+          statusColor = sentColor;
+          borderColor = "rgba(39, 174, 96, 1)";
+          textColor = "green.300";
+          statusText = t("common:status.approved");
+        } else if (value === "Pending") {
+          statusColor = scheduleColor;
+          borderColor = "rgba(244, 170, 105, 1)";
+          textColor = "rgba(244, 170, 105, 1)";
+          statusText = t("common:status.pending");
+        } else {
+          statusColor = cancelColor;
+          borderColor = "rgba(235, 87, 87, 1)";
+          textColor = "red.200";
+          statusText = t("common:status.rejected");
+        }
+
+        return (
+          <Flex
+            h="34px"
+            bgColor={statusColor}
+            maxW="90px"
+            alignItems="center"
+            justify="center"
+            borderRadius={"35px"}
+            border={`1px solid ${borderColor}`}
+            color={textColor}
+          >
+            {statusText}
+          </Flex>
+        );
+      },
     },
     {
       Header: t("common:menu.status"),
-      accessor: "status",
+      accessor: "isActive",
       Cell: ({ value }: { value: boolean }) =>
         value === true ? (
           <Flex
@@ -146,28 +187,28 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
                 icon={<EditIcon />}
                 bgColor={background}
                 _hover={{ bgColor: hover }}
-                onClick={() => handleEditModalOpen(row?.original?.memberId)}
+                onClick={() => handleEditModalOpen(row?.original?.id)}
               >
                 {t("common:buttons.view")}
               </MenuItem>
-              {row?.original?.status === true ? (
+              {row?.original?.isActive === true ? (
                 <MenuItem
                   icon={<InActivateIcon />}
                   bgColor={background}
                   _hover={{ bgColor: hover }}
                   color="rgba(235, 87, 87, 1)"
-                  onClick={() => handleActivate(row?.original?.memberId)}
+                  onClick={() => handleActivate(row?.original?.id)}
                 >
                   {t("common:buttons.inActivate")}
                 </MenuItem>
               ) : (
                 <MenuItem
-                  //  icon={<InActivateIcon />}
+                   icon={<ActivateIcon />}
 
                   bgColor={background}
                   _hover={{ bgColor: hover }}
                   color="rgba(39, 174, 96, 1)"
-                  onClick={() => handleDeactivate(row?.original?.memberId)}
+                  onClick={() => handleDeactivate(row?.original?.id)}
                 >
                   {t("common:buttons.activate")}
                 </MenuItem>
@@ -180,8 +221,10 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
     },
   ]
 
-  const sentColor = useColorModeValue("green.50","")
+  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)","")
 
+  const sentColor = useColorModeValue("green.50","")
+  
   const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
  
   const toast = useToast()
@@ -230,12 +273,13 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
     }
   };
 
-  const handleDeactivate = async (memberId: string) => {
-    if (memberId) {
+  const handleDeactivate = async (id: string) => {
+    if (id) {
       try {
-        const updatedValues = { memberId };
-        if (memberId) {
-          const response = await ky.post(`/api/members/Activate/${memberId}`, {
+        const updatedValues = { userId : id, status : true  };
+    
+        if (id) {
+          const response = await ky.put(`/api/members/Activate/${id}`, {
             json: updatedValues,
           });
 
@@ -317,7 +361,7 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
                 </Box>
               </Formik>
               <Box mt={5}>
-                <Table columns={columnConfig} data={responseData} />
+                <Table columns={columnConfig} data={data} />
               </Box>
               {isEditModalOpen && (
                 <>

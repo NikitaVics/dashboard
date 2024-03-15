@@ -13,7 +13,7 @@ function Home() {
       <Layout  description={t("page.description")} title={""}>
         
        <PageContainer
-        //  isLoading={isLoading}
+         isLoading={isLoading}
          as="section"
          maxW="full"
          height="100vh"

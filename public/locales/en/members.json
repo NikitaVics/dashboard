@@ -8,8 +8,9 @@
         "member":"Member Since",
         "membership":"Membership",
         "name":"Name",
-        "status":"Status",
+        "status":"Account Status",
         "search":"Search",
+        "request":"Request Status",
         "age":"Age"
     }
 }

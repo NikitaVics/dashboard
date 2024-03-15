@@ -5,8 +5,8 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  Area,
-  AreaChart,
+  Bar,
+  BarChart,
   CartesianGrid,
 } from "recharts";
 import { Text } from "@chakra-ui/react";
@@ -58,12 +58,9 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
 };
 
 const MonthTabs: React.FC = () => {
-
-
   const { data: yearlyGraph } = useSWR<YearlyGraphItem[]>("/api/dashboard/yearlyGrowth");
 
   const monthData: MonthData[] = [
-    { month: "", value: 0 },
     ...(yearlyGraph || []).map((item: YearlyGraphItem) => ({
       month: item.monthName,
       value: item.growth,
@@ -89,15 +86,17 @@ const MonthTabs: React.FC = () => {
         {t(`dashboard.year`)}
       </Text>
       <ResponsiveContainer width="100%" height={300}>
-        <AreaChart data={monthData} ref={chartRef} margin={{ bottom: 20 }}>
+        <BarChart data={monthData} ref={chartRef} margin={{ bottom: 20 }} >
           <XAxis
             dataKey="month"
             tickLine={false}
             axisLine={false}
             orientation="bottom"
             interval={0}
+            
             textAnchor="end"
             dy={20}
+            dx={10}
             tick={{ fill: color2 }}
           />
           <YAxis hide={true} />
@@ -109,39 +108,25 @@ const MonthTabs: React.FC = () => {
               strokeDasharray: "5 5",
             }}
           />
-          <defs>
-            <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop
-                offset="0%"
-                stopColor="rgba(75,200,110,0.14)"
-                stopOpacity={3}
-              />
-              <stop
-                offset="70%"
-                stopColor="rgba(75,200,110,0.14)"
-                stopOpacity={0.5}
-              />
-              <stop
-                offset="0%"
-                stopColor="rgba(75,200,110,0.14)"
-                stopOpacity={0.1}
-              />
-          
-            </linearGradient>
-          </defs>
-          <Area
-            type="natural"
-            dataKey="value"
-            stroke="rgba(78, 203, 113, 1)"
-            strokeWidth={"3px"}
-            fill="url(#colorGradient)"
-          />
           <CartesianGrid
             vertical={false}
             stroke="#E5E4E2"
             strokeDasharray="solid"
           />
-        </AreaChart>
+         <Bar
+            dataKey="value"
+            fill="url(#colorGradient)"
+            radius={[4, 4, 4, 4]} 
+            barSize={60}
+          
+          />
+          <defs>
+            <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="10%" stopColor="rgba(217, 253, 228, 1)" />
+              <stop offset="40%" stopColor="rgba(173, 234, 192, 1)" />
+            </linearGradient>
+          </defs>
+        </BarChart>
       </ResponsiveContainer>
     </Box>
   );
