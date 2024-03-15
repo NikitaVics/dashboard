@@ -13,6 +13,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   async function ActivateMember(params: MemberProps) {
     try {
+      console.log("APiParams :",params)
       const response = await client.members.ActivateMember(params);
       res.status(200).json(response);
     } catch (error) {

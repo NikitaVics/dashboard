@@ -41,6 +41,7 @@ import { AddCoachProps } from "@/service/types";
 import CoachForm from "@/components/coachForm";
 import ky, { HTTPError } from "ky";
 import { useDebounce } from "use-debounce";
+import ActivateIcon from "../components/Icons/activateIcon";
 
 type EditCoachProps = {
   coaches: AddCoachProps;
@@ -99,7 +100,7 @@ const Coach = ({ coaches }: EditCoachProps) => {
     },
     {
       Header: t(`coach.experience`),
-      accessor: "exp",
+      accessor: "coachFrom",
     },
     {
       Header: t("common:menu.status"),
@@ -176,7 +177,7 @@ const Coach = ({ coaches }: EditCoachProps) => {
                 </MenuItem>
               ) : (
                 <MenuItem
-                  //  icon={<InActivateIcon />}
+                   icon={<ActivateIcon />}
 
                   bgColor={background}
                   _hover={{ bgColor: hover }}
@@ -217,7 +218,7 @@ const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/coach`);
+            await mutate(`/api/coach?searchTerm=${""}`);
           }
         }
       } catch (error) {
@@ -259,7 +260,7 @@ const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/coach`);
+            await mutate(`/api/coach?searchTerm=${""}`);
           }
         }
       } catch (error) {
@@ -371,7 +372,7 @@ const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
                   </DrawerHeader>
 
                   <DrawerBody px={8}>
-                    <CoachAddForm image={undefined} onClose={onClose}/>
+                    <CoachAddForm image={undefined} onClose={onClose} email={""} phoneNumber={""} experience={""} lastName={""} firstName={""} gender={""}/>
                   </DrawerBody>
                 </DrawerContent>
               </Drawer>

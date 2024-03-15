@@ -276,7 +276,7 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
   const handleDeactivate = async (id: string) => {
     if (id) {
       try {
-        const updatedValues = { userId : id, status : true  };
+        const updatedValues = { id };
     
         if (id) {
           const response = await ky.put(`/api/members/Activate/${id}`, {

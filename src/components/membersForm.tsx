@@ -53,7 +53,7 @@ const MembersForm = (props: MemberFormProps) => {
               <Heading>Loading...</Heading>
             </Flex>
           ) : (
-         <MembersDetails memberId={memberId} onClose={onClose} memberData={memberData} status={undefined}  />
+         <MembersDetails memberId={memberId} onClose={onClose} memberData={memberData} status={undefined} membershipStatus={""}  />
       
           )}
         </DrawerBody>
