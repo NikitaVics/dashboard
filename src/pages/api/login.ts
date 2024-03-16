@@ -1,4 +1,5 @@
 import { BehrainClient } from "@/service/client";
+import { ErrorResponse } from "@/service/types";
 import Cookies from "cookies";
 import { HTTPError } from "ky";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -39,8 +40,13 @@ async function loginHandler(req: NextApiRequest, res: NextApiResponse) {
 
     res.status(200).json({ message: "Login Successfully" });
   } catch (error) {
-    if (error instanceof HTTPError && error.response.status === 401) {
-      res.status(401).json({ message: "Invalid Email or Password" });
+    if (error instanceof HTTPError && error.response.status === 400) {
+      const errorResponse: ErrorResponse = await error.response.json();
+      const { messages } = errorResponse;
+      res.status(400).json({
+        error: { messages },
+        status: 400,
+      });
     }
   }
 }

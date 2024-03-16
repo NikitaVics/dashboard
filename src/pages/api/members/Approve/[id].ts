@@ -6,15 +6,15 @@ import type { NextApiRequest, NextApiResponse } from "next";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const client = new BehrainClient(req, res);
   if (req.method === "PUT") {
-    await ActivateMember(req.body);
+    await ApproveMember(req.body);
   } else {
     res.status(405).end("Method Not Allowed");
   }
 
-  async function ActivateMember(params: MemberProps) {
+  async function ApproveMember(params: MemberProps) {
     try {
       
-      const response = await client.members.ActivateMember(params);
+      const response = await client.members.ApproveMember(params);
       res.status(200).json(response);
     } catch (error) {
       console.log(error)

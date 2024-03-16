@@ -44,6 +44,7 @@ import getCancelled from "./bookings/cancelledBookings";
 import DeActivateBooking from "./bookings/deactivateBooking";
 import getAnnouncementDetail from "./announcement/getDetails";
 import DeleteSchedule from "./announcement/deleteSchedule";
+import ApproveMember from "./members/ApproveMember";
 
 type ApiHandler<T, U> = (baseHttpClient: typeof ky, params: U) => Promise<T>;
 
@@ -147,6 +148,7 @@ export class BehrainClient {
       getSuccessBookings: withApiClient(getSuccessBookings),
       getCancelledBookings: withApiClient(getCancelledBookings),
       ActivateMember: withApiClient(ActivateMember),
+      ApproveMember : withApiClient(ApproveMember)
     };
 
     this.application = {

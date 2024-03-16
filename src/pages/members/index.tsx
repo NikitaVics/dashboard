@@ -197,7 +197,7 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
                   bgColor={background}
                   _hover={{ bgColor: hover }}
                   color="rgba(235, 87, 87, 1)"
-                  onClick={() => handleActivate(row?.original?.id)}
+                  onClick={() => handleDeactivate(row?.original?.id)}
                 >
                   {t("common:buttons.inActivate")}
                 </MenuItem>
@@ -230,49 +230,6 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
   const toast = useToast()
  
 
-
-  const handleActivate = async (memberId: string) => {
-    if (memberId) {
-      try {
-        const updatedValues = { memberId };
-        if (memberId) {
-          const response = await ky.post(`/api/members/Activate/${memberId}`, {
-            json: updatedValues,
-          });
-
-          if (response) {
-            toast({
-              description: "Successfully Deactivated",
-              status: "success",
-              position: "top",
-              duration: 3000,
-              isClosable: true,
-            });
-            await mutate(`/api/members`);
-          }
-        }
-      } catch (error) {
-        if (error instanceof HTTPError && error.response.status === 400) {
-          const errorResponse = await error.response.json();
-          const messages = errorResponse.error.messages;
-          toast({
-            description: (
-              <>
-                {messages.map((message: string, index: number) => (
-                  <Text key={index}>{message}</Text>
-                ))}
-              </>
-            ),
-            status: "error",
-            position: "top",
-            duration: 3000,
-            isClosable: true,
-          });
-        }
-      }
-    }
-  };
-
   const handleDeactivate = async (id: string) => {
     if (id) {
       try {
@@ -285,13 +242,13 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
 
           if (response) {
             toast({
-              description: "Successfully Activated",
+              description: "Successfully Updated",
               status: "success",
               position: "top",
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/members`);
+            await mutate(`/api/members?searchTerm=${""}`);
           }
         }
       } catch (error) {
