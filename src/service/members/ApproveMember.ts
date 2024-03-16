@@ -3,14 +3,14 @@ import { MemberProps } from "../types"
 
 
 
-const ActivateMember = async (
+const ApproveMember = async (
   httpClient: typeof ky,
   params: MemberProps,
 ) => {
  const userId = params.id;
   return httpClient
-    .put(`Management/Member/member-activity-update/${userId}`)
+    .put(`Management/Member/member-request-update/${userId}`)
     .json()
 }
 
-export default ActivateMember
+export default ApproveMember

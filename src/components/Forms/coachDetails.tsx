@@ -63,7 +63,7 @@ function CoachDetails({ coachData, coachId, onClose }: FormItems) {
               duration: 3000,
               isClosable: true,
             });
-            await mutate(/api/accho);
+            await mutate(`/api/coach`);
             onClose?.();
           }
         }
@@ -106,7 +106,7 @@ function CoachDetails({ coachData, coachId, onClose }: FormItems) {
               duration: 3000,
               isClosable: true,
             });
-            await mutate(/api/accho);
+            await mutate(`/api/coach`);
             onClose?.();
           }
         }

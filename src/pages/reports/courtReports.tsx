@@ -40,10 +40,13 @@ function CourtReportDetails() {
   };
 
   const [selected, setSelected] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [selectedCourt, setSelectedCourt] = useState("");
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedCourt = event.target.value;
     setSelected(selectedCourt);
+    setSelectedCourt(selectedCourt);
   };
 
   const [debouncedateInput] = useDebounce(selectedDate, 1000);
@@ -127,7 +130,7 @@ function CourtReportDetails() {
           textColor = "green.300";
           statusText = t("common:status.booked");
         } else if (value === "Pending") {
-          statusColor =scheduleColor;
+          statusColor = scheduleColor;
           borderColor = "rgba(244, 170, 105, 1)";
           textColor = "rgba(244, 170, 105, 1)";
           statusText = t("common:status.pending");
@@ -156,16 +159,6 @@ function CourtReportDetails() {
     },
   ];
 
-
-  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)","")
-
-  const sentColor = useColorModeValue("green.50","")
-  
-  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
-
-
-  const isLoading = !responseData;
-
   const handleExport = async () => {
     try {
       const response = await fetch(
@@ -186,12 +179,21 @@ function CourtReportDetails() {
     }
   };
 
+  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)", "");
+
+  const sentColor = useColorModeValue("green.50", "");
+
+  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)", "");
+
+  const isLoading = !responseData;
+
   const handleClearDate = () => {
     setSelectedDate("");
   };
 
   const handleClearCourt = () => {
     setSelected("");
+    setSelectedCourt("");
   };
 
   return (
