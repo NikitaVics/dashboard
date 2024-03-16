@@ -20,6 +20,7 @@ import useSWR from "swr";
 import TableSkeleton from "@/components/Skeleton/TableSkeleton";
 import { Input } from "@chakra-ui/react";
 import DownloadIcon from "../components/Icons/downloadIcon";
+import { useDebounce } from "use-debounce";
 
 function CourtReportDetails() {
   const { t } = useTranslation("reports");
@@ -29,8 +30,13 @@ function CourtReportDetails() {
   const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedDates = event.target.value;
     const [year, month, day] = selectedDates.split("-");
-    const reversedDate = `${year}-${month}-${day}`;
-    setSelectedDate(reversedDate);
+
+    if (year && month && day) {
+      const reversedDate = `${year}-${month}-${day}`;
+      setSelectedDate(reversedDate);
+    } else {
+      setSelectedDate("");
+    }
   };
 
   const [selected, setSelected] = useState("");
@@ -39,8 +45,11 @@ function CourtReportDetails() {
     const selectedCourt = event.target.value;
     setSelected(selectedCourt);
   };
+
+  const [debouncedateInput] = useDebounce(selectedDate, 1000);
+
   const { data: responseData } = useSWR(
-    `/api/reports/getCourtReport?bookingDate=${selectedDate}&court=${selected}`
+    `/api/reports/getCourtReport?bookingDate=${debouncedateInput}&court=${selected}`
   );
 
   const { data: dropdownData } = useSWR(`/api/reports/courtDropdown`);
@@ -197,6 +206,7 @@ function CourtReportDetails() {
               <HStack>
                 <Input
                   placeholder="Select Date"
+                  cursor="pointer"
                   value={selectedDate}
                   onChange={handleDateChange}
                   type="date"
@@ -218,7 +228,7 @@ function CourtReportDetails() {
 
               <Flex direction={{ base: "column", md: "row" }} gap={8}>
                 <Select
-                  placeholder="courts"
+                  placeholder="Courts"
                   w={{ md: "165px" }}
                   onChange={handleSelectChange}
                   bgColor={bgColor2}
