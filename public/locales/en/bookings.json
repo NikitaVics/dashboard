@@ -4,6 +4,7 @@
         "totalBookings": "Total Bookings",
         "cancelledBookings": "Cancelled Bookings",
         "members": "Peak booking hour",
+        "daily": "Peak booking daily",
         "day":"Today",
         "bookingName":"Booking Name",
         "team":"Team",

@@ -6,9 +6,11 @@
         "phone":"Phone Number",
         "gender" : "Gender",
         "member":"Member Since",
+        "membership":"Membership",
         "name":"Name",
-        "status":"Status",
-        "search":"Search"
-
+        "status":"Account Status",
+        "search":"Search",
+        "request":"Request Status",
+        "age":"Age"
     }
 }

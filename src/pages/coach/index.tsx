@@ -41,6 +41,7 @@ import { AddCoachProps } from "@/service/types";
 import CoachForm from "@/components/coachForm";
 import ky, { HTTPError } from "ky";
 import { useDebounce } from "use-debounce";
+import ActivateIcon from "../components/Icons/activateIcon";
 
 type EditCoachProps = {
   coaches: AddCoachProps;
@@ -99,7 +100,7 @@ const Coach = ({ coaches }: EditCoachProps) => {
     },
     {
       Header: t(`coach.experience`),
-      accessor: "exp",
+      accessor: "coachFrom",
     },
     {
       Header: t("common:menu.status"),
@@ -108,7 +109,7 @@ const Coach = ({ coaches }: EditCoachProps) => {
         value === true ? (
           <Flex
             h="34px"
-            bgColor="green.50"
+            bgColor={sentColor}
             maxW="90px"
             alignItems="center"
             justify="center"
@@ -122,7 +123,7 @@ const Coach = ({ coaches }: EditCoachProps) => {
         ) : (
           <Flex
             h="34px"
-            bgColor="red.50"
+            bgColor={cancelColor}
             maxW="90px"
             alignItems="center"
             justify="center"
@@ -176,7 +177,7 @@ const Coach = ({ coaches }: EditCoachProps) => {
                 </MenuItem>
               ) : (
                 <MenuItem
-                  //  icon={<InActivateIcon />}
+                   icon={<ActivateIcon />}
 
                   bgColor={background}
                   _hover={{ bgColor: hover }}
@@ -193,6 +194,10 @@ const Coach = ({ coaches }: EditCoachProps) => {
       textAlign: "center",
     },
   ];
+
+  const sentColor = useColorModeValue("green.50","")
+
+const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
 
   const toast = useToast();
 
@@ -213,7 +218,7 @@ const Coach = ({ coaches }: EditCoachProps) => {
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/coach`);
+            await mutate(`/api/coach?searchTerm=${""}`);
           }
         }
       } catch (error) {
@@ -255,7 +260,7 @@ const Coach = ({ coaches }: EditCoachProps) => {
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/coach`);
+            await mutate(`/api/coach?searchTerm=${""}`);
           }
         }
       } catch (error) {
@@ -366,8 +371,8 @@ const Coach = ({ coaches }: EditCoachProps) => {
                     {t(`coach.addTitle`)}
                   </DrawerHeader>
 
-                  <DrawerBody>
-                    <CoachAddForm image={undefined} />
+                  <DrawerBody px={8}>
+                    <CoachAddForm image={undefined} onClose={onClose} email={""} phoneNumber={""} experience={""} lastName={""} firstName={""} gender={""}/>
                   </DrawerBody>
                 </DrawerContent>
               </Drawer>

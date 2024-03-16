@@ -23,21 +23,38 @@ import useSWR, { mutate } from "swr";
 
 type FormItems = {
   // eslint-disable-next-line
+  membershipStatus: any;
+  // eslint-disable-next-line
   status: any;
   memberId?: string;
   memberData?: {
     name: string;
     memberId?: string;
     gender: string;
-    status?: string;
+    isActive?: string;
+    age:string;
     image: string;
-    phoneNo: string;
+    phoneNumber: string;
+    membershipStatus:string
     email: string;
-    memberSince: string;
+    registrationDate: string;
     membershipExpirationCountDown: string;
   };
   onClose?: () => void;
 };
+
+
+const getColorForStatus = (status: string) => {
+  switch (status) {
+    case "Rejected":
+      return "rgba(235, 87, 87, 1)";
+    case "Pending":
+      return "rgba(237, 181, 73, 1)";
+    default:
+      return "rgba(39, 174, 96, 1)";
+  }
+};
+
 
 function MembersDetails({ memberData, memberId, onClose }: FormItems) {
   const { t } = useTranslation("members");
@@ -161,18 +178,34 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
 
   const bgColor = useColorModeValue("light.200", "dark.300");
   const color = useColorModeValue("light.50", "dark.400");
+
+
+  function formatDate(dateString: string) {
+    const date = new Date(dateString);
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: '2-digit',
+    };
+    return date.toLocaleDateString(undefined, options);
+  }
+  
+
+  
   return (
     <Formik
       initialValues={{
-        name: memberData?.name || "",
-        image: memberData?.image || "",
-        gender: memberData?.gender || "",
-        email: memberData?.email || "",
-        phoneNo: memberData?.phoneNo || "",
-        memberSince: memberData?.memberSince || "",
-        status: memberData?.status || "",
+        name: memberData?.name,
+        image: memberData?.image,
+        gender: memberData?.gender,
+        email: memberData?.email,
+        age : memberData?.age,
+        phoneNumber: memberData?.phoneNumber,
+        membershipStatus: memberData?.membershipStatus,
+        registrationDate: formatDate(memberData?.registrationDate || ""), 
+        status: memberData?.isActive,
         membershipExpirationCountDown:
-          memberData?.membershipExpirationCountDown || "",
+          memberData?.membershipExpirationCountDown
       }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
@@ -252,9 +285,26 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
               <CustomInput
                 inputProps={{
                   type: "text",
+                  placeholder: t(`members.age`),
+                  fontSize: "md",
+                  fontWeight: "medium",
+                  border: "none",
+                  color: { color },
+                  h: "45px",
+                }}
+                name="age"
+                isReadOnly
+                onKeyUp={() => setFieldTouched("age")}
+              />
+            </GridItem>
+            <GridItem rowSpan={2} colSpan={1}>
+              <CustomInput
+                inputProps={{
+                  type: "text",
                   placeholder: t(`members.email`),
                   fontSize: "md",
                   fontWeight: "medium",
+                 
                   border: "none",
                   color: { color },
                   h: "45px",
@@ -276,9 +326,9 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
                   border: "none",
                   h: "45px",
                 }}
-                name="phoneNo"
+                name="phoneNumber"
                 isReadOnly
-                onKeyUp={() => setFieldTouched("phoneNo")}
+                onKeyUp={() => setFieldTouched("phoneNumber")}
               />
             </GridItem>
             <GridItem rowSpan={2} colSpan={1}>
@@ -292,10 +342,28 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
                   border: "none",
                   h: "45px",
                 }}
-                name="memberSince"
-                onKeyUp={() => setFieldTouched("memberSince")}
+                name="registrationDate"
+                onKeyUp={() => setFieldTouched("registrationDate")}
               />
             </GridItem>
+
+          
+<GridItem rowSpan={2} colSpan={1}>
+  <CustomInput
+    inputProps={{
+      type: "text",
+      placeholder: t(`members.request`),
+      fontSize: "md",
+      fontWeight: "medium",
+      color: getColorForStatus(values.membershipStatus),
+      border: "none",
+      h: "45px",
+    }}
+    name="membershipStatus"
+    onKeyUp={() => setFieldTouched("membershipStatus")}
+  />
+</GridItem>
+
 
             <GridItem rowSpan={2} colSpan={1}>
               <CustomInput
@@ -324,7 +392,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
               <CustomInput
                 inputProps={{
                   type: "text",
-                  placeholder: t(`members.name`),
+                  placeholder: t(`members.membership`),
                   fontSize: "md",
                   fontWeight: "medium",
                   color: "rgba(244, 166, 98, 1)",
@@ -336,10 +404,6 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
                 onKeyUp={() => setFieldTouched("membershipExpirationCountDown")}
               />
             </GridItem>
-
-            {/* <GridItem rowSpan={2} colSpan={2}>
-              
-            </GridItem> */}
           </Grid>
 
           <Grid
@@ -390,29 +454,27 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
             </Box>
           </Grid>
 
-          <Box maxW="full">
-            {memberData?.status ? (
-              <Button
-                variant="outline"
-                colorScheme="red"
-                w="full"
-                h={"80px"}
-                onClick={() => handleActivate(memberId)}
-              >
-                DeActivate
-              </Button>
-            ) : (
-              <Button
-                variant="outline"
-                colorScheme="green"
-                w="full"
-                h={"80px"}
-                onClick={() => handleDeactivate(memberId)}
-              >
-                Activate
-              </Button>
-            )}
-          </Box>
+          <Flex   gap={4} maxW="full">
+            <Button
+              bgColor={"rgba(253, 238, 238, 1)"} color="rgba(238, 116, 116, 1)" border="1px solid rgba(238, 116, 116, 1)"
+              w="full"
+             
+              h={"60px"}
+              onClick={() => handleDeactivate(memberId)}
+            >
+              Reject
+            </Button>
+            <Button
+              variant="outline"
+              color={"white"}
+              bgColor={"green.100"}
+              w="full"
+              h={"60px"}
+              onClick={() => handleActivate(memberId)}
+            >
+              Approve
+            </Button>
+          </Flex>
         </Form>
       )}
     </Formik>

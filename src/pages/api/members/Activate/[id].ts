@@ -5,7 +5,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const client = new BehrainClient(req, res);
-  if (req.method === "POST") {
+  if (req.method === "PUT") {
     await ActivateMember(req.body);
   } else {
     res.status(405).end("Method Not Allowed");
@@ -13,9 +13,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   async function ActivateMember(params: MemberProps) {
     try {
+      console.log("APiParams :",params)
       const response = await client.members.ActivateMember(params);
       res.status(200).json(response);
     } catch (error) {
+      console.log(error)
       if (error instanceof HTTPError && error.response.status === 400) {
         const errorResponse: ErrorResponse = await error.response.json();
         const { messages } = errorResponse;
@@ -23,8 +25,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           error: { messages },
           status: 400,
         });
-      } else {
-        res.status(400).end;
       }
     }
   }

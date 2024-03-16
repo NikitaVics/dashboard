@@ -19,6 +19,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/pdf.js", "src/pages/du.js", "src/components/Forms/announcement.tsx", "src/service/announcement/addAnnouncement.ts"],
   "exclude": ["node_modules"]
 }

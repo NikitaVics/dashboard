@@ -5,17 +5,18 @@ import type { NextApiRequest, NextApiResponse } from "next"
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const client = new BehrainClient(req, res)
   if (req.method === "GET") {
-    await CancelBooking()
+    await getPeakBookingHour()
   } else {
     res.status(405).end(`Method ${req.method} Not Allowed`)
   }
 
-  async function CancelBooking() {
+  async function getPeakBookingHour() {
     try {
-      const response = await client.bookings.CancelBooking()
+      const response = await client.bookings.getCancelledBookings()
+
       res.status(200).json(response)
     } catch (error) {
-      console.log(error)
+     
       res.status(401).end()
     }
   }

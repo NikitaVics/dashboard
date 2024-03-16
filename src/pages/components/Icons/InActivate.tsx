@@ -5,9 +5,10 @@ export const InActivateIcon = (props: HTMLChakraProps<"svg">) => {
     <chakra.svg
       width="24px !important"
       height="24px !important"
-      viewBox="0 0 24 24"
+      viewBox="0 0 10 24"
       fill="none"
       {...props}
+     
     >
       <path
         d="M5 5L15 15M15 5L5 15"

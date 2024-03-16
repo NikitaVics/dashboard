@@ -1,4 +1,4 @@
-import { Menu, MenuItem, MenuList } from "@chakra-ui/react";
+import { Menu, MenuItem, MenuList, useColorModeValue } from "@chakra-ui/react";
 import React, { ReactElement } from "react";
 
 type ChakraMenuProps = {
@@ -13,14 +13,16 @@ type ItemProps = {
 
 const ChakraMenu = (props: React.PropsWithChildren<ChakraMenuProps>) => {
   const { items, children, ...rest } = props;
+  const color = useColorModeValue("rgba(254, 254, 254, 1)","rgba(13, 13, 13, 1)")
+  const bgColor = useColorModeValue("rgba(237, 250, 241, 1)","rgba(24, 24, 24, 1)")
   return (
-    <Menu {...rest}>
+    <Menu {...rest} placement="bottom">
       {children}
-      <MenuList>
+      <MenuList bgColor = {color} >
         {items &&
           items.map((item, index) => {
             return (
-              <MenuItem key={index} icon={item?.icon} onClick={item?.onClick}>
+              <MenuItem key={index} icon={item?.icon} onClick={item?.onClick} bgColor = {color} _hover={{bgColor : bgColor}}   >
                 {item.name}
               </MenuItem>
             );

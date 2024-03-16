@@ -12,10 +12,13 @@
         "court4":"Court 4",
         "court5":"Court 5",
         "court6":"Court 6",
+        "search":"Search",
         "placeholder":"Type Message....",
         "eventAnnoun":"Event Announcement",
         "type":"Announcement Type",
         "message" : "Message",
+        "schedule":"Scheduled  !",
+        "successMessage":"Your announcement was successfully scheduled",
         "date" : "Date",
         "time" : "Scheduled Time",
         "status" : "Status"

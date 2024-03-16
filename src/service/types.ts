@@ -23,6 +23,10 @@ export type User = {
     statusCode: number
   }
 
+  export type BookingMessage = {
+    message : string
+  }
+
   export type Session = {
     result: string[]
     token: string
@@ -33,6 +37,8 @@ bookingId:string
     image:string
    memberId : string
    gender:string
+   userId : string
+   age:string
       id?:string
       value:string
       name : string
@@ -45,16 +51,22 @@ bookingId:string
    
   }
   export type BookingsProps={
-    memberId : string
-    image:string
-    name: string
-    bookingId: string
-    bookingDate: string
-    slot: string
-    teamMembers: string
-    status?: string;
-
-   
+  
+         bookingStatus?: string
+          userName : string
+          userImage : string
+          bookingId: string
+          slot: string
+          bookingDate:string
+          tennisCourt?:{
+            name:string
+            courtImages : string
+          },
+          teamMembers?:{
+            name:string
+            imageUrl : string
+          }
+    
   }
 
 export type ReportProps = {
@@ -77,7 +89,18 @@ export type ReportProps = {
     message : string
     scheduledTime : string
     courtNames:string
-    images  : string
+    image? : string;
+    Message:string
+  }
+
+  export type AnnouncementProps = {
+    id:string
+    message : string
+    images : File[];
+    date  : string
+    time : string
+    scheduledDateTime : string
+    // images : FileList 
   }
 
   export type AddCoachProps = {
@@ -86,6 +109,7 @@ export type ReportProps = {
   firstName:string
   lastName:string
   phoneNumber:string
+  successfulBookings:string
   exp:string
   phoneNo:string
   email:string

@@ -122,17 +122,17 @@ function CourtReportDetails() {
         let textColor = "";
 
         if (value === "Booked") {
-          statusColor = "green.50";
+          statusColor = sentColor;
           borderColor = "rgba(39, 174, 96, 1)";
           textColor = "green.300";
           statusText = t("common:status.booked");
         } else if (value === "Pending") {
-          statusColor = "rgba(254, 245, 237, 1)";
+          statusColor =scheduleColor;
           borderColor = "rgba(244, 170, 105, 1)";
           textColor = "rgba(244, 170, 105, 1)";
           statusText = t("common:status.pending");
         } else {
-          statusColor = "red.50";
+          statusColor = cancelColor;
           borderColor = "rgba(235, 87, 87, 1)";
           textColor = "red.200";
           statusText = t("common:status.cancel");
@@ -155,6 +155,14 @@ function CourtReportDetails() {
       },
     },
   ];
+
+
+  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)","")
+
+  const sentColor = useColorModeValue("green.50","")
+  
+  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
+
 
   const isLoading = !responseData;
 
@@ -257,6 +265,8 @@ function CourtReportDetails() {
                   variant="outline"
                   color="green.400"
                   borderColor="green.400"
+                  fontWeight={500}
+                  borderRadius={"8px"}
                   rightIcon={<DownloadIcon />}
                 >
                   {t(`common:buttons.download`)}

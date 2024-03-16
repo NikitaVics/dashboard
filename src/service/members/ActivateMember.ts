@@ -7,10 +7,12 @@ const ActivateMember = async (
   httpClient: typeof ky,
   params: MemberProps,
 ) => {
-  const id = params.memberId
+console.log("Params :",params)
   return httpClient
-    .post(`Management/Member/${id}/toggle-status`, {
-      json: params,
+    .put(`Management/Member/member-activity-update`, {
+    searchParams:{
+      userId : 2
+    }
     })
     .json()
 }

@@ -65,6 +65,7 @@ const PageContainer = React.forwardRef<HTMLDivElement, PageContainerProps>(
         ) : (
           <>
             <motion.div
+         
               style={{ height: "inherit" }}
               initial={{ y: -16, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}

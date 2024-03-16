@@ -10,11 +10,9 @@ import {
   Text,
   useColorModeValue,
   useToast,
-  Image,
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import ky, { HTTPError } from "ky";
-import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import React from "react";
 import * as Yup from "yup";
@@ -22,18 +20,20 @@ import { CustomInput } from "../Input/customInput";
 import { mutate } from "swr";
 
 type FormItems = {
+  
   // eslint-disable-next-line
-  status: any;
+  membershipStatus: any;
   memberId?: string;
   memberData?: {
     name: string;
     memberId?: string;
     gender: string;
-    status?: string;
+    membershipStatus?: string;
     image: string;
     phoneNo: string;
     email: string;
     imageID: string;
+    age:string;
     memberSince: string;
     membershipExpirationCountDown: string;
   };
@@ -43,8 +43,7 @@ type FormItems = {
 function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
   const { t } = useTranslation("members");
   const toast = useToast();
-  const router = useRouter();
-  const { id } = router.query;
+ 
 
   
 
@@ -141,82 +140,13 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
   };
 
   const handleSubmit = async (values: FormItems) => {
-    if (id) {
+   
       try {
-        const response = await ky
-          .post("/api/roles/create-role", {
-            json: {
-              ...values,
-              id: router.query.id,
-            },
-          })
-          .json();
-        if (response) {
-          toast({
-            description: t("forms.role.update"),
-            status: "success",
-            position: "top",
-            duration: 3000,
-            isClosable: true,
-          });
-          router.push("/roles");
-        }
+        console.log(values)
       } catch (error) {
-        if (error instanceof HTTPError && error.response.status === 500) {
-          const errorResponse = await error.response.json();
-          const messages = errorResponse.error.messages;
-
-          toast({
-            description: (
-              <>
-                {messages.map((message: string, index: number) => (
-                  <Text key={index}>{message}</Text>
-                ))}
-              </>
-            ),
-            status: "error",
-            position: "top",
-            duration: 3000,
-            isClosable: true,
-          });
-        }
+       console.log(error)
       }
-    } else {
-      try {
-        const response = await ky
-          .post("/api/roles/create-role", { json: values })
-          .json();
-        if (response) {
-          toast({
-            description: t("forms.role.success"),
-            status: "success",
-            position: "top",
-            duration: 3000,
-            isClosable: true,
-          });
-          router.push("/roles");
-        }
-      } catch (error) {
-        if (error instanceof HTTPError && error.response.status === 500) {
-          const errorResponse = await error.response.json();
-          const messages = errorResponse.error.messages;
-
-          toast({
-            description: (
-              <>
-                {messages.map((message: string, index: number) => (
-                  <Text key={index}>{message}</Text>
-                ))}
-              </>
-            ),
-            status: "error",
-            position: "top",
-            duration: 3000,
-            isClosable: true,
-          });
-        }
-      }
-    }
+    
   };
 
   const validationSchema = Yup.object().shape({
@@ -238,7 +168,8 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
         email: memberData?.email || "",
         phoneNo: memberData?.phoneNo || "",
         memberSince: memberData?.memberSince || "",
-        status: memberData?.status || "",
+        membershipStatus: memberData?.membershipStatus || "",
+        age : memberData?.age || "",
         membershipExpirationCountDown:
           memberData?.membershipExpirationCountDown || "",
       }}
@@ -259,15 +190,7 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
               <Text>{memberData?.name}</Text>
             </Flex>
 
-            <Button
-              bg="none"
-              fontSize="16px"
-              color="green.100"
-              _hover={{ bg: "none" }}
-              fontWeight={"400"}
-            >
-              Edit Profile
-            </Button>
+          
           </HStack>
 
           <Grid
@@ -279,9 +202,10 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
             gap="8"
             mt={10}
             bgColor={bgColor}
-            pt={7}
+            
             pl={4}
             borderRadius={"20px"}
+           pt={12}
           >
             <GridItem rowSpan={2} colSpan={1}>
               <CustomInput
@@ -353,15 +277,15 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
               <CustomInput
                 inputProps={{
                   type: "text",
-                  placeholder: t(`members.member`),
+                  placeholder: t(`members.age`),
                   fontSize: "md",
                   fontWeight: "medium",
                   color: { color },
                   border: "none",
                   h: "45px",
                 }}
-                name="memberSince"
-                onKeyUp={() => setFieldTouched("memberSince")}
+                name="age"
+                onKeyUp={() => setFieldTouched("age")}
               />
             </GridItem>
 
@@ -375,20 +299,27 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
                   color: { color },
                   border: "none",
                   h: "45px",
-                  value: values.status === true ? "Active" : "In-Active",
-                  style: {
-                    color:
-                      values.status === true
-                        ? "rgba(39, 174, 96, 1)"
-                        : "rgba(235, 87, 87, 1)",
-                  },
+                  value:
+                  values.membershipStatus === "Pending"
+                    ? "Pending"
+                    : values.membershipStatus === "Approved"
+                    ? "Approved"
+                    : "Rejected",
+                    style: {
+                      color:
+                        values.membershipStatus === "Pending"
+                          ? "rgba(242, 153, 74, 1)"
+                          : values.membershipStatus === "Approved"
+                          ? "rgba(39, 174, 96, 1)"
+                          : "rgba(235, 87, 87, 1)",
+                    },
                 }}
                 name="status"
                 isReadOnly
                 onKeyUp={() => setFieldTouched("status")}
               />
             </GridItem>
-            <GridItem rowSpan={1} colSpan={2}>
+            {/* <GridItem rowSpan={1} colSpan={2}>
               <Image
                 src={memberData?.imageID}
                 alt={"ss"}
@@ -401,14 +332,14 @@ function ApplicationDetails({ memberData, memberId, onClose }: FormItems) {
                   Document
                 </Text>
               </Flex>
-            </GridItem>
+            </GridItem> */}
           </Grid>
 
-          <Flex mt={15} gap={4} maxW="full">
+          <Flex  mt={40} gap={4} maxW="full">
             <Button
-              variant="outline"
-              colorScheme="red"
+              bgColor={"rgba(253, 238, 238, 1)"} color="rgba(238, 116, 116, 1)" border="1px solid rgba(238, 116, 116, 1)"
               w="full"
+             
               h={"80px"}
               onClick={() => handleDeactivate(memberId)}
             >

@@ -10,7 +10,11 @@
     "send": "Send",
     "addCoach": "Add Coach",
     "approve": "Approve",
-    "reject": "Reject"
+    "reject": "Reject",
+    "cancel":"Cancel Booking",
+    "reSchedule" : "Re-Schedule",
+    "cancelSchedule" : "Cancel Schedule"
+    
   },
   "status": {
     "approved": "Approved",

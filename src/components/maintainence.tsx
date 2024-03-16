@@ -1,16 +1,23 @@
-import {  Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody,  useColorModeValue} from "@chakra-ui/react";
+import {  Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody,  useColorModeValue, Heading, Flex} from "@chakra-ui/react";
 import React from "react";
 import useTranslation from "next-translate/useTranslation";
 import CourtMaintainence from "./Forms/maintainence";
+import useSWR from "swr";
 
 type MaintainenceProps = {
   isOpen: boolean;
   onClose: () => void;
+  id : string
 };
 
 const MaintainenceForm = (props: MaintainenceProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose,id } = props;
+  const { data: Data, isValidating } = id ? useSWR(
+    `/api/announcement/announcement-detail?id=${id}`
+  ) : { data: undefined, isValidating: false };
+  
 
+  const responseData  =  Data?.result
   const color = useColorModeValue("rgba(248, 248, 248, 1)", "dark.500");
   const { t } = useTranslation("announcement");
 
@@ -29,9 +36,14 @@ const MaintainenceForm = (props: MaintainenceProps) => {
         </DrawerHeader>
 
         <DrawerBody>
+        {isValidating ? (
+            <Flex alignItems="center" justifyContent="center" height="full">
+            <Heading>Loading...</Heading>
+          </Flex>
+          ) : (
        
-       <CourtMaintainence />
-        
+       <CourtMaintainence message={undefined} onClose={onClose} courtData={responseData} courtId={id} />
+          )}
         </DrawerBody>
       </DrawerContent>
     </Drawer>

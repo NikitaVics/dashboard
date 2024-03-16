@@ -24,9 +24,13 @@ type MemberFormProps = {
 const MembersForm = (props: MemberFormProps) => {
   const { isOpen, onClose, memberId } = props;
 
-  const { data: memberData, isValidating } = useSWR<MemberProps>(
+  const { data: responseData, isValidating } = useSWR<MemberProps>(
     `/api/members/member-detail?id=${memberId}`
   );
+// eslint-disable-next-line
+  //@ts-ignore
+  const memberData = responseData?.result;
+
   const color = useColorModeValue("dark.100", "dark.500");
 
   return (
@@ -49,7 +53,7 @@ const MembersForm = (props: MemberFormProps) => {
               <Heading>Loading...</Heading>
             </Flex>
           ) : (
-         <MembersDetails memberId={memberId} onClose={onClose} memberData={memberData} status={undefined}  />
+         <MembersDetails memberId={memberId} onClose={onClose} memberData={memberData} status={undefined} membershipStatus={""}  />
       
           )}
         </DrawerBody>

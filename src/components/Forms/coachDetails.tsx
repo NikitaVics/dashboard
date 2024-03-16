@@ -27,7 +27,7 @@ type FormItems = {
     name: string;
     coachId?: string;
     gender: string;
-
+    successfulBookings: string;
     status?: string;
     image: File | string;
     phoneNo: string;
@@ -63,7 +63,7 @@ function CoachDetails({ coachData, coachId, onClose }: FormItems) {
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/coach`);
+            await mutate(/api/accho);
             onClose?.();
           }
         }
@@ -106,7 +106,7 @@ function CoachDetails({ coachData, coachId, onClose }: FormItems) {
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/coach`);
+            await mutate(/api/accho);
             onClose?.();
           }
         }
@@ -332,10 +332,16 @@ function CoachDetails({ coachData, coachId, onClose }: FormItems) {
               h={"75px"}
               borderRadius={"12px"}
               px={4}
-              py={3}
+              py={2}
             >
-              <HStack>
-                {/* <Text fontSize={"43px"} fontWeight={"700"} color="green.300">{succesData}</Text> */}
+              <HStack gap={2}>
+                <Text
+                  fontSize={"43px"}
+                  fontWeight={"700"}
+                  color="rgba(39, 174, 96, 1)"
+                >
+                  {coachData?.successfulBookings}
+                </Text>
                 <Text fontSize={"14px"} color={color2}>
                   Succesfull Booking
                 </Text>

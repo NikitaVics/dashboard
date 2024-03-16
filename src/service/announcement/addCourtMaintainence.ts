@@ -10,7 +10,7 @@ const AddCourtMaintainence = async (
     .post(`Management/Announcement/create CourtMaintenance Announcement`, {
       json: {
         message: params.message,
-  scheduledDateTime: "2024-01-25T13:14:15.859Z",
+  scheduledDateTime: params.scheduledDateTime,
   courtNames:[params.courtNames]
       }
     })
