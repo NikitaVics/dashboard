@@ -20,6 +20,7 @@ import useSWR from "swr";
 import TableSkeleton from "@/components/Skeleton/TableSkeleton";
 import { Input } from "@chakra-ui/react";
 import DownloadIcon from "../components/Icons/downloadIcon";
+import { useDebounce } from "use-debounce";
 
 function CoachReportDetails() {
   const { t } = useTranslation("reports");
@@ -29,8 +30,13 @@ function CoachReportDetails() {
   const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedDates = event.target.value;
     const [year, month, day] = selectedDates.split("-");
-    const reversedDate = `${year}-${month}-${day}`;
-    setSelectedDate(reversedDate);
+
+    if (year && month && day) {
+      const reversedDate = `${year}-${month}-${day}`;
+      setSelectedDate(reversedDate);
+    } else {
+      setSelectedDate("");
+    }
   };
 
   const [selected, setSelected] = useState("");
@@ -43,8 +49,10 @@ function CoachReportDetails() {
     setSelectedCoach(selectedCoach)
   };
 
+  const [debouncedateInput] = useDebounce(selectedDate, 1000);
+
   const { data: responseData } = useSWR(
-    `/api/reports/getCoachReports?bookingDate=${selectedDate}&coach=${selected}`
+    `/api/reports/getCoachReports?bookingDate=${debouncedateInput}&coach=${selected}`
   );
 
   const { data: dropdownData } = useSWR(`/api/reports/coachDropdown`);
@@ -213,6 +221,7 @@ function CoachReportDetails() {
                 <Input
                   placeholder="Select Date"
                   value={selectedDate}
+                  cursor="pointer"
                   onChange={handleDateChange}
                   type="date"
                   mb={{ base: 4, md: 0 }}

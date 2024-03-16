@@ -20,32 +20,39 @@ import useSWR from "swr";
 import TableSkeleton from "@/components/Skeleton/TableSkeleton";
 import { Input } from "@chakra-ui/react";
 import DownloadIcon from "../components/Icons/downloadIcon";
+import { useDebounce } from "use-debounce";
 
 function CourtReportDetails() {
   const { t } = useTranslation("reports");
 
   const [selectedDate, setSelectedDate] = useState("");
-  
 
   const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedDates = event.target.value;
     const [year, month, day] = selectedDates.split("-");
-    const reversedDate = `${year}-${month}-${day}`;
-    setSelectedDate(reversedDate);
+
+    if (year && month && day) {
+      const reversedDate = `${year}-${month}-${day}`;
+      setSelectedDate(reversedDate);
+    } else {
+      setSelectedDate("");
+    }
   };
 
   const [selected, setSelected] = useState("");
- const [selectedCourt, setSelectedCourt] = useState("");
-
- 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [selectedCourt, setSelectedCourt] = useState("");
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedCourt = event.target.value;
     setSelected(selectedCourt);
     setSelectedCourt(selectedCourt);
   };
+
+  const [debouncedateInput] = useDebounce(selectedDate, 1000);
+
   const { data: responseData } = useSWR(
-    `/api/reports/getCourtReport?bookingDate=${selectedDate}&court=${selected}`
+    `/api/reports/getCourtReport?bookingDate=${debouncedateInput}&court=${selected}`
   );
 
   const { data: dropdownData } = useSWR(`/api/reports/courtDropdown`);
@@ -123,7 +130,7 @@ function CourtReportDetails() {
           textColor = "green.300";
           statusText = t("common:status.booked");
         } else if (value === "Pending") {
-          statusColor =scheduleColor;
+          statusColor = scheduleColor;
           borderColor = "rgba(244, 170, 105, 1)";
           textColor = "rgba(244, 170, 105, 1)";
           statusText = t("common:status.pending");
@@ -172,16 +179,13 @@ function CourtReportDetails() {
     }
   };
 
-  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)","")
+  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)", "");
 
-  const sentColor = useColorModeValue("green.50","")
-  
-  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
+  const sentColor = useColorModeValue("green.50", "");
 
+  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)", "");
 
   const isLoading = !responseData;
-
-
 
   const handleClearDate = () => {
     setSelectedDate("");
@@ -212,6 +216,7 @@ function CourtReportDetails() {
               <HStack>
                 <Input
                   placeholder="Select Date"
+                  cursor="pointer"
                   value={selectedDate}
                   onChange={handleDateChange}
                   type="date"
@@ -232,24 +237,18 @@ function CourtReportDetails() {
               </HStack>
 
               <Flex direction={{ base: "column", md: "row" }} gap={8}>
-              <Select
-  placeholder="Courts"
-  value={selectedCourt}
-  onChange={handleSelectChange}
-  w={{ md: "165px" }}
-  bgColor={bgColor2}
-  cursor="pointer"
-  _hover={{ bgColor: "rgba(78, 203, 113, 1)" }}
-                 
-  _focus={{ bgColor: "rgba(78, 203, 113, 1)" }}
->
-  {dropdownData?.map((value: string) => (
-    <option key={value} value={value}>
-      {value}
-    </option>
-  ))}
-</Select>
-
+                <Select
+                  placeholder="Courts"
+                  w={{ md: "165px" }}
+                  onChange={handleSelectChange}
+                  bgColor={bgColor2}
+                >
+                  {dropdownData?.map((value: string) => (
+                    <option key={value} value={value}>
+                      {value}
+                    </option>
+                  ))}
+                </Select>
                 {selected && (
                   <IconButton
                     onClick={handleClearCourt}

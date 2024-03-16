@@ -165,10 +165,8 @@ import {
             _disabled={{ opacity: "unset" }}
             {...labelProps}
           >
-            {label}
-          </FormLabel>
-        ) : (
-          label
+            {inputLeftElement}
+          </InputLeftElement>
         )}
         {bottomTextLabel && <Text {...bottomText}>{bottomTextLabel}</Text>} */}
       </FormControl>
