@@ -29,9 +29,10 @@ type FormItems = {
   memberId?: string;
   memberData?: {
     name: string;
-    memberId?: string;
+    id?: string;
     gender: string;
     isActive?: string;
+    membershipLeft : string;
     age:string;
     image: string;
     phoneNumber: string;
@@ -73,27 +74,38 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
     "rgba(224, 224, 226, 1)"
   );
 
-  const handleDeactivate = async (memberId: string | undefined) => {
-    if (memberId) {
+  const handleDeactivate = async (id: string | undefined) => {
+    if (id) {
       try {
-        const updatedValues = { memberId };
-        if (memberId) {
-          const response = await ky.post(` /api/members/Activate/${memberId}`, {
+        const updatedValues = { id };
+  
+        if (memberData?.membershipStatus === "Rejected" || memberData?.membershipStatus === "Pending"  ) {
+          const response = await ky.put(`/api/members/Approve/${id}`, {
             json: updatedValues,
           });
-
+  
           if (response) {
             toast({
-              description: "Successfully Activated",
+              description: "Successfully Updated",
               status: "success",
               position: "top",
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/members`);
-            onClose?.();
+            onClose?.()
+            await mutate(`/api/members?searchTerm=${""}`);
           }
+        } else {
+          toast({
+            description: "Already Approved",
+            status: "error",
+            position: "top",
+            duration: 3000,
+            isClosable: true,
+          });
+         
         }
+      
       } catch (error) {
         if (error instanceof HTTPError && error.response.status === 400) {
           const errorResponse = await error.response.json();
@@ -111,32 +123,46 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
             duration: 3000,
             isClosable: true,
           });
+        } else {
+          console.error(error); 
         }
       }
     }
   };
 
-  const handleActivate = async (memberId: string | undefined) => {
-    if (memberId) {
+  const handleActivate = async (id: string | undefined) => {
+    if (id) {
       try {
-        const updatedValues = { memberId };
-        if (memberId) {
-          const response = await ky.post(`/api/members/Activate/${memberId}`, {
+        const updatedValues = { id };
+  
+        if (memberData?.membershipStatus === "Approved" || memberData?.membershipStatus === "Pending"  ) {
+          const response = await ky.put(`/api/members/Approve/${id}`, {
             json: updatedValues,
           });
-
+  
           if (response) {
             toast({
-              description: "Successfully Deactivated",
+              description: "Successfully Updated",
               status: "success",
               position: "top",
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/members`);
-            onClose?.();
+            onClose?.()
+            await mutate(`/api/members?searchTerm=${""}`);
+
           }
+        } else {
+          toast({
+            description: "Already Rejected",
+            status: "error",
+            position: "top",
+            duration: 3000,
+            isClosable: true,
+          });
+        
         }
+      
       } catch (error) {
         if (error instanceof HTTPError && error.response.status === 400) {
           const errorResponse = await error.response.json();
@@ -154,10 +180,15 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
             duration: 3000,
             isClosable: true,
           });
+        } else {
+          console.error(error); 
         }
       }
     }
   };
+  
+
+
 
   const handleSubmit = async (values: FormItems) => {
     console.log(values);
@@ -191,15 +222,18 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
   }
   
 
+  const id = memberData?.id
   
   return (
     <Formik
       initialValues={{
+       
         name: memberData?.name,
         image: memberData?.image,
         gender: memberData?.gender,
         email: memberData?.email,
         age : memberData?.age,
+        membershipLeft : memberData?.membershipLeft,
         phoneNumber: memberData?.phoneNumber,
         membershipStatus: memberData?.membershipStatus,
         registrationDate: formatDate(memberData?.registrationDate || ""), 
@@ -399,9 +433,9 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
                   border: "none",
                   h: "45px",
                 }}
-                name="membershipExpirationCountDown"
+                name="membershipLeft"
                 isReadOnly
-                onKeyUp={() => setFieldTouched("membershipExpirationCountDown")}
+                onKeyUp={() => setFieldTouched("membershipLeft")}
               />
             </GridItem>
           </Grid>
@@ -455,22 +489,26 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
           </Grid>
 
           <Flex   gap={4} maxW="full">
-            <Button
-              bgColor={"rgba(253, 238, 238, 1)"} color="rgba(238, 116, 116, 1)" border="1px solid rgba(238, 116, 116, 1)"
-              w="full"
-             
-              h={"60px"}
-              onClick={() => handleDeactivate(memberId)}
-            >
-              Reject
-            </Button>
+          <Button
+  bgColor={"rgba(253, 238, 238, 1)"}
+  color="rgba(238, 116, 116, 1)"
+  border="1px solid rgba(238, 116, 116, 1)"
+  w="full"
+  h={"60px"}
+
+  onClick={() => handleActivate(id)}
+>
+  Reject
+</Button>
+
+
             <Button
               variant="outline"
               color={"white"}
               bgColor={"green.100"}
               w="full"
               h={"60px"}
-              onClick={() => handleActivate(memberId)}
+              onClick={() => handleDeactivate(id)}
             >
               Approve
             </Button>

@@ -34,10 +34,13 @@ function CoachReportDetails() {
   };
 
   const [selected, setSelected] = useState("");
+  const [selectedCoach, setSelectedCoach] = useState("");
+
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedCoach = event.target.value;
     setSelected(selectedCoach);
+    setSelectedCoach(selectedCoach)
   };
 
   const { data: responseData } = useSWR(
@@ -186,6 +189,7 @@ function CoachReportDetails() {
 
   const handleClearCourt = () => {
     setSelected("");
+    setSelectedCoach("");
   };
 
   return (
@@ -232,7 +236,12 @@ function CoachReportDetails() {
                   placeholder="Coach"
                   w={{ md: "165px" }}
                   onChange={handleSelectChange}
+                  value={selectedCoach}
                   bgColor={bgColor2}
+                  cursor = "pointer"
+                  _hover={{ bgColor: "rgba(78, 203, 113, 1)" }}
+                 
+                  _focus={{ bgColor: "rgba(78, 203, 113, 1)" }}
                 >
                   {dropdownData?.map((value: string) => (
                     <option key={value} value={value}>

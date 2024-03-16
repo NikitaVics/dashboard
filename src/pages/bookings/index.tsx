@@ -70,15 +70,16 @@ function Bookings( {memberData}:EditTaxDetailsProps) {
     const selectedDates = event.target.value;
     const [year, month, day] = selectedDates.split("-");
   
-   
+  
+  
     if (year && month && day) {
       const reversedDate = `${year}-${month}-${day}`;
       setSelectedDate(reversedDate);
     } else {
-     
       setSelectedDate("");
     }
   };
+  
   
   
   
@@ -457,16 +458,19 @@ const toast = useToast()
 
            
                     
-     <Input
-        placeholder="Select Date"
-        value={selectedDate}
-        onChange={handleDateChange}
-        type="date"
-        mb={{ base: 4, md: 0 }} 
-        maxW={{md:"352px"}}
-        h="60px"
-        cursor={"pointer"} 
-      />
+                    <Input
+  placeholder="Select Date"
+  value={selectedDate}
+  onChange={handleDateChange}
+  type="date"
+  mb={{ base: 4, md: 0 }}
+  maxW={{ md: "352px" }}
+  h="60px"
+  cursor="pointer"
+  min="1000-01-01" 
+  max="9999-12-31"  
+/>
+
        {selectedDate && (
         <IconButton onClick={handleClearDate} color="red.400" cursor={"pointer"} aria-label={""} bg="none">
           <CloseButton />

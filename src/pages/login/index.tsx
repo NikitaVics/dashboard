@@ -15,7 +15,7 @@ import { Box } from "@chakra-ui/react";
 import { Checkbox, FormControl } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/react";
 import { Formik } from "formik";
-import ky from "ky";
+import ky, { HTTPError } from "ky";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import React, { useEffect, useRef, useState } from "react";
@@ -118,8 +118,8 @@ function LoginScreen() {
         router.push("/dashboard");
       }
     } catch (error) {
-      // if (error instanceof HTTPError && error.response.status === 401) {
-        const messages = "Invalid Email or Password"
+      if (error instanceof HTTPError && error.response.status === 400) {
+        const messages = "Invalid UserName or Email or Password"
         toast({
           description: messages,
           status: "error",
@@ -127,7 +127,7 @@ function LoginScreen() {
           duration: 3000,
           isClosable: true,
         });
-      // }
+      }
     }
   };
 

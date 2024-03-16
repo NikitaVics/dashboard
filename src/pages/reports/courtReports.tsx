@@ -25,6 +25,7 @@ function CourtReportDetails() {
   const { t } = useTranslation("reports");
 
   const [selectedDate, setSelectedDate] = useState("");
+  
 
   const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedDates = event.target.value;
@@ -34,10 +35,14 @@ function CourtReportDetails() {
   };
 
   const [selected, setSelected] = useState("");
+ const [selectedCourt, setSelectedCourt] = useState("");
+
+ 
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedCourt = event.target.value;
     setSelected(selectedCourt);
+    setSelectedCourt(selectedCourt);
   };
   const { data: responseData } = useSWR(
     `/api/reports/getCourtReport?bookingDate=${selectedDate}&court=${selected}`
@@ -147,16 +152,6 @@ function CourtReportDetails() {
     },
   ];
 
-
-  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)","")
-
-  const sentColor = useColorModeValue("green.50","")
-  
-  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
-
-
-  const isLoading = !responseData;
-
   const handleExport = async () => {
     try {
       const response = await fetch(
@@ -177,12 +172,24 @@ function CourtReportDetails() {
     }
   };
 
+  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)","")
+
+  const sentColor = useColorModeValue("green.50","")
+  
+  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
+
+
+  const isLoading = !responseData;
+
+
+
   const handleClearDate = () => {
     setSelectedDate("");
   };
 
   const handleClearCourt = () => {
     setSelected("");
+    setSelectedCourt("");
   };
 
   return (
@@ -225,18 +232,24 @@ function CourtReportDetails() {
               </HStack>
 
               <Flex direction={{ base: "column", md: "row" }} gap={8}>
-                <Select
-                  placeholder="courts"
-                  w={{ md: "165px" }}
-                  onChange={handleSelectChange}
-                  bgColor={bgColor2}
-                >
-                  {dropdownData?.map((value: string) => (
-                    <option key={value} value={value}>
-                      {value}
-                    </option>
-                  ))}
-                </Select>
+              <Select
+  placeholder="Courts"
+  value={selectedCourt}
+  onChange={handleSelectChange}
+  w={{ md: "165px" }}
+  bgColor={bgColor2}
+  cursor="pointer"
+  _hover={{ bgColor: "rgba(78, 203, 113, 1)" }}
+                 
+  _focus={{ bgColor: "rgba(78, 203, 113, 1)" }}
+>
+  {dropdownData?.map((value: string) => (
+    <option key={value} value={value}>
+      {value}
+    </option>
+  ))}
+</Select>
+
                 {selected && (
                   <IconButton
                     onClick={handleClearCourt}
