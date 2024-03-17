@@ -468,6 +468,7 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
                         color: "gray.500",
                         h: "64px",
                         value: searchInput,
+                        cursor : "pointer",
                         onChange: (e) => setSearchInput(e.target.value),
                       }}
                       name="description"
