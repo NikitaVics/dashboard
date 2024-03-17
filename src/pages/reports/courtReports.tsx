@@ -242,6 +242,7 @@ function CourtReportDetails() {
                   w={{ md: "165px" }}
                   onChange={handleSelectChange}
                   bgColor={bgColor2}
+                  cursor="pointer"
                 >
                   {dropdownData?.map((value: string) => (
                     <option key={value} value={value}>
