@@ -79,10 +79,10 @@ const MonthTabs: React.FC = () => {
 
   return (
     <Box borderWidth="1px" p={4} mx={4} border="none">
-      <Text fontSize={"24px"} fontWeight={"700"}>
+      <Text fontSize={"24px"} fontWeight={"700"} cursor="default">
         {t(`dashboard.membershipGrowth`)}
       </Text>
-      <Text fontSize={"16px"} fontWeight={"500"} mt={5} mb={5}>
+      <Text fontSize={"16px"} fontWeight={"500"} mt={5} mb={5} cursor="default">
         {t(`dashboard.year`)}
       </Text>
       <ResponsiveContainer width="100%" height={300}>

@@ -25,8 +25,8 @@ interface CustomTooltipProps {
 
 interface YearlyGraphItem {
   peakDailyBooking: number;
-  monthName: string;
-  averagePeakHour: number;
+  slot: string;
+  bookingsMade: number;
  
 }
 
@@ -70,8 +70,8 @@ const yearlyGraph=bookingyearlyGraph?.result;
 const monthData: MonthData[] = [
     { month: '', value: 0 },
     ...(yearlyGraph || []).map((item: YearlyGraphItem) => ({
-      month: item.monthName,
-      value: item.peakDailyBooking,
+      month: item.slot,
+      value: item.bookingsMade,
     })),
   ];
 

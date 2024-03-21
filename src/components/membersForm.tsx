@@ -44,7 +44,7 @@ const MembersForm = (props: MemberFormProps) => {
           bgColor="rgba(0, 0, 0, 0.08)"
         />
         <DrawerHeader fontSize="28px" fontWeight="700">
-          Members Details
+          View Details
         </DrawerHeader>
 
         <DrawerBody>

@@ -96,7 +96,7 @@ const background  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
                         paddingTop: "1.5rem",
                         paddingBottom: "1.5rem",
                         position: "relative",
-                        cursor: "pointer",
+                       cursor : "default",
                         textTransform: "none",
                         color:tableColor,
                         fontWeight:"600",
