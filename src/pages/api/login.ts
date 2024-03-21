@@ -30,7 +30,7 @@ async function loginHandler(req: NextApiRequest, res: NextApiResponse) {
     const access_token = result.token;
     const date = new Date();
     // Cookie expiry time for 24hrs
-    const expiryTime = date.setTime(date.getTime() + 5 * 1000);
+    const expiryTime = date.setTime(date.getTime() + 23 * 59 * 59 * 1000);
 
     const tokenWithBearer = `Bearer ${access_token}`;
 
