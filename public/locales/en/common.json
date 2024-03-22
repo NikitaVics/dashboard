@@ -3,7 +3,7 @@
     "login": "Login",
     "view": "View Details",
     "views": "View Booking",
-    "inActivate": "In Activate",
+    "inActivate": "In Active Member",
     "activate": "Activate",
     "download": "Download",
     "schedule": "Schedule",
@@ -11,10 +11,9 @@
     "addCoach": "Add Coach",
     "approve": "Approve",
     "reject": "Reject",
-    "cancel":"Cancel Booking",
-    "reSchedule" : "Re-Schedule",
-    "cancelSchedule" : "Cancel Schedule"
-    
+    "cancel": "Cancel Booking",
+    "reSchedule": "Re-Schedule",
+    "cancelSchedule": "Cancel Schedule"
   },
   "status": {
     "approved": "Approved",

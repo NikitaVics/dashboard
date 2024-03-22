@@ -17,145 +17,129 @@ import {
   Text,
   useColorModeValue,
   useToast,
-    } from "@chakra-ui/react"
-import Table from "@/components/Table"
-import useTranslation from "next-translate/useTranslation"
-import React, { ChangeEvent, useState } from "react"
-import useSWR, { mutate } from "swr"
-import TableSkeleton from "@/components/Skeleton/TableSkeleton"
-import Layout from "../components/Layout"
-import CalenderIcon from "../components/Icons/calenderIcon"
-import MoreVertIcon from "../components/Icons/MoreVertIcon"
-import InActivateIcon from "../components/Icons/InActivate"
+} from "@chakra-ui/react";
+import Table from "@/components/Table";
+import useTranslation from "next-translate/useTranslation";
+import React, { ChangeEvent, useState } from "react";
+import useSWR, { mutate } from "swr";
+import TableSkeleton from "@/components/Skeleton/TableSkeleton";
+import Layout from "../components/Layout";
+import CalenderIcon from "../components/Icons/calenderIcon";
+import MoreVertIcon from "../components/Icons/MoreVertIcon";
+import InActivateIcon from "../components/Icons/InActivate";
 
+import ky, { HTTPError } from "ky";
+import { BookingsProps, MemberProps } from "@/service/types";
 
-import ky, { HTTPError } from "ky"
-import { BookingsProps, MemberProps } from "@/service/types"
+import { InputControl } from "@/components/Input/Input";
+import { Formik } from "formik";
+import { useDebounce } from "use-debounce";
 
-import { InputControl } from "@/components/Input/Input"
-import { Formik } from "formik"
-import { useDebounce } from "use-debounce"
-
-import BookingForm from "@/components/bookingForm"
-import PeakBooking from "../components/graph/peakbookingHour"
-import PageContainer from "../components/PageContainer"
-import ClockIcon from "../components/Icons/clockIcon"
-import DailyBooking from "../components/graph/dailyBooking"
-import EditIcon from "../components/Icons/EditIcon"
-import SearchIcon from "../components/Icons/searchIcon"
-
+import BookingForm from "@/components/bookingForm";
+import PeakBooking from "../components/graph/peakbookingHour";
+import PageContainer from "../components/PageContainer";
+import ClockIcon from "../components/Icons/clockIcon";
+import DailyBooking from "../components/graph/dailyBooking";
+import EditIcon from "../components/Icons/EditIcon";
+import SearchIcon from "../components/Icons/searchIcon";
 
 type EditTaxDetailsProps = {
-  memberData: BookingsProps
-}
-
-
-
-function Bookings( {memberData}:EditTaxDetailsProps) {
-
-  const { t } = useTranslation("bookings")
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-const handleEditModalOpen = (bookingId: MemberProps | undefined) => {
- 
-  setIsEditModalOpen(true)
-  if (bookingId) {
-     // eslint-disable-next-line
-  //@ts-ignore
-    setMemberId(bookingId); 
-  }
-}
-const [selectedDate, setSelectedDate] = useState("");
-
-const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
-  const selectedDates = event.target.value;
-  const [year, month, day] = selectedDates.split("-");
-
-
-
-  if (year && month && day) {
-    const reversedDate = `${year}-${month}-${day}`;
-    setSelectedDate(reversedDate);
-  } else {
-    setSelectedDate("");
-  }
+  memberData: BookingsProps;
 };
 
+function Bookings({ memberData }: EditTaxDetailsProps) {
+  const { t } = useTranslation("bookings");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const handleEditModalOpen = (bookingId: MemberProps | undefined) => {
+    setIsEditModalOpen(true);
+    if (bookingId) {
+      // eslint-disable-next-line
+      //@ts-ignore
+      setMemberId(bookingId);
+    }
+  };
+  const [selectedDate, setSelectedDate] = useState("");
 
+  const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedDates = event.target.value;
+    const [year, month, day] = selectedDates.split("-");
 
+    if (year && month && day) {
+      const reversedDate = `${year}-${month}-${day}`;
+      setSelectedDate(reversedDate);
+    } else {
+      setSelectedDate("");
+    }
+  };
 
-const [memberId, setMemberId] = useState("")
-const [searchInput, setSearchInput] = useState("")
-const [debouncedSearchInput] = useDebounce(searchInput, 900)
-const [debouncedateInput] = useDebounce(selectedDate, 1000)
-const { data: responseData } = useSWR(
-  `/api/bookings/bookingDetails?searchTerm=${debouncedSearchInput}&bookingDate=${debouncedateInput}`,
-)
+  const [memberId, setMemberId] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [debouncedSearchInput] = useDebounce(searchInput, 900);
+  const [debouncedateInput] = useDebounce(selectedDate, 1000);
+  const { data: responseData } = useSWR(
+    `/api/bookings/bookingDetails?searchTerm=${debouncedSearchInput}&bookingDate=${debouncedateInput}`
+  );
 
+  const { data: totalbookingsList } = useSWR("/api/bookings/totalBookings");
+  const totalbookings = totalbookingsList?.result;
 
+  const { data: cancelbookingsList } = useSWR(`/api/bookings/bookings`);
 
+  const cancelbooking = cancelbookingsList?.result;
 
-   const { data: totalbookingsList } = useSWR("/api/bookings/totalBookings")
-   const totalbookings=totalbookingsList?.result
+  const background = useColorModeValue("#fff", "#0D0D0D");
 
-   const { data: cancelbookingsList } = useSWR(`/api/bookings/bookings`)
-  
-    const cancelbooking=cancelbookingsList?.result
+  const hover = useColorModeValue("rgba(237, 250, 241, 1)", "#181818;");
 
-
-  const background = useColorModeValue("#fff","#0D0D0D")
-
-
-
-
-  const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818;")
-
-
-   const columnConfig = [
+  const columnConfig = [
     {
       Header: t(`bookings.bookingName`),
       // eslint-disable-next-line
-Cell: ({ row: { original } }: any) => { 
-  return (
-
-  <HStack align="center" spacing={2}>
-    
-    {original.bookingPersonImage ? (
-      <Avatar src={original.bookingPersonImage} size="md" />
-    ) : (
-      <Avatar size="md" />
-    )}
-    <Text>{original.bookingPerson}</Text>
-  </HStack>
-) } 
+      Cell: ({ row: { original } }: any) => {
+        return (
+          <HStack align="center" spacing={2}>
+            {original.bookingPersonImage ? (
+              <Avatar src={original.bookingPersonImage} size="md" />
+            ) : (
+              <Avatar size="md" />
+            )}
+            <Text>{original.bookingPerson}</Text>
+          </HStack>
+        );
+      },
     },
     {
       Header: t(`bookings.team`),
-      accessor:"teamMembersImage",
+      accessor: "teamMembersImage",
       // eslint-disable-next-line
       Cell: ({ row: { original } }: any) => (
-  <AvatarGroup>
-    {(original.teamMembersImage || []).map((image: string, index: number) => (
-      <Avatar key={index} src={image} size="md" />
-    ))}
-    {Array.from({ length: Math.max(0, 3 - (original.teamMembersImage || []).length) }).map((_, index) => (
-      <Avatar key={`default-${index}`} size="md" />
-    ))}
-  </AvatarGroup>
-),
-    },      
+        <AvatarGroup>
+          {(original.teamMembersImage || []).map(
+            (image: string, index: number) => (
+              <Avatar key={index} src={image} size="md" />
+            )
+          )}
+          {Array.from({
+            length: Math.max(0, 3 - (original.teamMembersImage || []).length),
+          }).map((_, index) => (
+            <Avatar key={`default-${index}`} size="md" />
+          ))}
+        </AvatarGroup>
+      ),
+    },
     {
       Header: t(`bookings.coach`),
       accessor: "coachImage",
-        // eslint-disable-next-line
-        Cell: ({ row: { original } } : any ) => (
-         <>
+      // eslint-disable-next-line
+      Cell: ({ row: { original } }: any) => (
+        <>
           {original.coachImage ? (
             <Avatar src={original.bookingPersonImage} size="md" />
           ) : (
             <Avatar size="md" />
           )}
-          </>
-        ),
+        </>
+      ),
     },
     {
       Header: t(`bookings.court`),
@@ -173,7 +157,7 @@ Cell: ({ row: { original } }: any) => {
         let statusText = "";
         let borderColor = "";
         let textColor = "";
-    
+
         if (value === "Booked") {
           statusColor = sentColor;
           borderColor = "rgba(39, 174, 96, 1)";
@@ -190,9 +174,8 @@ Cell: ({ row: { original } }: any) => {
           textColor = "red.200";
           statusText = t("common:status.cancel");
         }
-    
+
         return (
-          
           <Flex
             h="34px"
             bgColor={statusColor}
@@ -209,306 +192,319 @@ Cell: ({ row: { original } }: any) => {
       },
     },
     {
-      Header:  t("common:menu.action"),
-    
-       // eslint-disable-next-line
+      Header: t("common:menu.action"),
+
+      // eslint-disable-next-line
       Cell: ({ row }: any) => {
         const bookingDate = new Date(row.original.bookingDate);
         const currentDate = new Date();
-  
-        
+
         const isPastDate = bookingDate < currentDate;
         return (
-          
-          <Menu >
+          <Menu>
             <MenuButton
               as={IconButton}
               icon={<MoreVertIcon />}
               variant="ghost"
-               _hover = {{bg:"none"}}
+              _hover={{ bg: "none" }}
             />
             <MenuList
               right="0"
               minWidth="120px"
               position="fixed"
               bgColor={background}
-             
               zIndex={9999}
               transform="translateY(20px)"
-             
             >
               <MenuItem
-               icon={<EditIcon />}
-               
+                icon={<EditIcon />}
                 bgColor={background}
-                _hover = {{bgColor : hover}}
+                _hover={{ bgColor: hover }}
                 onClick={() => handleEditModalOpen(row?.original?.bookingId)}
               >
                 View Booking
               </MenuItem>
               {row?.original?.status === "Booked" && !isPastDate && (
-            <MenuItem
-              icon={<InActivateIcon />}
-              bgColor={background}
-              _hover={{ bgColor: hover }}
-              color="rgba(235, 87, 87, 1)"
-              onClick={() => handleDeactivate(row?.original?.bookingId)}
-            >
-              {t("common:buttons.cancel")}
-            </MenuItem>
-          )}
+                <MenuItem
+                  icon={<InActivateIcon />}
+                  bgColor={background}
+                  _hover={{ bgColor: hover }}
+                  color="rgba(235, 87, 87, 1)"
+                  onClick={() => handleDeactivate(row?.original?.bookingId)}
+                >
+                  {t("common:buttons.cancel")}
+                </MenuItem>
+              )}
             </MenuList>
           </Menu>
-        )
+        );
       },
       textAlign: "center",
-    }
-  
-    
-  ]
+    },
+  ];
 
-  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)","")
+  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)", "");
 
-  const sentColor = useColorModeValue("green.50","")
-  
-  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
-    
-const toast = useToast()
+  const sentColor = useColorModeValue("green.50", "");
+
+  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)", "");
+
+  const toast = useToast();
   const handleDeactivate = async (bookingId: string) => {
-      if (bookingId) {
-        try {
-          const updatedValues = { bookingId }
-          if (bookingId) {
-            const response = await ky.put(
-              `/api/bookings/DeActivate/${bookingId}`,
-              {
-                json: updatedValues,
-              },
-            )
-  
-            if (response) {
-              toast({
-                description: "Successfully DeActivated",
-                status: "success",
-                position: "top",
-                duration: 3000,
-                isClosable: true,
-              })
-             await mutate(`/api/bookings/bookingDetails?searchTerm=${debouncedSearchInput}&bookingDate=${selectedDate}`)
+    if (bookingId) {
+      try {
+        const updatedValues = { bookingId };
+        if (bookingId) {
+          const response = await ky.put(
+            `/api/bookings/DeActivate/${bookingId}`,
+            {
+              json: updatedValues,
             }
-          }
-        } catch (error) {
-          if (error instanceof HTTPError && error.response.status === 400) {
-            const errorResponse = await error.response.json()
-            const messages = errorResponse.error.messages
+          );
+
+          if (response) {
             toast({
-              description: (
-                <>
-                  {messages.map((message: string, index: number) => (
-                    <Text key={index}>{message}</Text>
-                  ))}
-                </>
-              ),
-              status: "error",
+              description: "Successfully DeActivated",
+              status: "success",
               position: "top",
               duration: 3000,
               isClosable: true,
-            })
+            });
+            await mutate(
+              `/api/bookings/bookingDetails?searchTerm=${debouncedSearchInput}&bookingDate=${selectedDate}`
+            );
           }
+        }
+      } catch (error) {
+        if (error instanceof HTTPError && error.response.status === 400) {
+          const errorResponse = await error.response.json();
+          const messages = errorResponse.error.messages;
+          toast({
+            description: (
+              <>
+                {messages.map((message: string, index: number) => (
+                  <Text key={index}>{message}</Text>
+                ))}
+              </>
+            ),
+            status: "error",
+            position: "top",
+            duration: 3000,
+            isClosable: true,
+          });
         }
       }
     }
+  };
 
-  const isLoading = !responseData
- 
+  const isLoading = !responseData;
 
-  const bgColor = useColorModeValue("light.300","dark.600")
-  const color  = useColorModeValue("dark.700","light.400")
-  const color2  = useColorModeValue("dark.400","light.50")
-  
+  const bgColor = useColorModeValue("light.300", "dark.600");
+  const color = useColorModeValue("dark.700", "light.400");
+  const color2 = useColorModeValue("dark.400", "light.50");
+
   const handleClearDate = () => {
-      setSelectedDate("");
-    };
+    setSelectedDate("");
+  };
 
-    const [showPeakBooking, setShowPeakBooking] = useState(true);
+  const [showPeakBooking, setShowPeakBooking] = useState(true);
 
-    const handleClockIconClick = () => {
-      setShowPeakBooking(!showPeakBooking);
-    };
-
+  const handleClockIconClick = () => {
+    setShowPeakBooking(!showPeakBooking);
+  };
 
   return (
     <>
-     <Layout title={t("bookings.title")} description={t("page.description")}>
-     
-       
+      <Layout title={t("bookings.title")} description={t("page.description")}>
         {isLoading ? (
-          <TableSkeleton  />
-         
+          <TableSkeleton />
         ) : (
+          <Box>
+            <Grid
+              templateRows="repeat(1, 1fr)"
+              templateColumns={{
+                base: "repeat(1, 1fr)",
+                md: "repeat(3, 4fr)",
+                sm: "repeat(2, 1fr)",
+              }}
+              gap="5"
+              mt="10"
+            >
+              <GridItem rowSpan={1} colSpan={1}>
+                <Box
+                  bgColor={bgColor}
+                  h="170px"
+                  borderRadius="20px"
+                  px={6}
+                  py={6}
+                >
+                  <Stack>
+                    <Flex justify="space-between">
+                      <Text color={color}>{t(`bookings.totalBookings`)}</Text>
+                      <CalenderIcon />
+                    </Flex>
+                    <Flex justify={"space-between"} mt={14}>
+                      <HStack>
+                        <Text fontSize={"32px"} fontWeight={"700"}>
+                          {totalbookings}
+                        </Text>
+                        <Text fontSize={"13px"} fontWeight="400" color={color2}>
+                          {t(`bookings.day`)}
+                        </Text>
+                      </HStack>
+                    </Flex>
+                  </Stack>
+                </Box>
+              </GridItem>
 
+              <GridItem rowSpan={1} colSpan={1}>
+                <Box
+                  bgColor={bgColor}
+                  h="170px"
+                  borderRadius="20px"
+                  px={6}
+                  py={6}
+                >
+                  <Stack>
+                    <Flex justify="space-between">
+                      <Text color={color}>
+                        {t(`bookings.cancelledBookings`)}
+                      </Text>
+                      <CalenderIcon />
+                    </Flex>
+                    <Flex justify={"space-between"} mt={14}>
+                      <HStack>
+                        <Text
+                          fontSize={"32px"}
+                          fontWeight={"700"}
+                          color={"rgba(235, 87, 87, 1)"}
+                        >
+                          {cancelbooking}
+                        </Text>
+                        <Text
+                          fontSize={"13px"}
+                          fontWeight="400"
+                          color="red.200"
+                        >
+                          {t(`bookings.day`)}
+                        </Text>
+                      </HStack>
+                    </Flex>
+                  </Stack>
+                </Box>
+              </GridItem>
+              <GridItem rowSpan={1} colSpan={1}>
+                <Box
+                  bgColor={bgColor}
+                  h="170px"
+                  borderRadius="20px"
+                  px={6}
+                  py={6}
+                >
+                  <Flex justify="space-between">
+                    <Text color={color}>
+                      {showPeakBooking
+                        ? t(`bookings.members`)
+                        : t(`bookings.daily`)}
+                    </Text>
+                    <ClockIcon
+                      onClick={handleClockIconClick}
+                      cursor="pointer"
+                    />
+                  </Flex>
 
-         
-         <Box >
-          
-          <Grid
-          templateRows="repeat(1, 1fr)"
-          templateColumns={{
-            base: "repeat(1, 1fr)",
-            md: "repeat(3, 4fr)",
-            sm: "repeat(2, 1fr)",
-          }}
-          gap="5"
-          mt="10">
-         <GridItem rowSpan={1} colSpan={1}>
-         <Box  bgColor={bgColor} h="170px"   borderRadius="20px" px={6} py={6}>
-            <Stack>
-            <Flex justify="space-between">
-             <Text color={color}>{t(`bookings.totalBookings`)}</Text>
-             <CalenderIcon />
-             </Flex>
-             <Flex justify={"space-between"} mt={14}>
-               <HStack>
-                <Text fontSize={"32px"} fontWeight={"700"}>{totalbookings}</Text> 
-               <Text fontSize={"13px"} fontWeight="400" color={color2}>{t(`bookings.day`)}</Text>
-               </HStack>
-           
-              
-             </Flex>
-            </Stack>
-            
-         </Box>
-         </GridItem>
-        
-        
-         <GridItem rowSpan={1} colSpan={1}>
-         <Box  bgColor={bgColor} h="170px"   borderRadius="20px" px={6} py={6}>
-          <Stack>
+                  {showPeakBooking ? <PeakBooking /> : <DailyBooking />}
+                </Box>
+              </GridItem>
+            </Grid>
 
-
-             <Flex justify="space-between">
-             <Text color={color}>{t(`bookings.cancelledBookings`)}</Text>
-              <CalenderIcon /> 
-             </Flex>
-             <Flex justify={"space-between"} mt={14}>
-             <HStack>
-                 <Text fontSize={"32px"} fontWeight={"700"} color={"rgba(235, 87, 87, 1)"}>{cancelbooking}</Text>   
-               <Text fontSize={"13px"} fontWeight="400" color="red.200">{t(`bookings.day`)}</Text>
-               </HStack>
-           
-             </Flex>
-             </Stack>
-         </Box>
-         </GridItem>
-         <GridItem rowSpan={1} colSpan={1}>
-    <Box bgColor={bgColor} h="170px" borderRadius="20px" px={6} py={6}>
-      <Flex justify="space-between">
-        <Text color={color}>{showPeakBooking ? t(`bookings.members`) : t(`bookings.daily`)}</Text>
-        <ClockIcon onClick={handleClockIconClick} cursor="pointer"/>
-      </Flex>
-
-      {showPeakBooking ? <PeakBooking /> : <DailyBooking />} 
-    </Box>
-  </GridItem>
-     
-         
-       </Grid>
-      
-      
-
-
-                <PageContainer  as="section"
-          maxW="full"
-          px="0"
-          mt={{ base: 8, md: 18, lg: 10 }}>
-             <Stack py={{ base: 3, md: 5 }}>
-            <Formik
+            <PageContainer
+              as="section"
+              maxW="full"
+              px="0"
+              mt={{ base: 8, md: 18, lg: 10 }}
+            >
+              <Stack py={{ base: 3, md: 5 }}>
+                <Formik
                   initialValues={{
                     firstName: "",
                   }}
                   onSubmit={() => {}}
-                  
-               >
-            
-            <HStack justifyContent="space-between" my={{ base: 3, md: 5 }} mx="10px">
-                  
-            <Formik
-                initialValues={{
-                  firstName: "",
-                }}
-                onSubmit={() => {}}
-              >
-                  <InputControl
-            
-                    inputProps={{
-                      type: "text",
-                      placeholder: t(`bookings.search`),
-                      fontSize: "md",
-                      fontWeight: "medium",
-                      color: "gray.500",
-                      cursor : "pointer",
-                      h:"61px",
-                      value: searchInput,
-                      onChange: (e) => setSearchInput(e.target.value),
-                    }}
-                    name="description"
-                    inputRightElement={<SearchIcon />}
-                  />
-                  </Formik>
-                
+                >
+                  <HStack
+                    justifyContent="space-between"
+                    my={{ base: 3, md: 5 }}
+                    mx="10px"
+                  >
+                    <Formik
+                      initialValues={{
+                        firstName: "",
+                      }}
+                      onSubmit={() => {}}
+                    >
+                      <InputControl
+                        inputProps={{
+                          type: "text",
+                          placeholder: t(`bookings.search`),
+                          fontSize: "md",
+                          fontWeight: "medium",
+                          color: "gray.500",
+                          cursor: "pointer",
+                          h: "61px",
+                          value: searchInput,
+                          onChange: (e) => setSearchInput(e.target.value),
+                        }}
+                        name="description"
+                        inputRightElement={<SearchIcon />}
+                      />
+                    </Formik>
 
-         
-                  
-                  <Input
-placeholder="Select Date"
-value={selectedDate}
-onChange={handleDateChange}
-type="date"
-mb={{ base: 4, md: 0 }}
-maxW={{ md: "352px" }}
-h="60px"
-cursor="pointer"
-min="1000-01-01" 
-max="9999-12-31"  
-/>
+                    <Input
+                      placeholder="Select Date"
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                      type="date"
+                      mb={{ base: 4, md: 0 }}
+                      maxW={{ md: "352px" }}
+                      h="60px"
+                      cursor="pointer"
+                      min="1000-01-01"
+                      max="9999-12-31"
+                    />
 
-     {selectedDate && (
-      <IconButton onClick={handleClearDate} color="red.400" cursor={"pointer"} aria-label={""} bg="none">
-        <CloseButton />
-      </IconButton>
-    )}
- 
-  
-   </HStack>
-   </Formik>
-   <Box mt={5}>
-                  
+                    {selectedDate && (
+                      <IconButton
+                        onClick={handleClearDate}
+                        color="red.400"
+                        cursor={"pointer"}
+                        aria-label={""}
+                        bg="none"
+                      >
+                        <CloseButton />
+                      </IconButton>
+                    )}
+                  </HStack>
+                </Formik>
+                <Box mt={5}>
                   <Table columns={columnConfig} data={responseData} />
                 </Box>
-                 {isEditModalOpen && (
-                <><BookingForm
+                {isEditModalOpen && (
+                  <>
+                    <BookingForm
                       isOpen={isEditModalOpen}
-                      onClose={() => setIsEditModalOpen(false)} memberId={memberId} memberData={memberData} /></>
-                )} 
-               </Stack>
-   </PageContainer>
-  
-   
-          
-
-             
-            
-        
-              </Box>
-              )}
-         
-       </Layout>
-      
+                      onClose={() => setIsEditModalOpen(false)}
+                      memberId={memberId}
+                      memberData={memberData}
+                    />
+                  </>
+                )}
+              </Stack>
+            </PageContainer>
+          </Box>
+        )}
+      </Layout>
     </>
-  )
+  );
 }
 
-
-export default Bookings
-
-
+export default Bookings;

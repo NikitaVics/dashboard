@@ -60,8 +60,7 @@ function Member({ memberData }: EditTaxDetailsProps) {
 
   const background = useColorModeValue("#fff", "#0D0D0D");
 
- 
-const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
+  const hover = useColorModeValue("rgba(237, 250, 241, 1)", "#181818");
   const columnConfig = [
     {
       Header: t(`members.userName`),
@@ -203,8 +202,7 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
                 </MenuItem>
               ) : (
                 <MenuItem
-                   icon={<ActivateIcon />}
-
+                  icon={<ActivateIcon />}
                   bgColor={background}
                   _hover={{ bgColor: hover }}
                   color="rgba(39, 174, 96, 1)"
@@ -219,22 +217,21 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
       },
       textAlign: "center",
     },
-  ]
+  ];
 
-  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)","")
+  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)", "");
 
-  const sentColor = useColorModeValue("green.50","")
-  
-  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
- 
-  const toast = useToast()
- 
+  const sentColor = useColorModeValue("green.50", "");
+
+  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)", "");
+
+  const toast = useToast();
 
   const handleDeactivate = async (id: string) => {
     if (id) {
       try {
         const updatedValues = { id };
-    
+
         if (id) {
           const response = await ky.put(`/api/members/Activate/${id}`, {
             json: updatedValues,
@@ -304,6 +301,7 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
                     {...(isDesktopView && { width: "30%" })}
                     inputProps={{
                       type: "text",
+                      cursor: "pointer",
                       placeholder: t(`members.search`),
                       fontSize: "md",
                       fontWeight: "medium",
@@ -324,8 +322,11 @@ const hover  = useColorModeValue("rgba(237, 250, 241, 1)","#181818")
                 <>
                   <MembersForm
                     isOpen={isEditModalOpen}
-                    onClose={() => setIsEditModalOpen(false)} memberId={memberId} memberData={memberData} /></>
-             
+                    onClose={() => setIsEditModalOpen(false)}
+                    memberId={memberId}
+                    memberData={memberData}
+                  />
+                </>
               )}
             </Stack>
           </PageContainer>

@@ -1,4 +1,6 @@
-const nextTranslatePlugin = require('next-translate-plugin');
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-undef */
+const nextTranslatePlugin = require("next-translate-plugin");
 
 /**
  * @type {import('next').NextConfig}
@@ -10,7 +12,7 @@ const nextConfig = {
       test: /\.tsx?$/,
       use: [
         {
-          loader: 'ts-loader',
+          loader: "ts-loader",
           options: {
             transpileOnly: true,
           },
@@ -21,4 +23,5 @@ const nextConfig = {
   },
 };
 
+// eslint-disable-next-line no-undef
 module.exports = nextTranslatePlugin(nextConfig);

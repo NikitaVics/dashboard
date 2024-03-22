@@ -177,8 +177,7 @@ const Coach = ({ coaches }: EditCoachProps) => {
                 </MenuItem>
               ) : (
                 <MenuItem
-                   icon={<ActivateIcon />}
-
+                  icon={<ActivateIcon />}
                   bgColor={background}
                   _hover={{ bgColor: hover }}
                   color="rgba(39, 174, 96, 1)"
@@ -195,9 +194,9 @@ const Coach = ({ coaches }: EditCoachProps) => {
     },
   ];
 
-  const sentColor = useColorModeValue("green.50","")
+  const sentColor = useColorModeValue("green.50", "");
 
-const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
+  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)", "");
 
   const toast = useToast();
 
@@ -372,7 +371,16 @@ const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
                   </DrawerHeader>
 
                   <DrawerBody px={8}>
-                    <CoachAddForm image={undefined} onClose={onClose} email={""} phoneNumber={""} experience={""} lastName={""} firstName={""} gender={""}/>
+                    <CoachAddForm
+                      image={undefined}
+                      onClose={onClose}
+                      email={""}
+                      phoneNumber={""}
+                      experience={""}
+                      lastName={""}
+                      firstName={""}
+                      gender={""}
+                    />
                   </DrawerBody>
                 </DrawerContent>
               </Drawer>

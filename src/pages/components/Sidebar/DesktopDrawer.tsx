@@ -87,8 +87,8 @@ function DesktopDrawer() {
     path: string;
   }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const router = useRouter()
-    const isActive = path ? router.pathname.includes(path) : false
+    const router = useRouter();
+    const isActive = path ? router.pathname.includes(path) : false;
     return (
       <ListItem
      
@@ -129,19 +129,18 @@ function DesktopDrawer() {
           }}
           {...(isActive && { background: "green.100", color: hoverColor })}
         >
-        <ListIcon
-  as={icon}
-  mx={isDrawerOpen ? 5 : 4}
-  justifyContent="center"
-  stroke={
-    isHovered || isActive ? iconColor : "rgba(124, 124, 125, 1)"
-  }
-  alignItems="center"
-  textAlign="center"
-  _hover={{ stroke: iconColor }}
-  _active={{ stroke: iconColor }}
-/>
-
+          <ListIcon
+            as={icon}
+            mx={isDrawerOpen ? 5 : 4}
+            justifyContent="center"
+            stroke={
+              isHovered || isActive ? iconColor : "rgba(124, 124, 125, 1)"
+            }
+            alignItems="center"
+            textAlign="center"
+            _hover={{ stroke: iconColor }}
+            _active={{ stroke: iconColor }}
+          />
 
           {isDrawerOpen && (
             <Box
@@ -203,7 +202,12 @@ function DesktopDrawer() {
           height="64px"
         ></HStack>
         <Flex>
-          <MenuIcon ml={10} onClick={toggleDrawer}  _hover={{ stroke: "#4ECB71" }} cursor={"pointer"} />
+          <MenuIcon
+            ml={10}
+            onClick={toggleDrawer}
+            _hover={{ stroke: "#4ECB71" }}
+            cursor={"pointer"}
+          />
           {isDrawerOpen ? <Behrain mt={2} /> : ""}
         </Flex>
 
