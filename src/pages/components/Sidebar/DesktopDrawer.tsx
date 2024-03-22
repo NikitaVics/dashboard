@@ -91,11 +91,12 @@ function DesktopDrawer() {
     const isActive = path ? router.pathname.includes(path) : false;
     return (
       <ListItem
-        mt="0 !important"
+     
         key={path}
         listStyleType="none"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        gap={12}
       >
         <Link
           href={path}
@@ -171,6 +172,7 @@ function DesktopDrawer() {
           fontWeight="400"
           // background={menuTitleBg}
           borderRadius="4px"
+          cursor="default"
         >
           {text}
         </Text>
@@ -190,6 +192,7 @@ function DesktopDrawer() {
       bgColor={bgColor}
       color={"rgba(124, 124, 125, 1)"}
       mt={"-20px"}
+    
     >
       <Flex flexDirection="column" h="full">
         <HStack
@@ -208,7 +211,7 @@ function DesktopDrawer() {
           {isDrawerOpen ? <Behrain mt={2} /> : ""}
         </Flex>
 
-        <List as="ul" spacing="2" styleType="none" flex="1" overflow="auto">
+        <List as="ul" spacing="2" styleType="none" flex="1" overflow="auto" >
           <Title text={t("sideMenus.title")} />
 
           {dashboards.map(({ path, icon, name }) => {

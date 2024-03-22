@@ -40,13 +40,12 @@ function CourtReportDetails() {
   };
 
   const [selected, setSelected] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedCourt, setSelectedCourt] = useState("");
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const selectedCourt = event.target.value;
-    setSelected(selectedCourt);
-    setSelectedCourt(selectedCourt);
+    const selectedCoach = event.target.value;
+    setSelected(selectedCoach);
+    setSelectedCourt(selectedCoach)
   };
 
   const [debouncedateInput] = useDebounce(selectedDate, 1000);
@@ -241,6 +240,8 @@ function CourtReportDetails() {
                   placeholder="All Courts"
                   w={{ md: "165px" }}
                   onChange={handleSelectChange}
+                  value={selectedCourt}
+                  _hover={{ bgColor: "rgba(78, 203, 113, 1)" }}
                   bgColor={bgColor2}
                   cursor="pointer"
                 >

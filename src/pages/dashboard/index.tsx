@@ -71,7 +71,7 @@ const Dashboard = () => {
           mt="10"
         >
           <GridItem rowSpan={1} colSpan={1}>
-            <Box bgColor={bgColor} h="139px" borderRadius="20px" px={6} py={6}>
+            <Box bgColor={bgColor} h="139px" borderRadius="20px" px={6} py={6} cursor={"default"}>
               <Flex justify="space-between">
                 <Text color={color}>{t(`dashboard.totalMembers`)}</Text>
                 <CalenderIcon />
@@ -102,12 +102,12 @@ const Dashboard = () => {
           </GridItem>
 
           <GridItem rowSpan={1} colSpan={1}>
-            <Box bgColor={bgColor} h="139px" borderRadius="20px" px={6} py={6}>
+            <Box bgColor={bgColor} h="139px" borderRadius="20px" px={6} py={6} cursor={"default"}>
               <Flex justify="space-between">
-                <Text color={color}>{t(`dashboard.totalRevenue`)}</Text>
+                <Text color={color} >{t(`dashboard.totalRevenue`)}</Text>
                 <RevenueIcon />
               </Flex>
-              <Flex justify={"space-between"} mt={10}>
+              <Flex justify={"space-between"} mt={10} >
                 <HStack>
                   <Text fontSize={"24px"} fontWeight={"700"}>
                     ${revenueList}
@@ -123,12 +123,12 @@ const Dashboard = () => {
           </GridItem>
 
           <GridItem rowSpan={1} colSpan={1}>
-            <Box bgColor={bgColor} h="139px" borderRadius="20px" px={6} py={6}>
+            <Box bgColor={bgColor} h="139px" borderRadius="20px" px={6} py={6} cursor={"default"}>
               <Flex justify="space-between">
-                <Text color={color}>{t(`dashboard.members`)}</Text>
+                <Text color={color} >{t(`dashboard.members`)}</Text>
                 <GrowthIcon />
               </Flex>
-              <Flex justify={"space-between"} mt={10}>
+              <Flex justify={"space-between"} mt={10} >
                 <HStack>
                   <Text fontSize={"24px"} fontWeight={"700"}>
                     {membershipGrowth}
@@ -165,8 +165,9 @@ const Dashboard = () => {
                   <MenuItem
                     onClick={() => handleMenuItemClick("membershipGrowth")}
                     backgroundColor={menuBg}
+                  
                   >
-                    {t(`dashboard.membershipGrowth`)}
+                  {t(`dashboard.membershipGrowth`)}
                   </MenuItem>
                   <MenuItem
                     onClick={() => handleMenuItemClick("bookingsGrowth")}
@@ -195,7 +196,7 @@ const Dashboard = () => {
             <Box bgColor={bgColor} h="207px" borderRadius="20px" px={6} py={6}>
               <Flex justify="space-between">
                 <Stack gap={8}>
-                  <Text fontSize={"20px"} fontWeight={"700"}>
+                  <Text fontSize={"20px"} fontWeight={"700"} cursor={"default"}>
                     {t(`dashboard.bookings`)}
                   </Text>
                   <Button
@@ -220,7 +221,7 @@ const Dashboard = () => {
             <Box bgColor={bgColor} h="207px" borderRadius="20px" px={6} py={6}>
               <Flex justify="space-between">
                 <Stack gap={8}>
-                  <Text fontSize={"20px"} fontWeight={"700"}>
+                  <Text fontSize={"20px"} fontWeight={"700"} cursor={"default"}>
                     {t(`dashboard.reports`)}
                   </Text>
                   <Button
@@ -244,7 +245,7 @@ const Dashboard = () => {
             <Box bgColor={bgColor} h="207px" borderRadius="20px" px={6} py={6}>
               <Flex justify="space-between">
                 <Stack gap={8}>
-                  <Text fontSize={"20px"} fontWeight={"700"}>
+                  <Text fontSize={"20px"} fontWeight={"700"} cursor={"default"}> 
                     {t(`dashboard.application`)}
                   </Text>
                   <Button
@@ -256,7 +257,7 @@ const Dashboard = () => {
                     fontWeight={"500"}
                     fontSize="14px"
                     cursor="pointer"
-                    onClick={() => router.push(`/application`)}
+                    onClick={() => router.push(`/members`)}
                   >
                     {t(`dashboard.view`)}
                   </Button>

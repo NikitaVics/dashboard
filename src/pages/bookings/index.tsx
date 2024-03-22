@@ -2,7 +2,6 @@ import {
   Avatar,
   AvatarGroup,
   Box,
-  Button,
   CloseButton,
   Flex,
   Grid,
@@ -14,6 +13,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Stack,
   Text,
   useColorModeValue,
   useToast,
@@ -25,9 +25,7 @@ import useSWR, { mutate } from "swr";
 import TableSkeleton from "@/components/Skeleton/TableSkeleton";
 import Layout from "../components/Layout";
 import CalenderIcon from "../components/Icons/calenderIcon";
-import router from "next/router";
 import MoreVertIcon from "../components/Icons/MoreVertIcon";
-import { EditIcon, SearchIcon } from "@chakra-ui/icons";
 import InActivateIcon from "../components/Icons/InActivate";
 
 import ky, { HTTPError } from "ky";
@@ -40,6 +38,10 @@ import { useDebounce } from "use-debounce";
 import BookingForm from "@/components/bookingForm";
 import PeakBooking from "../components/graph/peakbookingHour";
 import PageContainer from "../components/PageContainer";
+import ClockIcon from "../components/Icons/clockIcon";
+import DailyBooking from "../components/graph/dailyBooking";
+import EditIcon from "../components/Icons/EditIcon";
+import SearchIcon from "../components/Icons/searchIcon";
 
 type EditTaxDetailsProps = {
   memberData: BookingsProps;
@@ -56,6 +58,7 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
       setMemberId(bookingId);
     }
   };
+  const [selectedDate, setSelectedDate] = useState("");
 
   const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedDates = event.target.value;
@@ -71,56 +74,39 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
 
   const [memberId, setMemberId] = useState("");
   const [searchInput, setSearchInput] = useState("");
-  const [debouncedSearchInput] = useDebounce(searchInput, 800);
+  const [debouncedSearchInput] = useDebounce(searchInput, 900);
+  const [debouncedateInput] = useDebounce(selectedDate, 1000);
   const { data: responseData } = useSWR(
-    `/api/bookings/bookingDetails?searchTerm=${debouncedSearchInput}`
+    `/api/bookings/bookingDetails?searchTerm=${debouncedSearchInput}&bookingDate=${debouncedateInput}`
   );
-
-  const [selectedDate, setSelectedDate] = useState("");
-
-  //const menuBg = useColorModeValue("","rgba(20, 20, 20, 1)")
 
   const { data: totalbookingsList } = useSWR("/api/bookings/totalBookings");
   const totalbookings = totalbookingsList?.result;
 
-  const { data: cancelbookingsList } = useSWR(
-    "/api/bookings/cancelledBookings"
-  );
+  const { data: cancelbookingsList } = useSWR(`/api/bookings/bookings`);
+
   const cancelbooking = cancelbookingsList?.result;
-  //   console.log("cancel",cancelbookingsList)
 
-  // const { data: peakbookingsHour } = useSWR("/api/bookings/peakBookingHour")
-  // const peakbookhour=peakbookingsHour?.result
-
-  // const { data: averagepeakbookhour } = useSWR("/api/bookings/averagepeakookingMonth")
-  // const averagepeakbookHour=averagepeakbookhour?.result
-
-  //  const { data: responseData } = useSWR(
-  //    `/api/bookings/bookingDetails`,
-  //  )
   const background = useColorModeValue("#fff", "#0D0D0D");
 
-  //     const [ setSelectedComponent] = useState('membershipGrowth');
-
-  //   const handleMenuItemClick = (component: string) => {
-  //     setSelectedComponent(component);
-  //   };
-
   const hover = useColorModeValue("rgba(237, 250, 241, 1)", "#181818;");
+
   const columnConfig = [
     {
       Header: t(`bookings.bookingName`),
       // eslint-disable-next-line
-      Cell: ({ row: { original } }: any) => (
-        <HStack align="center" spacing={2}>
-          {original.bookingPersonImage ? (
-            <Avatar src={original.bookingPersonImage} size="md" />
-          ) : (
-            <Avatar size="md" />
-          )}
-          <Text>{original.bookingPerson}</Text>
-        </HStack>
-      ),
+      Cell: ({ row: { original } }: any) => {
+        return (
+          <HStack align="center" spacing={2}>
+            {original.bookingPersonImage ? (
+              <Avatar src={original.bookingPersonImage} size="md" />
+            ) : (
+              <Avatar size="md" />
+            )}
+            <Text>{original.bookingPerson}</Text>
+          </HStack>
+        );
+      },
     },
     {
       Header: t(`bookings.team`),
@@ -173,17 +159,17 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
         let textColor = "";
 
         if (value === "Booked") {
-          statusColor = "green.50";
+          statusColor = sentColor;
           borderColor = "rgba(39, 174, 96, 1)";
           textColor = "green.300";
           statusText = t("common:status.booked");
         } else if (value === "Pending") {
-          statusColor = "rgba(254, 245, 237, 1)";
+          statusColor = scheduleColor;
           borderColor = "rgba(244, 170, 105, 1)";
           textColor = "rgba(244, 170, 105, 1)";
           statusText = t("common:status.pending");
         } else {
-          statusColor = "red.50";
+          statusColor = cancelColor;
           borderColor = "rgba(235, 87, 87, 1)";
           textColor = "red.200";
           statusText = t("common:status.cancel");
@@ -207,8 +193,13 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
     },
     {
       Header: t("common:menu.action"),
+
       // eslint-disable-next-line
       Cell: ({ row }: any) => {
+        const bookingDate = new Date(row.original.bookingDate);
+        const currentDate = new Date();
+
+        const isPastDate = bookingDate < currentDate;
         return (
           <Menu>
             <MenuButton
@@ -231,28 +222,17 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
                 _hover={{ bgColor: hover }}
                 onClick={() => handleEditModalOpen(row?.original?.bookingId)}
               >
-                {t("common:buttons.view")}
+                View Booking
               </MenuItem>
-              {row?.original?.status === true ? (
+              {row?.original?.status === "Booked" && !isPastDate && (
                 <MenuItem
                   icon={<InActivateIcon />}
                   bgColor={background}
                   _hover={{ bgColor: hover }}
                   color="rgba(235, 87, 87, 1)"
-                  //   onClick={() => handleActivate(row?.original?.memberId)}
+                  onClick={() => handleDeactivate(row?.original?.bookingId)}
                 >
-                  {t("common:buttons.inActivate")}
-                </MenuItem>
-              ) : (
-                <MenuItem
-                  //  icon={<InActivateIcon />}
-
-                  bgColor={background}
-                  _hover={{ bgColor: hover }}
-                  color="rgba(39, 174, 96, 1)"
-                  onClick={() => handleDeactivate(row?.original?.memberId)}
-                >
-                  {t("common:buttons.activate")}
+                  {t("common:buttons.cancel")}
                 </MenuItem>
               )}
             </MenuList>
@@ -263,25 +243,36 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
     },
   ];
 
+  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)", "");
+
+  const sentColor = useColorModeValue("green.50", "");
+
+  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)", "");
+
   const toast = useToast();
-  const handleDeactivate = async (memberId: string) => {
-    if (memberId) {
+  const handleDeactivate = async (bookingId: string) => {
+    if (bookingId) {
       try {
-        const updatedValues = { memberId };
-        if (memberId) {
-          const response = await ky.post(`/api/members/Activate/${memberId}`, {
-            json: updatedValues,
-          });
+        const updatedValues = { bookingId };
+        if (bookingId) {
+          const response = await ky.put(
+            `/api/bookings/DeActivate/${bookingId}`,
+            {
+              json: updatedValues,
+            }
+          );
 
           if (response) {
             toast({
-              description: "Successfully Activated",
+              description: "Successfully DeActivated",
               status: "success",
               position: "top",
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/members`);
+            await mutate(
+              `/api/bookings/bookingDetails?searchTerm=${debouncedSearchInput}&bookingDate=${selectedDate}`
+            );
           }
         }
       } catch (error) {
@@ -316,6 +307,12 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
     setSelectedDate("");
   };
 
+  const [showPeakBooking, setShowPeakBooking] = useState(true);
+
+  const handleClockIconClick = () => {
+    setShowPeakBooking(!showPeakBooking);
+  };
+
   return (
     <>
       <Layout title={t("bookings.title")} description={t("page.description")}>
@@ -336,121 +333,132 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
               <GridItem rowSpan={1} colSpan={1}>
                 <Box
                   bgColor={bgColor}
-                  h="200px"
+                  h="170px"
                   borderRadius="20px"
                   px={6}
                   py={6}
                 >
-                  <Flex justify="space-between">
-                    <Text color={color}>{t(`bookings.totalBookings`)}</Text>
-                    <CalenderIcon />
-                  </Flex>
-                  <Flex justify={"space-between"} mt={10}>
-                    <HStack>
-                      <Text fontSize={"16px"} fontWeight={"700"}>
-                        {totalbookings}
-                      </Text>
-                      <Text fontSize={"13px"} fontWeight="400" color={color2}>
-                        {t(`bookings.day`)}
-                      </Text>
-                    </HStack>
-
-                    <Button
-                      color="rgba(78, 203, 113, 1)"
-                      p={"0"}
-                      onClick={() => router.push("/bookings")}
-                      fontSize={"14px"}
-                      fontWeight={"700"}
-                      background={"none"}
-                      _hover={{ bg: "none" }}
-                    >
-                      {t(`bookings.view`)}
-                    </Button>
-                  </Flex>
+                  <Stack>
+                    <Flex justify="space-between">
+                      <Text color={color}>{t(`bookings.totalBookings`)}</Text>
+                      <CalenderIcon />
+                    </Flex>
+                    <Flex justify={"space-between"} mt={14}>
+                      <HStack>
+                        <Text fontSize={"32px"} fontWeight={"700"}>
+                          {totalbookings}
+                        </Text>
+                        <Text fontSize={"13px"} fontWeight="400" color={color2}>
+                          {t(`bookings.day`)}
+                        </Text>
+                      </HStack>
+                    </Flex>
+                  </Stack>
                 </Box>
               </GridItem>
 
               <GridItem rowSpan={1} colSpan={1}>
                 <Box
                   bgColor={bgColor}
-                  h="200px"
+                  h="170px"
                   borderRadius="20px"
                   px={6}
                   py={6}
                 >
-                  <Flex justify="space-between">
-                    <Text color={color}>{t(`bookings.cancelledBookings`)}</Text>
-                    <CalenderIcon />
-                  </Flex>
-                  <Flex justify={"space-between"} mt={10}>
-                    <HStack>
-                      <Text fontSize={"16px"} fontWeight={"700"}>
-                        ${cancelbooking}
+                  <Stack>
+                    <Flex justify="space-between">
+                      <Text color={color}>
+                        {t(`bookings.cancelledBookings`)}
                       </Text>
-                      <Text fontSize={"13px"} fontWeight="400" color="red.200">
-                        {t(`bookings.day`)}
-                      </Text>
-                    </HStack>
-
-                    <Button
-                      color="red.200"
-                      p={"0"}
-                      fontSize={"14px"}
-                      fontWeight={"700"}
-                      background={"none"}
-                      _hover={{ bg: "none" }}
-                    >
-                      {t(`bookings.view`)}
-                    </Button>
-                  </Flex>
+                      <CalenderIcon />
+                    </Flex>
+                    <Flex justify={"space-between"} mt={14}>
+                      <HStack>
+                        <Text
+                          fontSize={"32px"}
+                          fontWeight={"700"}
+                          color={"rgba(235, 87, 87, 1)"}
+                        >
+                          {cancelbooking}
+                        </Text>
+                        <Text
+                          fontSize={"13px"}
+                          fontWeight="400"
+                          color="red.200"
+                        >
+                          {t(`bookings.day`)}
+                        </Text>
+                      </HStack>
+                    </Flex>
+                  </Stack>
                 </Box>
               </GridItem>
-
               <GridItem rowSpan={1} colSpan={1}>
                 <Box
                   bgColor={bgColor}
-                  h="200px"
+                  h="170px"
                   borderRadius="20px"
                   px={6}
                   py={6}
                 >
                   <Flex justify="space-between">
-                    <Text color={color}>{t(`bookings.members`)}</Text>
-                    {/* <GrowthIcon />  */}
+                    <Text color={color}>
+                      {showPeakBooking
+                        ? t(`bookings.members`)
+                        : t(`bookings.daily`)}
+                    </Text>
+                    <ClockIcon
+                      onClick={handleClockIconClick}
+                      cursor="pointer"
+                    />
                   </Flex>
 
-                  <PeakBooking />
+                  {showPeakBooking ? <PeakBooking /> : <DailyBooking />}
                 </Box>
               </GridItem>
             </Grid>
 
-            <Formik
-              initialValues={{
-                firstName: "",
-              }}
-              onSubmit={() => {}}
+            <PageContainer
+              as="section"
+              maxW="full"
+              px="0"
+              mt={{ base: 8, md: 18, lg: 10 }}
             >
-              <PageContainer maxWidth={"full"}>
-                <Flex justify={"space-between"} mt={"15px"}>
-                  <Box px={5}>
-                    <InputControl
-                      inputProps={{
-                        type: "text",
-                        placeholder: t(`bookings.search`),
-                        fontSize: "md",
-                        fontWeight: "medium",
-                        color: "gray.500",
-                        h: "64px",
-                        value: searchInput,
-                        cursor: "pointer",
-                        onChange: (e) => setSearchInput(e.target.value),
+              <Stack py={{ base: 3, md: 5 }}>
+                <Formik
+                  initialValues={{
+                    firstName: "",
+                  }}
+                  onSubmit={() => {}}
+                >
+                  <HStack
+                    justifyContent="space-between"
+                    my={{ base: 3, md: 5 }}
+                    mx="10px"
+                  >
+                    <Formik
+                      initialValues={{
+                        firstName: "",
                       }}
-                      name="description"
-                      inputRightElement={<SearchIcon />}
-                    />
-                  </Box>
+                      onSubmit={() => {}}
+                    >
+                      <InputControl
+                        inputProps={{
+                          type: "text",
+                          placeholder: t(`bookings.search`),
+                          fontSize: "md",
+                          fontWeight: "medium",
+                          color: "gray.500",
+                          cursor: "pointer",
+                          h: "61px",
+                          value: searchInput,
+                          onChange: (e) => setSearchInput(e.target.value),
+                        }}
+                        name="description"
+                        inputRightElement={<SearchIcon />}
+                      />
+                    </Formik>
 
-                  <HStack>
                     <Input
                       placeholder="Select Date"
                       value={selectedDate}
@@ -468,6 +476,7 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
                       <IconButton
                         onClick={handleClearDate}
                         color="red.400"
+                        cursor={"pointer"}
                         aria-label={""}
                         bg="none"
                       >
@@ -475,23 +484,22 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
                       </IconButton>
                     )}
                   </HStack>
-                </Flex>
-              </PageContainer>
-            </Formik>
-
-            <Box mt={5}>
-              <Table columns={columnConfig} data={responseData} />
-            </Box>
-            {isEditModalOpen && (
-              <>
-                <BookingForm
-                  isOpen={isEditModalOpen}
-                  onClose={() => setIsEditModalOpen(false)}
-                  memberId={memberId}
-                  memberData={memberData}
-                />
-              </>
-            )}
+                </Formik>
+                <Box mt={5}>
+                  <Table columns={columnConfig} data={responseData} />
+                </Box>
+                {isEditModalOpen && (
+                  <>
+                    <BookingForm
+                      isOpen={isEditModalOpen}
+                      onClose={() => setIsEditModalOpen(false)}
+                      memberId={memberId}
+                      memberData={memberData}
+                    />
+                  </>
+                )}
+              </Stack>
+            </PageContainer>
           </Box>
         )}
       </Layout>

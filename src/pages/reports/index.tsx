@@ -45,10 +45,12 @@ const Reports = () => {
                 _hover={{
                   bgColor: "rgba(78, 203, 113, 1)",
                   color: "rgba(252, 252, 252, 1)",
+                  border: "4px solid rgba(61, 176, 73, 1)"
                 }}
                 _focus={{
                   bgColor: "rgba(78, 203, 113, 1)",
                   color: "rgba(252, 252, 252, 1)",
+                  border: "4px solid rgba(61, 176, 73, 1)"
                 }}
                 bgColor={
                   selectedReport === "court" ? "rgba(78, 203, 113, 1)" : bgColor
@@ -74,10 +76,12 @@ const Reports = () => {
                 _hover={{
                   bgColor: "rgba(78, 203, 113, 1)",
                   color: "rgba(252, 252, 252, 1)",
+                  border: "4px solid rgba(61, 176, 73, 1)"
                 }}
                 _focus={{
                   bgColor: "rgba(78, 203, 113, 1)",
                   color: "rgba(252, 252, 252, 1)",
+                  border: "4px solid rgba(61, 176, 73, 1)"
                 }}
                 bgColor={
                   selectedReport === "coach" ? "rgba(78, 203, 113, 1)" : bgColor

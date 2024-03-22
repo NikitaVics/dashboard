@@ -66,7 +66,7 @@ export function Header({ title }: HeaderProps) {
  gap={10}
 >
 
-   <Text fontSize={"32px"} fontWeight="700">
+   <Text fontSize={"32px"} fontWeight="700" cursor={"default"}>
      {title}
    </Text>
  
