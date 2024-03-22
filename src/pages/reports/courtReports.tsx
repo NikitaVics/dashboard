@@ -238,7 +238,7 @@ function CourtReportDetails() {
 
               <Flex direction={{ base: "column", md: "row" }} gap={8}>
                 <Select
-                  placeholder="Courts"
+                  placeholder="All Courts"
                   w={{ md: "165px" }}
                   onChange={handleSelectChange}
                   bgColor={bgColor2}

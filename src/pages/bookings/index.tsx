@@ -15,8 +15,6 @@ import {
   MenuItem,
   MenuList,
   Text,
-
-  // useBreakpointValue,
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
@@ -309,7 +307,6 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
   };
 
   const isLoading = !responseData;
-  //const isDesktopView = useBreakpointValue({ base: false, md: false, xl: true })
 
   const bgColor = useColorModeValue("light.300", "dark.600");
   const color = useColorModeValue("dark.700", "light.400");
@@ -318,10 +315,6 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
   const handleClearDate = () => {
     setSelectedDate("");
   };
-
-  //   function setSearchInput(value: string): void {
-  //     throw new Error("Function not implemented.")
-  //   }
 
   return (
     <>
@@ -431,24 +424,6 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
               </GridItem>
             </Grid>
 
-            {/* <Box px={5}>
-                      <InputControl
-                     // {...(isDesktopView && { width: "30%" })}
-                      inputProps={{
-                        type: "text",
-                        placeholder: t(`members.search`),
-                        fontSize: "md",
-                        fontWeight: "medium",
-                        color: "gray.500",
-                        h:"64px",
-                        // value: searchInput,
-                        // onChange: (e) => setSearchInput(e.target.value),
-                      }}
-                      name="description"
-                      inputRightElement={<SearchIcon />} 
-                    /> 
-                    </Box> */}
-
             <Formik
               initialValues={{
                 firstName: "",
@@ -459,7 +434,6 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
                 <Flex justify={"space-between"} mt={"15px"}>
                   <Box px={5}>
                     <InputControl
-                      // {...(isDesktopView && { width: "full" })}
                       inputProps={{
                         type: "text",
                         placeholder: t(`bookings.search`),
@@ -468,7 +442,7 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
                         color: "gray.500",
                         h: "64px",
                         value: searchInput,
-                        cursor : "pointer",
+                        cursor: "pointer",
                         onChange: (e) => setSearchInput(e.target.value),
                       }}
                       name="description"

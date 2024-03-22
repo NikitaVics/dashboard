@@ -42,11 +42,10 @@ function CoachReportDetails() {
   const [selected, setSelected] = useState("");
   const [selectedCoach, setSelectedCoach] = useState("");
 
-
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedCoach = event.target.value;
     setSelected(selectedCoach);
-    setSelectedCoach(selectedCoach)
+    setSelectedCoach(selectedCoach);
   };
 
   const [debouncedateInput] = useDebounce(selectedDate, 1000);
@@ -139,7 +138,7 @@ function CoachReportDetails() {
           textColor = "rgba(244, 170, 105, 1)";
           statusText = t("common:status.pending");
         } else {
-          statusColor =cancelColor;
+          statusColor = cancelColor;
           borderColor = "rgba(235, 87, 87, 1)";
           textColor = "red.200";
           statusText = t("common:status.cancel");
@@ -163,11 +162,11 @@ function CoachReportDetails() {
     },
   ];
 
-  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)","")
+  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)", "");
 
-  const sentColor = useColorModeValue("green.50","")
-  
-  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
+  const sentColor = useColorModeValue("green.50", "");
+
+  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)", "");
 
   const isLoading = !responseData;
 
@@ -242,14 +241,13 @@ function CoachReportDetails() {
 
               <Flex direction={{ base: "column", md: "row" }} gap={8}>
                 <Select
-                  placeholder="Coach"
+                  placeholder="All Coaches"
                   w={{ md: "165px" }}
                   onChange={handleSelectChange}
                   value={selectedCoach}
                   bgColor={bgColor2}
-                  cursor = "pointer"
+                  cursor="pointer"
                   _hover={{ bgColor: "rgba(78, 203, 113, 1)" }}
-                 
                   _focus={{ bgColor: "rgba(78, 203, 113, 1)" }}
                 >
                   {dropdownData?.map((value: string) => (

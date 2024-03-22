@@ -101,15 +101,6 @@ const handleSendClick = async () => {
         });
       }
 
-
-
-
-      // if (formData.images) {
-       
-      //   data.append("Images", formData.images[0]);
-        
-      // }
-
       const response = await ky.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement/create Announcement`, {
         body: data,
       });
@@ -204,12 +195,6 @@ const handleSendClick = async () => {
 
 
       data.append("Id",id)
-
-      // if (formData.images) {
-       
-      //   data.append("Images", formData.images[0]);
-        
-      // }
 
       const scheduledDateTime = new Date(`${selectedDate}T${selectedTime}:00.000Z`).toISOString();
 
