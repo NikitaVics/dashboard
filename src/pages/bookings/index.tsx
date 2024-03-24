@@ -2,13 +2,11 @@ import {
   Avatar,
   AvatarGroup,
   Box,
-  CloseButton,
   Flex,
   Grid,
   GridItem,
   HStack,
   IconButton,
-  Input,
   Menu,
   MenuButton,
   MenuItem,
@@ -20,7 +18,7 @@ import {
     } from "@chakra-ui/react"
 import Table from "@/components/Table"
 import useTranslation from "next-translate/useTranslation"
-import React, { ChangeEvent, useState } from "react"
+import React, {  useState } from "react"
 import useSWR, { mutate } from "swr"
 import TableSkeleton from "@/components/Skeleton/TableSkeleton"
 import Layout from "../components/Layout"
@@ -43,6 +41,7 @@ import ClockIcon from "../components/Icons/clockIcon"
 import DailyBooking from "../components/graph/dailyBooking"
 import EditIcon from "../components/Icons/EditIcon"
 import SearchIcon from "../components/Icons/searchIcon"
+import CustomDateRangePicker from "../DatePicker"
 
 
 type EditTaxDetailsProps = {
@@ -64,35 +63,68 @@ const handleEditModalOpen = (bookingId: MemberProps | undefined) => {
     setMemberId(bookingId); 
   }
 }
-const [selectedDate, setSelectedDate] = useState("");
 
-const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
-  const selectedDates = event.target.value;
-  const [year, month, day] = selectedDates.split("-");
-
-
-
-  if (year && month && day) {
-    const reversedDate = `${year}-${month}-${day}`;
-    setSelectedDate(reversedDate);
-  } else {
-    setSelectedDate("");
-  }
-};
 
 
 
 
 const [memberId, setMemberId] = useState("")
 const [searchInput, setSearchInput] = useState("")
+const[date,setDate] = useState("")
+const[endDate,setEndDate] = useState("")
+
+
+  // eslint-disable-next-line
+const handleDateRangeSelect = (dateRange: any) => {
+  if (dateRange.length > 0) {
+    const startDate = dateRange[0].startDate;
+    const endDate = dateRange[0].endDate;
+
+   
+    const formattedStartDate = formatDate(startDate);
+  
+    const formattedEndDate = endDate ? formatEndDate(endDate) : "";
+
+   
+    const formattedQueryDate = `${formattedStartDate}`;
+    const formattedEndingDate = `${formattedEndDate}`
+
+    setDate(formattedQueryDate);
+    setEndDate(formattedEndingDate)
+
+  }
+};  
+
+const formatDate = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is zero-based
+  const day = String(date.getDate()).padStart(2, "0");
+
+  const formattedDate = `${year}-${month}-${day} 00:00:00.0000000`;
+  setDate(formattedDate);
+
+  return formattedDate;
+};
+
+const formatEndDate = (endDate: Date): string => {
+  const year = endDate.getFullYear();
+  const month = String(endDate.getMonth() + 1).padStart(2, "0"); // Month is zero-based
+  const day = String(endDate.getDate()).padStart(2, "0");
+
+  const formattedDate = `${year}-${month}-${day} 00:00:00.0000000`;
+  setEndDate(formattedDate);
+
+  return formattedDate;
+};
 const [debouncedSearchInput] = useDebounce(searchInput, 900)
-const [debouncedateInput] = useDebounce(selectedDate, 1000)
 const { data: responseData } = useSWR(
-  `/api/bookings/bookingDetails?searchTerm=${debouncedSearchInput}&bookingDate=${debouncedateInput}`,
+  `/api/bookings/bookingDetails?bookerName=${debouncedSearchInput}&fromBookingDate=${date}&toBookingDate=${endDate}`,
 )
 
 
-
+const handleClearDate = () => {
+  setDate("")
+};
 
    const { data: totalbookingsList } = useSWR("/api/bookings/totalBookings")
    const totalbookings=totalbookingsList?.result
@@ -294,7 +326,7 @@ const toast = useToast()
                 duration: 3000,
                 isClosable: true,
               })
-             await mutate(`/api/bookings/bookingDetails?searchTerm=${debouncedSearchInput}&bookingDate=${selectedDate}`)
+             await mutate(`/api/bookings/bookingDetails?bookerName=${debouncedSearchInput}&fromBookingDate=${date}&toBookingDate=${endDate}`)
             }
           }
         } catch (error) {
@@ -326,9 +358,7 @@ const toast = useToast()
   const color  = useColorModeValue("dark.700","light.400")
   const color2  = useColorModeValue("dark.400","light.50")
   
-  const handleClearDate = () => {
-      setSelectedDate("");
-    };
+
 
     const [showPeakBooking, setShowPeakBooking] = useState(true);
 
@@ -456,27 +486,7 @@ const toast = useToast()
                   />
                   </Formik>
                 
-
-         
-                  
-                  <Input
-placeholder="Select Date"
-value={selectedDate}
-onChange={handleDateChange}
-type="date"
-mb={{ base: 4, md: 0 }}
-maxW={{ md: "352px" }}
-h="60px"
-cursor="pointer"
-min="1000-01-01" 
-max="9999-12-31"  
-/>
-
-     {selectedDate && (
-      <IconButton onClick={handleClearDate} color="red.400" cursor={"pointer"} aria-label={""} bg="none">
-        <CloseButton />
-      </IconButton>
-    )}
+                  <CustomDateRangePicker onDateRangeSelect={handleDateRangeSelect}  onClear={handleClearDate}/>
  
   
    </HStack>

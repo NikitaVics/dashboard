@@ -18,29 +18,18 @@ import useTranslation from "next-translate/useTranslation";
 import React, { ChangeEvent, useState } from "react";
 import useSWR from "swr";
 import TableSkeleton from "@/components/Skeleton/TableSkeleton";
-import { Input } from "@chakra-ui/react";
 import DownloadIcon from "../components/Icons/downloadIcon";
-import { useDebounce } from "use-debounce";
+import CustomDateRangePicker from "../DatePicker";
 
 function CoachReportDetails() {
   const { t } = useTranslation("reports");
 
-  const [selectedDate, setSelectedDate] = useState("");
 
-  const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const selectedDates = event.target.value;
-    const [year, month, day] = selectedDates.split("-");
-
-    if (year && month && day) {
-      const reversedDate = `${year}-${month}-${day}`;
-      setSelectedDate(reversedDate);
-    } else {
-      setSelectedDate("");
-    }
-  };
 
   const [selected, setSelected] = useState("");
   const [selectedCoach, setSelectedCoach] = useState("");
+  const[date,setDate] = useState("")
+  const[endDate,setEndDate] = useState("")
 
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -49,10 +38,54 @@ function CoachReportDetails() {
     setSelectedCoach(selectedCoach)
   };
 
-  const [debouncedateInput] = useDebounce(selectedDate, 1000);
+    // eslint-disable-next-line
+  const handleDateRangeSelect = (dateRange: any) => {
+    if (dateRange.length > 0) {
+      const startDate = dateRange[0].startDate;
+      const endDate = dateRange[0].endDate;
+  
+     
+      const formattedStartDate = formatDate(startDate);
+    
+      const formattedEndDate = endDate ? formatEndDate(endDate) : "";
+  
+     
+      const formattedQueryDate = `${formattedStartDate}`;
+      const formattedEndingDate = `${formattedEndDate}`
+  
+      setDate(formattedQueryDate);
+      setEndDate(formattedEndingDate)
+  
+      console.log('Date Range Selected in Parent:', formattedQueryDate);
+    }
+  };  
+
+  const formatDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is zero-based
+    const day = String(date.getDate()).padStart(2, "0");
+  
+    const formattedDate = `${year}-${month}-${day} 00:00:00.0000000`;
+    setDate(formattedDate);
+  
+    return formattedDate;
+  };
+
+  const formatEndDate = (endDate: Date): string => {
+    const year = endDate.getFullYear();
+    const month = String(endDate.getMonth() + 1).padStart(2, "0"); // Month is zero-based
+    const day = String(endDate.getDate()).padStart(2, "0");
+  
+    const formattedDate = `${year}-${month}-${day} 00:00:00.0000000`;
+    setEndDate(formattedDate);
+  
+    return formattedDate;
+  };
+  
+
 
   const { data: responseData } = useSWR(
-    `/api/reports/getCoachReports?bookingDate=${debouncedateInput}&coach=${selected}`
+    `/api/reports/getCoachReports?fromBookingDate=${date}&toBookingDate=${endDate}&coach=${selected}`
   );
 
   const { data: dropdownData } = useSWR(`/api/reports/coachDropdown`);
@@ -174,7 +207,7 @@ function CoachReportDetails() {
   const handleExport = async () => {
     try {
       const response = await fetch(
-        `/api/reports/exportCoachReport?bookingDate=${selectedDate}&coach=${selected}`
+        `/api/reports/exportCoachReport?fromBookingDate=${date}&toBookingDate=${endDate}&coach=${selected}`
       );
       const blob = await response.blob();
 
@@ -192,7 +225,7 @@ function CoachReportDetails() {
   };
 
   const handleClearDate = () => {
-    setSelectedDate("");
+    setDate("")
   };
 
   const handleClearCourt = () => {
@@ -218,6 +251,16 @@ function CoachReportDetails() {
               align="center"
             >
               <HStack>
+              {/* {selectedDate && (
+                  <IconButton
+                    onClick={handleClearDate}
+                    color="red.400"
+                    aria-label={""}
+                    bg="none"
+                  >
+                    <CloseButton />
+                  </IconButton>
+                )}
                 <Input
                   placeholder="Select Date"
                   value={selectedDate}
@@ -228,17 +271,23 @@ function CoachReportDetails() {
                   maxW={{ md: "352px" }}
                   h="60px"
                 />
-                {selectedDate && (
+                 {selectedDate && (
                   <IconButton
-                    onClick={handleClearDate}
-                    color="red.400"
+                    onClick={handleChange}
+                   
                     aria-label={""}
                     bg="none"
+
                   >
-                    <CloseButton />
+                    <Search2Icon />
                   </IconButton>
                 )}
+                 */}
+                  <CustomDateRangePicker onDateRangeSelect={handleDateRangeSelect}  onClear={handleClearDate}/>
+               
+              
               </HStack>
+              
 
               <Flex direction={{ base: "column", md: "row" }} gap={8}>
                 <Select
