@@ -32,18 +32,17 @@ type FormItems = {
     id?: string;
     gender: string;
     isActive?: string;
-    membershipLeft : string;
-    age:string;
+    membershipLeft: string;
+    age: string;
     image: string;
     phoneNumber: string;
-    membershipStatus:string
+    membershipStatus: string;
     email: string;
     registrationDate: string;
     membershipExpirationCountDown: string;
   };
   onClose?: () => void;
 };
-
 
 const getColorForStatus = (status: string) => {
   switch (status) {
@@ -55,7 +54,6 @@ const getColorForStatus = (status: string) => {
       return "rgba(39, 174, 96, 1)";
   }
 };
-
 
 function MembersDetails({ memberData, memberId, onClose }: FormItems) {
   const { t } = useTranslation("members");
@@ -78,12 +76,15 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
     if (id) {
       try {
         const updatedValues = { id };
-  
-        if (memberData?.membershipStatus === "Rejected" || memberData?.membershipStatus === "Pending"  ) {
+
+        if (
+          memberData?.membershipStatus === "Rejected" ||
+          memberData?.membershipStatus === "Pending"
+        ) {
           const response = await ky.put(`/api/members/Approve/${id}`, {
             json: updatedValues,
           });
-  
+
           if (response) {
             toast({
               description: "Successfully Updated",
@@ -92,7 +93,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
               duration: 3000,
               isClosable: true,
             });
-            onClose?.()
+            onClose?.();
             await mutate(`/api/members?searchTerm=${""}`);
           }
         } else {
@@ -103,9 +104,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
             duration: 3000,
             isClosable: true,
           });
-         
         }
-      
       } catch (error) {
         if (error instanceof HTTPError && error.response.status === 400) {
           const errorResponse = await error.response.json();
@@ -124,7 +123,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
             isClosable: true,
           });
         } else {
-          console.error(error); 
+          console.error(error);
         }
       }
     }
@@ -134,12 +133,15 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
     if (id) {
       try {
         const updatedValues = { id };
-  
-        if (memberData?.membershipStatus === "Approved" || memberData?.membershipStatus === "Pending"  ) {
+
+        if (
+          memberData?.membershipStatus === "Approved" ||
+          memberData?.membershipStatus === "Pending"
+        ) {
           const response = await ky.put(`/api/members/Approve/${id}`, {
             json: updatedValues,
           });
-  
+
           if (response) {
             toast({
               description: "Successfully Updated",
@@ -148,9 +150,8 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
               duration: 3000,
               isClosable: true,
             });
-            onClose?.()
+            onClose?.();
             await mutate(`/api/members?searchTerm=${""}`);
-
           }
         } else {
           toast({
@@ -160,9 +161,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
             duration: 3000,
             isClosable: true,
           });
-        
         }
-      
       } catch (error) {
         if (error instanceof HTTPError && error.response.status === 400) {
           const errorResponse = await error.response.json();
@@ -181,14 +180,11 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
             isClosable: true,
           });
         } else {
-          console.error(error); 
+          console.error(error);
         }
       }
     }
   };
-  
-
-
 
   const handleSubmit = async (values: FormItems) => {
     console.log(values);
@@ -210,36 +206,33 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
   const bgColor = useColorModeValue("light.200", "dark.300");
   const color = useColorModeValue("light.50", "dark.400");
 
-
   function formatDate(dateString: string) {
     const date = new Date(dateString);
     const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'long',
-      day: '2-digit',
+      year: "numeric",
+      month: "long",
+      day: "2-digit",
     };
     return date.toLocaleDateString(undefined, options);
   }
-  
 
-  const id = memberData?.id
-  
+  const id = memberData?.id;
+
   return (
     <Formik
       initialValues={{
-       
         name: memberData?.name,
         image: memberData?.image,
         gender: memberData?.gender,
         email: memberData?.email,
-        age : memberData?.age,
-        membershipLeft : memberData?.membershipLeft,
+        age: memberData?.age,
+        membershipLeft: memberData?.membershipLeft,
         phoneNumber: memberData?.phoneNumber,
         membershipStatus: memberData?.membershipStatus,
-        registrationDate: formatDate(memberData?.registrationDate || ""), 
+        registrationDate: formatDate(memberData?.registrationDate || ""),
         status: memberData?.isActive,
         membershipExpirationCountDown:
-          memberData?.membershipExpirationCountDown
+          memberData?.membershipExpirationCountDown,
       }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
@@ -338,7 +331,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
                   placeholder: t(`members.email`),
                   fontSize: "md",
                   fontWeight: "medium",
-                 
+
                   border: "none",
                   color: { color },
                   h: "45px",
@@ -381,23 +374,21 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
               />
             </GridItem>
 
-          
-<GridItem rowSpan={2} colSpan={1}>
-  <CustomInput
-    inputProps={{
-      type: "text",
-      placeholder: t(`members.request`),
-      fontSize: "md",
-      fontWeight: "medium",
-      color: getColorForStatus(values.membershipStatus),
-      border: "none",
-      h: "45px",
-    }}
-    name="membershipStatus"
-    onKeyUp={() => setFieldTouched("membershipStatus")}
-  />
-</GridItem>
-
+            <GridItem rowSpan={2} colSpan={1}>
+              <CustomInput
+                inputProps={{
+                  type: "text",
+                  placeholder: t(`members.request`),
+                  fontSize: "md",
+                  fontWeight: "medium",
+                  color: getColorForStatus(values.membershipStatus),
+                  border: "none",
+                  h: "45px",
+                }}
+                name="membershipStatus"
+                onKeyUp={() => setFieldTouched("membershipStatus")}
+              />
+            </GridItem>
 
             <GridItem rowSpan={2} colSpan={1}>
               <CustomInput
@@ -488,19 +479,17 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
             </Box>
           </Grid>
 
-          <Flex   gap={4} maxW="full">
-          <Button
-  bgColor={"rgba(253, 238, 238, 1)"}
-  color="rgba(238, 116, 116, 1)"
-  border="1px solid rgba(238, 116, 116, 1)"
-  w="full"
-  h={"60px"}
-
-  onClick={() => handleActivate(id)}
->
-  Reject
-</Button>
-
+          <Flex gap={4} maxW="full">
+            <Button
+              bgColor={"rgba(253, 238, 238, 1)"}
+              color="rgba(238, 116, 116, 1)"
+              border="1px solid rgba(238, 116, 116, 1)"
+              w="full"
+              h={"60px"}
+              onClick={() => handleActivate(id)}
+            >
+              Reject
+            </Button>
 
             <Button
               variant="outline"

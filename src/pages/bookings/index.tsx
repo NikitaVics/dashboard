@@ -64,67 +64,65 @@ const handleEditModalOpen = (bookingId: MemberProps | undefined) => {
   }
 }
 
+const[date,setDate] = useState("")
+  const[endDate,setEndDate] = useState("")
+
+   // eslint-disable-next-line
+   const handleDateRangeSelect = (dateRange: any) => {
+    if (dateRange.length > 0) {
+      const startDate = dateRange[0].startDate;
+      const endDate = dateRange[0].endDate;
+  
+     
+      const formattedStartDate = formatDate(startDate);
+    
+      const formattedEndDate = endDate ? formatEndDate(endDate) : "";
+  
+     
+      const formattedQueryDate = `${formattedStartDate}`;
+      const formattedEndingDate = `${formattedEndDate}`
+  
+      setDate(formattedQueryDate);
+      setEndDate(formattedEndingDate)
+  
+      
+    }
+  };  
+
+  const formatDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is zero-based
+    const day = String(date.getDate()).padStart(2, "0");
+  
+    const formattedDate = `${year}-${month}-${day} 00:00:00.0000000`;
+    setDate(formattedDate);
+  
+    return formattedDate;
+  };
+
+  const formatEndDate = (endDate: Date): string => {
+    const year = endDate.getFullYear();
+    const month = String(endDate.getMonth() + 1).padStart(2, "0"); // Month is zero-based
+    const day = String(endDate.getDate()).padStart(2, "0");
+  
+    const formattedDate = `${year}-${month}-${day} 00:00:00.0000000`;
+    setEndDate(formattedDate);
+  
+    return formattedDate;
+  };
 
 
 
 
 const [memberId, setMemberId] = useState("")
 const [searchInput, setSearchInput] = useState("")
-const[date,setDate] = useState("")
-const[endDate,setEndDate] = useState("")
-
-
-  // eslint-disable-next-line
-const handleDateRangeSelect = (dateRange: any) => {
-  if (dateRange.length > 0) {
-    const startDate = dateRange[0].startDate;
-    const endDate = dateRange[0].endDate;
-
-   
-    const formattedStartDate = formatDate(startDate);
-  
-    const formattedEndDate = endDate ? formatEndDate(endDate) : "";
-
-   
-    const formattedQueryDate = `${formattedStartDate}`;
-    const formattedEndingDate = `${formattedEndDate}`
-
-    setDate(formattedQueryDate);
-    setEndDate(formattedEndingDate)
-
-  }
-};  
-
-const formatDate = (date: Date): string => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is zero-based
-  const day = String(date.getDate()).padStart(2, "0");
-
-  const formattedDate = `${year}-${month}-${day} 00:00:00.0000000`;
-  setDate(formattedDate);
-
-  return formattedDate;
-};
-
-const formatEndDate = (endDate: Date): string => {
-  const year = endDate.getFullYear();
-  const month = String(endDate.getMonth() + 1).padStart(2, "0"); // Month is zero-based
-  const day = String(endDate.getDate()).padStart(2, "0");
-
-  const formattedDate = `${year}-${month}-${day} 00:00:00.0000000`;
-  setEndDate(formattedDate);
-
-  return formattedDate;
-};
 const [debouncedSearchInput] = useDebounce(searchInput, 900)
 const { data: responseData } = useSWR(
   `/api/bookings/bookingDetails?bookerName=${debouncedSearchInput}&fromBookingDate=${date}&toBookingDate=${endDate}`,
 )
 
 
-const handleClearDate = () => {
-  setDate("")
-};
+
 
    const { data: totalbookingsList } = useSWR("/api/bookings/totalBookings")
    const totalbookings=totalbookingsList?.result
@@ -358,7 +356,9 @@ const toast = useToast()
   const color  = useColorModeValue("dark.700","light.400")
   const color2  = useColorModeValue("dark.400","light.50")
   
-
+  const handleClearDate = () => {
+      setDate("");
+    };
 
     const [showPeakBooking, setShowPeakBooking] = useState(true);
 
@@ -486,6 +486,9 @@ const toast = useToast()
                   />
                   </Formik>
                 
+
+         
+                  
                   <CustomDateRangePicker onDateRangeSelect={handleDateRangeSelect}  onClear={handleClearDate}/>
  
   
@@ -520,5 +523,3 @@ const toast = useToast()
 
 
 export default Bookings
-
-

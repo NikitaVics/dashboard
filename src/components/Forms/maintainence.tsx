@@ -38,12 +38,12 @@ interface ImageItem {
 
 type FormItems = {
   message: string | number | readonly string[] | undefined;
-  courtId : string
+  courtId: string;
   courtData?: {
     id?: string;
     message: string;
     scheduledDateTime: string;
-    courts:string
+    courts: string;
     courtNames: string;
     date: string;
     time: string;
@@ -51,10 +51,11 @@ type FormItems = {
   onClose?: () => void;
 };
 
-
-
-
-const CourtMaintainence: React.FC<FormItems> = ({ courtData, onClose,courtId }: FormItems) => {
+const CourtMaintainence: React.FC<FormItems> = ({
+  courtData,
+  onClose,
+  courtId,
+}: FormItems) => {
   const { t } = useTranslation("announcement");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const handleEditModalOpen = () => {
@@ -88,7 +89,6 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData, onClose,courtId }: 
 
   const color = useColorModeValue("dark.100", "dark.500");
 
-
   const [images, setImages] = useState<ImageItem[]>([
     { id: 1, name: "Court1", icon: <Court1 />, selected: false },
     { id: 2, name: "Court2", icon: <Court2 />, selected: false },
@@ -98,12 +98,17 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData, onClose,courtId }: 
     { id: 6, name: "Court6", icon: <Court6 />, selected: false },
   ]);
 
- {courtId ?  useEffect(() => {
-  
-  setImages(prevImages =>
-    prevImages.filter(image => courtData?.courts?.includes(image.name))
-  );
-}, [courtData?.courts]) : ""}
+  {
+    courtId
+      ? useEffect(() => {
+          setImages((prevImages) =>
+            prevImages.filter(
+              (image) => courtData?.courts?.includes(image.name)
+            )
+          );
+        }, [courtData?.courts])
+      : "";
+  }
 
   const handleImageClick = (imageId: number) => {
     setImages((prevImages) =>
@@ -124,10 +129,11 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData, onClose,courtId }: 
   const handleSubmit = async () => {
     try {
       const selectedImages = images.filter((image) => image.selected);
-      const courtNames = selectedImages.map((image) => t(`announce.${image.name.toLowerCase()}`)).join(", ");
+      const courtNames = selectedImages
+        .map((image) => t(`announce.${image.name.toLowerCase()}`))
+        .join(", ");
 
       const updatedValues = {
-       
         message: message,
         courtNames,
       };
@@ -166,14 +172,16 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData, onClose,courtId }: 
     }
   };
 
- 
-
   const handleSchedule = async () => {
     try {
       const selectedImages = images.filter((image) => image.selected);
-      const courtNames = selectedImages.map((image) => t(`announce.${image.name.toLowerCase()}`)).join(", ");
+      const courtNames = selectedImages
+        .map((image) => t(`announce.${image.name.toLowerCase()}`))
+        .join(", ");
 
-      const scheduledDateTime = new Date(`${selectedDate}T${selectedTime}:00.000Z`).toISOString();
+      const scheduledDateTime = new Date(
+        `${selectedDate}T${selectedTime}:00.000Z`
+      ).toISOString();
 
       const updatedValues = {
         scheduledDateTime,
@@ -208,30 +216,28 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData, onClose,courtId }: 
     }
   };
 
-  const handleEdits= async () => {
+  const handleEdits = async () => {
     try {
-     
-     
       const data = new FormData();
-      data.append("Id",courtId)
-      data.append('Message', message);
-      
+      data.append("Id", courtId);
+      data.append("Message", message);
 
-    
+      const event = new Date(
+        `${selectedDate}T${selectedTime}:00.000Z`
+      ).toISOString();
 
-      const event = new Date(`${selectedDate}T${selectedTime}:00.000Z`).toISOString();
-    
-      data.append("EventDateTime",event)
+      data.append("EventDateTime", event);
 
-  
-
-      const response = await ky.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement`, {
-        body: data,
-      });
+      const response = await ky.put(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement`,
+        {
+          body: data,
+        }
+      );
 
       if (response) {
         setIsSuccessDrawerOpen(true);
-        await mutate(`/api/getAnnouncement`)
+        await mutate(`/api/getAnnouncement`);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -247,7 +253,7 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData, onClose,courtId }: 
           message: courtData?.message || "",
           scheduledTime: courtData?.scheduledDateTime || "",
           courtNames: courtData?.courtNames || "",
-          courtId : ""
+          courtId: "",
         }}
         onSubmit={handleSubmit}
       >
@@ -304,75 +310,73 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData, onClose,courtId }: 
               mt={8}
             >
               {courtId ? (
-  <>
-  <GridItem rowSpan={1} colSpan={1}>
-    <Button
-      w="full"
-      bg="none"
-      variant={"outline"}
-      borderColor="rgba(78, 203, 113, 1)"
-      border="1px solid"
-      color="rgba(78, 203, 113, 1)"
-      h="80px"
-      // type="submit"
-      onClick={handleEditModalOpen}
-    >
-      {t(`common:buttons.reSchedule`)}
-    </Button>
-  </GridItem>
-  <GridItem rowSpan={1} colSpan={1}>
-    <Button
-      w="full"
-      bgColor="rgba(78, 203, 113, 1)"
-     
-      color="#fff"
-      h="80px"
-      
-      _hover={{
-        bg: "none",
-        color: "rgba(78, 203, 113, 1)",
-        border: "1px solid rgba(78, 203, 113, 1)",
-      }}
-    >
-      {t(`common:buttons.cancelSchedule`)}
-    </Button>
-  </GridItem>
-</>
-) : (
-  <>
-    <GridItem rowSpan={1} colSpan={1}>
-      <Button
-        w="full"
-        bg="none"
-        variant={"outline"}
-        borderColor="rgba(78, 203, 113, 1)"
-        border="1px solid"
-        color="rgba(78, 203, 113, 1)"
-        h="80px"
-        onClick={handleEditModalOpen}
-      >
-        {t(`common:buttons.schedule`)}
-      </Button>
-    </GridItem>
-    <GridItem rowSpan={1} colSpan={1}>
-      <Button
-        w="full"
-        bgColor="rgba(78, 203, 113, 1)"
-        type="submit"
-        color="#fff"
-        h="80px"
-        _hover={{
-          bg: "none",
-          color: "rgba(78, 203, 113, 1)",
-          border: "1px solid rgba(78, 203, 113, 1)",
-        }}
-        // onClick={handleSubmit}
-      >
-        {t(`common:buttons.send`)}
-      </Button>
-    </GridItem>
-  </>
-)}
+                <>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Button
+                      w="full"
+                      bg="none"
+                      variant={"outline"}
+                      borderColor="rgba(78, 203, 113, 1)"
+                      border="1px solid"
+                      color="rgba(78, 203, 113, 1)"
+                      h="80px"
+                      // type="submit"
+                      onClick={handleEditModalOpen}
+                    >
+                      {t(`common:buttons.reSchedule`)}
+                    </Button>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Button
+                      w="full"
+                      bgColor="rgba(78, 203, 113, 1)"
+                      color="#fff"
+                      h="80px"
+                      _hover={{
+                        bg: "none",
+                        color: "rgba(78, 203, 113, 1)",
+                        border: "1px solid rgba(78, 203, 113, 1)",
+                      }}
+                    >
+                      {t(`common:buttons.cancelSchedule`)}
+                    </Button>
+                  </GridItem>
+                </>
+              ) : (
+                <>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Button
+                      w="full"
+                      bg="none"
+                      variant={"outline"}
+                      borderColor="rgba(78, 203, 113, 1)"
+                      border="1px solid"
+                      color="rgba(78, 203, 113, 1)"
+                      h="80px"
+                      onClick={handleEditModalOpen}
+                    >
+                      {t(`common:buttons.schedule`)}
+                    </Button>
+                  </GridItem>
+                  <GridItem rowSpan={1} colSpan={1}>
+                    <Button
+                      w="full"
+                      bgColor="rgba(78, 203, 113, 1)"
+                      type="submit"
+                      color="#fff"
+                      h="80px"
+                      _hover={{
+                        bg: "none",
+                        color: "rgba(78, 203, 113, 1)",
+                        border: "1px solid rgba(78, 203, 113, 1)",
+                      }}
+                      // onClick={handleSubmit}
+                    >
+                      {t(`common:buttons.send`)}
+                    </Button>
+                  </GridItem>
+                </>
+              )}
             </Grid>
             {isEditModalOpen && (
               <Drawer
@@ -448,7 +452,7 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData, onClose,courtId }: 
                                 }}
                                 type="submit"
                               >
-                                 {t(`common:buttons.schedule`)}
+                                {t(`common:buttons.schedule`)}
                               </Button>
                             </GridItem>
                           </Grid>
@@ -459,7 +463,12 @@ const CourtMaintainence: React.FC<FormItems> = ({ courtData, onClose,courtId }: 
                 </DrawerContent>
               </Drawer>
             )}
-            {isSuccessDrawerOpen && <SuccessDrawer isOpen={isSuccessDrawerOpen} onClose={handleCloseSuccessDrawer} />}
+            {isSuccessDrawerOpen && (
+              <SuccessDrawer
+                isOpen={isSuccessDrawerOpen}
+                onClose={handleCloseSuccessDrawer}
+              />
+            )}
           </Form>
         )}
       </Formik>
