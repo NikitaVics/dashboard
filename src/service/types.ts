@@ -74,11 +74,15 @@ export type ReportProps = {
   bookingDate : string
   court : string
   coach : string
+  fromBookingDate  :string
+  toBookingDate : string
 }
 
   export type getMember = {
     searchTerm : string
-    bookingDate:string
+   bookerName : string
+   fromBookingDate : string
+   toBookingDate : string
   }
 
   export type getAnnouncementProps = {

@@ -2,11 +2,12 @@ import ky from "ky"
 
 import { ReportProps, User } from "../types"
 
-const getCourtReports = async (httpClient: typeof ky, { bookingDate,court }: ReportProps,) => {
+const getCourtReports = async (httpClient: typeof ky, { fromBookingDate,toBookingDate,court }: ReportProps,) => {
  
   return httpClient.get(`Management/ReportBoard/Court Report`, {
     searchParams: {
-      bookingDate: bookingDate,
+      fromBookingDate: fromBookingDate,
+      toBookingDate : toBookingDate,
       court : court
     } as unknown as string,
   }).json<User>()

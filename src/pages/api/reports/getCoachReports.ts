@@ -12,9 +12,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   async function getCoachReports() {
     try {
-      const { bookingDate = "", coach = "" } = req.query;
+      const { fromBookingDate = "", coach = "",toBookingDate = "" } = req.query;
       const params = {
-        bookingDate: bookingDate as string,
+        fromBookingDate: fromBookingDate as string,
+        toBookingDate: toBookingDate as string,
         coach: coach as string,
       } as ReportProps;
       const response = await client.reports.getCoachReports(params);

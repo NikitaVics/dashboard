@@ -14,9 +14,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   async function ExportCoach() {
     try {
-      const { bookingDate = "", coach = "" } = req.query;
+      const { fromBookingDate = "",toBookingDate="", coach = "" } = req.query;
       const params = {
-        bookingDate: bookingDate as string,
+        fromBookingDate: fromBookingDate as string,
+        toBookingDate: toBookingDate as string,
         coach: coach as string,
       } as ReportProps;
 

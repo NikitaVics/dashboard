@@ -13,10 +13,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   async function bookingDetails() {
     try {
-      const { searchTerm = "",bookingDate="" } = req.query
+      const { bookerName = "",fromBookingDate="",toBookingDate } = req.query
       const params = {
-        searchTerm: searchTerm as string,
-        bookingDate:bookingDate as string
+        bookerName: bookerName as string,
+        fromBookingDate:fromBookingDate as string,
+        toBookingDate : toBookingDate
       } as getMember
       const response = await client.bookings.bookingDetails(params)
       res.status(200).json(response)
