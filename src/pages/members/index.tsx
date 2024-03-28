@@ -128,7 +128,7 @@ function Member({ memberData }: EditTaxDetailsProps) {
       },
     },
     {
-      Header: t("common:menu.status"),
+      Header: t(`members.status`),
       accessor: "isActive",
       Cell: ({ value }: { value: boolean }) =>
         value === true ? (
