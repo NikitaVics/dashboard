@@ -101,7 +101,7 @@ const Table = ({ columns, data }) => {
                         paddingTop: "1.5rem",
                         paddingBottom: "1.5rem",
                         position: "relative",
-                       cursor : "default",
+                        cursor: "default",
                         textTransform: "none",
                         color: tableColor,
                         fontWeight: "600",
