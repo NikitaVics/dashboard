@@ -2,6 +2,7 @@ import "@fontsource/inter/500.css";
 import React, {  useState } from "react";
 import { AppProps } from "next/app";
 import { useRouter } from "next/router";
+
 import { SWRConfig } from "swr";
 import {
   Modal,
