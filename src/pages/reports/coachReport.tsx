@@ -25,7 +25,7 @@ function CoachReportDetails() {
   const { t } = useTranslation("reports");
 
 
-
+  const [inputValue, setInputValue] = useState('');
   const [selected, setSelected] = useState("");
   const [selectedCoach, setSelectedCoach] = useState("");
   const[date,setDate] = useState("")
@@ -49,8 +49,14 @@ function CoachReportDetails() {
       const formattedEndDate = endDate ? formatEndDate(endDate) : "";
   
      
+     
+      const formatInput = formatInputDate(startDate);
+      const formatendDate =  formatInputDate(endDate)
+  
+     
       const formattedQueryDate = `${formattedStartDate}`;
       const formattedEndingDate = `${formattedEndDate}`
+      setInputValue(`${formatInput}-${formatendDate}`);
   
       setDate(formattedQueryDate);
       setEndDate(formattedEndingDate)
@@ -81,6 +87,15 @@ function CoachReportDetails() {
     return formattedDate;
   };
   
+  const formatInputDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); 
+    const day = String(date.getDate()).padStart(2, "0");
+  
+    const formattedDate = `${day}/${month}/${year}`;
+  
+    return formattedDate;
+  };
 
 
   const { data: responseData } = useSWR(
@@ -182,6 +197,7 @@ function CoachReportDetails() {
             h="34px"
             bgColor={statusColor}
             maxW="90px"
+            p={4}
             alignItems="center"
             justify="center"
             borderRadius={"35px"}
@@ -282,7 +298,7 @@ function CoachReportDetails() {
                   </IconButton>
                 )}
                  */}
-                  <CustomDateRangePicker onDateRangeSelect={handleDateRangeSelect}  onClear={handleClearDate}/>
+                  <CustomDateRangePicker onDateRangeSelect={handleDateRangeSelect}  onClear={handleClearDate} inputValue={inputValue}/>
                
               
               </HStack>

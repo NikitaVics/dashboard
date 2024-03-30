@@ -100,7 +100,7 @@ const Coach = ({ coaches }: EditCoachProps) => {
     },
     {
       Header: t(`coach.experience`),
-      accessor: "coachFrom",
+      accessor: "experience",
     },
     {
       Header: t("common:menu.status"),
@@ -111,6 +111,7 @@ const Coach = ({ coaches }: EditCoachProps) => {
             h="34px"
             bgColor={sentColor}
             maxW="90px"
+            p={4}
             alignItems="center"
             justify="center"
             borderRadius={"35px"}
@@ -125,6 +126,7 @@ const Coach = ({ coaches }: EditCoachProps) => {
             h="34px"
             bgColor={cancelColor}
             maxW="90px"
+            p={4}
             alignItems="center"
             justify="center"
             borderRadius={"35px"}

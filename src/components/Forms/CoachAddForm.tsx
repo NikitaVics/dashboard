@@ -17,6 +17,7 @@ import { mutate } from "swr";
 
 import * as Yup from "yup";
 import { InputControl } from "../Input/Input";
+import DatePicker from "@/pages/coachDatePicker";
 
 type FormItems = {
   gender: string | Blob;
@@ -67,6 +68,8 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
     setFieldTouched("gender", true);
   };
 
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
   const [image, setImage] = useState<File | string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,11 +98,12 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
 
   const handleSubmit = async (values: FormItems) => {
     try {
+
       const data = new FormData();
       data.append("FirstName", values.firstName);
       data.append("LastName", values.lastName);
       data.append("Gender", gender);
-      data.append("CoachFrom", values.experience);
+      data.append("CoachFrom", selectedDate?.toISOString() || ""); 
       data.append("PhoneNumber", values.phoneNumber);
       data.append("Email", values.email);
       data.append("Image", image);
@@ -163,6 +167,16 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
       .matches(/^[0-9]+$/, "Phone number must contain only digits")
       .required("Phone number is required"),
   });
+
+
+
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date);
+  };
+
+  const handleClearDate = () => {
+    setSelectedDate(null);
+  };
 
   return (
     <Formik
@@ -262,40 +276,16 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
             </GridItem>
 
             <GridItem rowSpan={1} colSpan={2}>
-              <InputControl
-                inputProps={{
-                  type: "date",
-                  h: "60px",
-                  borderRadius: "10px",
-                  placeholder: t("coach.from"),
-                  bgColor: bgColor,
-                  focusBorderColor: "rgba(78, 203, 113, 1)",
-                }}
-                name="experience"
-                onKeyUp={() => setFieldTouched("experience")}
-              />
-            </GridItem>
+      <DatePicker
+        onDateSelect={handleDateSelect}
+        onClear={handleClearDate}
+      />
+              {/* <DatePicker
+  onDateSelect={(date) => console.log('Selected Date:', date)}
+  onClear={() => console.log('Clearing date')}
+/> */}
 
-            {/* <GridItem rowSpan={1} colSpan={2}>
-  <InputControl
-    inputProps={{
-      type: "date",
-      h: "60px",
-      borderRadius: "10px",
-      placeholder: t("coach.experience"),
-      bgColor: bgColor,
-      focusBorderColor: "rgba(78, 203, 113, 1)",
-    }}
-    name="experience"
-    onKeyUp={() => setFieldTouched("experience")}
-    isInvalid={touched.experience && !values.experience}
-  />
-  {touched.experience && !values.experience && (
-    <Text color="red.500" fontSize="sm">
-      {t("coach.experienceRequired")}
-    </Text>
-  )}
-</GridItem> */}
+            </GridItem>
 
             <GridItem rowSpan={1} colSpan={2}>
               <div

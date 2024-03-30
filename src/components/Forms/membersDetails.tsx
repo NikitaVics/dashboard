@@ -6,8 +6,6 @@ import {
   Grid,
   GridItem,
   HStack,
-  Hide,
-  Show,
   Stack,
   Text,
   useColorModeValue,
@@ -239,14 +237,14 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
     >
       {({ setFieldTouched, values }) => (
         <Form noValidate>
-          <Show below="sm">
+          {/* <Show below="sm">
             <Avatar src={memberData?.image} size="lg" />
-          </Show>
+          </Show> */}
           <HStack justify={"space-between"}>
             <Flex alignItems={"center"} gap={6}>
-              <Hide below="sm">
+              {/* <Hide below="sm"> */}
                 <Avatar src={memberData?.image} size="lg" />
-              </Hide>
+              {/* </Hide> */}
 
               <Text>{memberData?.name}</Text>
             </Flex>
