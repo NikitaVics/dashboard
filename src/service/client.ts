@@ -73,6 +73,7 @@ export class BehrainClient {
   public announcement;
   public application;
 
+ 
   constructor(
     req: NextApiRequest,
     res: NextApiResponse,
@@ -82,6 +83,7 @@ export class BehrainClient {
       additionalHeader: [],
     }
   ) {
+    
     const baseUrl = prefixUrl;
     const cookies = new Cookies(req, res);
     const baseHttpClient = ky.create({
@@ -106,7 +108,9 @@ export class BehrainClient {
             const accessToken = cookies.get("access_token");
 
             if (!accessToken) {
+            
               throw new Error("missing valid session");
+              
             }
 
             request.headers.set("Authorization", ` ${accessToken}`);

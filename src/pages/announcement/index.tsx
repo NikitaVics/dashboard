@@ -229,6 +229,7 @@ const Announcemnet = () => {
           <Flex
             h="34px"
             bgColor={statusColor}
+            p={4}
             maxW="90px"
             alignItems="center"
             justify="center"

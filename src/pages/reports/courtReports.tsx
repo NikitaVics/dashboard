@@ -28,6 +28,7 @@ function CourtReportDetails() {
   const [selectedCourt, setSelectedCourt] = useState("");
   const[date,setDate] = useState("")
   const[endDate,setEndDate] = useState("")
+  const [inputValue, setInputValue] = useState('');
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedCoach = event.target.value;
@@ -48,8 +49,13 @@ function CourtReportDetails() {
       const formattedEndDate = endDate ? formatEndDate(endDate) : "";
   
      
+      const formatInput = formatInputDate(startDate);
+      const formatendDate =  formatInputDate(endDate)
+  
+     
       const formattedQueryDate = `${formattedStartDate}`;
       const formattedEndingDate = `${formattedEndDate}`
+      setInputValue(`${formatInput}-${formatendDate}`);
   
       setDate(formattedQueryDate);
       setEndDate(formattedEndingDate)
@@ -79,6 +85,17 @@ function CourtReportDetails() {
   
     return formattedDate;
   };
+
+  const formatInputDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); 
+    const day = String(date.getDate()).padStart(2, "0");
+  
+    const formattedDate = `${day}/${month}/${year}`;
+  
+    return formattedDate;
+  };
+
 
   const { data: responseData } = useSWR(
     `/api/reports/getCourtReport?fromBookingDate=${date}&toBookingDate=${endDate}&court=${selected}`
@@ -174,6 +191,7 @@ function CourtReportDetails() {
           <Flex
             h="34px"
             bgColor={statusColor}
+            p={4}
             maxW="90px"
             alignItems="center"
             justify="center"
@@ -243,7 +261,7 @@ function CourtReportDetails() {
               align="center"
             >
               <HStack>
-              <CustomDateRangePicker onDateRangeSelect={handleDateRangeSelect}  onClear={handleClearDate}/>
+              <CustomDateRangePicker onDateRangeSelect={handleDateRangeSelect}  onClear={handleClearDate} inputValue={inputValue}/>
               </HStack>
 
               <Flex direction={{ base: "column", md: "row" }} gap={8}>
