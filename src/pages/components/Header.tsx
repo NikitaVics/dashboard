@@ -34,12 +34,10 @@ export function Header({ title }: HeaderProps) {
 
   const { data: profile } = useSWR(`/api/profile`);
 
-  const { colorMode,toggleColorMode } = useColorMode();
+  const { colorMode, toggleColorMode } = useColorMode();
   const router = useRouter();
-  
 
   const settings = [
- 
     {
       name: t("common:settings.logout"),
       onClick: async () => {
@@ -53,55 +51,61 @@ export function Header({ title }: HeaderProps) {
   const bgColor = useColorModeValue("light.300", "dark.600");
   return (
     <>
-    {profile && (
- <Flex
- align="center"
- justify="space-between"
- cursor="pointer"
- pos="relative"
- pb="8"
- flex="1"
- p={2}
- py={10}
- gap={10}
->
+      {profile && (
+        <Flex
+          align="center"
+          justify="space-between"
+          cursor="pointer"
+          pos="relative"
+          pb="8"
+          flex="1"
+          p={2}
+          py={10}
+          gap={10}
+        >
+          <Text fontSize={"32px"} fontWeight="700" cursor={"default"}>
+            {title}
+          </Text>
 
-   <Text fontSize={"32px"} fontWeight="700" cursor={"default"}>
-     {title}
-   </Text>
- 
+          <HStack gap={10}>
+            <IconButton
+              aria-label="Toggle Dark Mode"
+              bgColor={bgColor}
+              p={1}
+              py={6}
+              onClick={toggleColorMode}
+            >
+              {colorMode === "light" ? (
+                <LightIcon ml={2} />
+              ) : (
+                <TorchIcon ml={2} />
+              )}
+            </IconButton>
 
- <HStack gap={10}>
- <IconButton aria-label="Toggle Dark Mode" bgColor={bgColor} p={1} py={6} onClick={toggleColorMode}>
- {colorMode === "light" ? <LightIcon ml={2}/> : <TorchIcon ml={2}/>}
-</IconButton>
-
-   <ChakraMenu items={settings} >
-     <Flex gap={4} align={"center"}>
-       <MenuButton
-         as={Avatar}
-         src={profile?.imageUrl}
-         aria-label="Options"
-         // size={{ base: "md", sm: "md" }}
-         size="md"
-       >
-         {" "}
-       </MenuButton>
-       <Stack gap={0}>
-         <Text fontSize={"18px"} fontWeight={"700"}>
-           {profile?.name}
-         </Text>
-         <Text fontSize={"13px"} fontWeight={"400"}>
-           {profile?.email}
-         </Text>
-       </Stack>
-     </Flex>
-   </ChakraMenu>
- </HStack>
-
-</Flex>
-    )}
-   
+            <ChakraMenu items={settings}>
+              <Flex gap={4} align={"center"}>
+                <MenuButton
+                  as={Avatar}
+                  src={profile?.imageUrl}
+                  aria-label="Options"
+                  // size={{ base: "md", sm: "md" }}
+                  size="md"
+                >
+                  {" "}
+                </MenuButton>
+                <Stack gap={0} cursor={"default"}>
+                  <Text fontSize={"18px"} fontWeight={"700"}>
+                    {profile?.name}
+                  </Text>
+                  <Text fontSize={"13px"} fontWeight={"400"}>
+                    {profile?.email}
+                  </Text>
+                </Stack>
+              </Flex>
+            </ChakraMenu>
+          </HStack>
+        </Flex>
+      )}
     </>
   );
 }

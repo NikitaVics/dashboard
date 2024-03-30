@@ -1,23 +1,19 @@
 {
-    "page": { "title": "Dashboard", "description": "Vship dashboard" },
-    "sideMenus":{
-      "title":"Main Menu",
-      "dashbords": "Dashboards",
-      "bookings":"Bookings",
-      "reports":"Reports",
-      "application":"Application",
-      "members":"Members Management",
-      "coach":"Coach",
-      "announcement":"Announcement"
-    },
-    "selectCountry":"Select Country",
-    "footers":{
-          
-      "copy":"© 2022, Verdant",
-      "documentation":"Documentation",
-      "support":"Support"
-  
-  
+  "page": { "title": "Dashboard", "description": "Vship dashboard" },
+  "sideMenus": {
+    "title": "Main Menu",
+    "dashbords": "Dashboard",
+    "bookings": "Bookings",
+    "reports": "Reports",
+    "application": "Application",
+    "members": "Member Management",
+    "coach": "Coach",
+    "announcement": "Announcement"
+  },
+  "selectCountry": "Select Country",
+  "footers": {
+    "copy": "© 2022, Verdant",
+    "documentation": "Documentation",
+    "support": "Support"
   }
-  
-  }
+}

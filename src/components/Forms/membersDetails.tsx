@@ -494,6 +494,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
               color={"white"}
               bgColor={"green.100"}
               w="full"
+              _hover={{ color: "green.100", border: "1px solid rgba(78, 203, 113, 1)", bg:"none" }}
               h={"60px"}
               onClick={() => handleDeactivate(id)}
             >

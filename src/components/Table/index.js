@@ -164,10 +164,11 @@ const Table = ({ columns, data }) => {
         </ChakraTable>
       </div>
       <Flex justifyContent="end" m={3} alignItems="center" gap={2} mx="4">
-        <Flex alignItems="center">
+        <Flex alignItems="center" gap={3}>
           <Text flexShrink="0">Rows per page :</Text>{" "}
           <Select
             value={pageSize}
+            width={20}
             onChange={(e) => {
               setPageSize(Number(e.target.value));
             }}
