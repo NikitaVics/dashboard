@@ -66,22 +66,24 @@ const handleEditModalOpen = (bookingId: MemberProps | undefined) => {
 
 const[date,setDate] = useState("")
   const[endDate,setEndDate] = useState("")
-
+  const [inputValue, setInputValue] = useState('');
    // eslint-disable-next-line
    const handleDateRangeSelect = (dateRange: any) => {
     if (dateRange.length > 0) {
       const startDate = dateRange[0].startDate;
       const endDate = dateRange[0].endDate;
-  
-     
+    
       const formattedStartDate = formatDate(startDate);
     
       const formattedEndDate = endDate ? formatEndDate(endDate) : "";
+
+      const formatInput = formatInputDate(startDate);
+      const formatendDate =  formatInputDate(endDate)
   
      
       const formattedQueryDate = `${formattedStartDate}`;
       const formattedEndingDate = `${formattedEndDate}`
-  
+      setInputValue(`${formatInput}-${formatendDate}`);
       setDate(formattedQueryDate);
       setEndDate(formattedEndingDate)
   
@@ -91,7 +93,7 @@ const[date,setDate] = useState("")
 
   const formatDate = (date: Date): string => {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is zero-based
+    const month = String(date.getMonth() + 1).padStart(2, "0"); 
     const day = String(date.getDate()).padStart(2, "0");
   
     const formattedDate = `${year}-${month}-${day} 00:00:00.0000000`;
@@ -100,9 +102,19 @@ const[date,setDate] = useState("")
     return formattedDate;
   };
 
+  const formatInputDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); 
+    const day = String(date.getDate()).padStart(2, "0");
+  
+    const formattedDate = `${day}/${month}/${year}`;
+  
+    return formattedDate;
+  };
+
   const formatEndDate = (endDate: Date): string => {
     const year = endDate.getFullYear();
-    const month = String(endDate.getMonth() + 1).padStart(2, "0"); // Month is zero-based
+    const month = String(endDate.getMonth() + 1).padStart(2, "0"); 
     const day = String(endDate.getDate()).padStart(2, "0");
   
     const formattedDate = `${year}-${month}-${day} 00:00:00.0000000`;
@@ -228,6 +240,7 @@ Cell: ({ row: { original } }: any) => {
             bgColor={statusColor}
             maxW="90px"
             alignItems="center"
+            p={4}
             justify="center"
             borderRadius={"35px"}
             border={`1px solid ${borderColor}`}
@@ -350,6 +363,10 @@ const toast = useToast()
     }
 
   const isLoading = !responseData
+
+
+
+
  
 
   const bgColor = useColorModeValue("light.300","dark.600")
@@ -489,7 +506,11 @@ const toast = useToast()
 
          
                   
-                  <CustomDateRangePicker onDateRangeSelect={handleDateRangeSelect}  onClear={handleClearDate}/>
+                  <CustomDateRangePicker
+        inputValue={inputValue}
+        onDateRangeSelect={handleDateRangeSelect}
+        onClear={handleClearDate}
+      />
  
   
    </HStack>

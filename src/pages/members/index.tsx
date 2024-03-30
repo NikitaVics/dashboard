@@ -115,6 +115,7 @@ function Member({ memberData }: EditTaxDetailsProps) {
           <Flex
             h="34px"
             bgColor={statusColor}
+            p={4}
             maxW="90px"
             alignItems="center"
             justify="center"
@@ -136,6 +137,7 @@ function Member({ memberData }: EditTaxDetailsProps) {
             h="34px"
             bgColor={sentColor}
             maxW="90px"
+            p={4}
             alignItems="center"
             justify="center"
             borderRadius={"35px"}
@@ -149,6 +151,7 @@ function Member({ memberData }: EditTaxDetailsProps) {
           <Flex
             h="34px"
             bgColor={cancelColor}
+            p={4}
             maxW="90px"
             alignItems="center"
             justify="center"

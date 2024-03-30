@@ -6,8 +6,6 @@ import {
   Grid,
   GridItem,
   HStack,
-  Hide,
-  Show,
   Text,
   useColorModeValue,
   useToast,
@@ -32,7 +30,7 @@ type FormItems = {
     image: File | string;
     phoneNo: string;
     email: string;
-    exp: string;
+    experience: string;
   };
   onClose?: () => void;
 };
@@ -151,14 +149,14 @@ function CoachDetails({ coachData, coachId, onClose }: FormItems) {
         gender: coachData?.gender || "",
         email: coachData?.email || "",
         phoneNo: coachData?.phoneNo || "",
-        exp: coachData?.exp || "",
+        experience: coachData?.experience || "",
         status: coachData?.status || "",
       }}
       onSubmit={handleSubmit}
     >
       {({ setFieldTouched, values }) => (
         <Form noValidate>
-          <Show below="sm">
+          {/* <Show below="sm">
             <Avatar
               src={
                 typeof coachData?.image === "string"
@@ -167,10 +165,10 @@ function CoachDetails({ coachData, coachId, onClose }: FormItems) {
               }
               size="lg"
             />
-          </Show>
+          </Show> */}
           <HStack justify={"space-between"}>
             <Flex alignItems={"center"} gap={6}>
-              <Hide below="sm">
+              {/* <Hide below="sm"> */}
                 <Avatar
                   src={
                     typeof coachData?.image === "string"
@@ -179,20 +177,12 @@ function CoachDetails({ coachData, coachId, onClose }: FormItems) {
                   }
                   size="lg"
                 />
-              </Hide>
+              {/* </Hide> */}
 
               <Text>{coachData?.name}</Text>
             </Flex>
 
-            <Button
-              bg="none"
-              fontSize="16px"
-              color="green.100"
-              _hover={{ bg: "none" }}
-              fontWeight={"400"}
-            >
-              Edit Profile
-            </Button>
+          
           </HStack>
 
           <Grid
@@ -285,8 +275,8 @@ function CoachDetails({ coachData, coachId, onClose }: FormItems) {
                   border: "none",
                   h: "45px",
                 }}
-                name="exp"
-                onKeyUp={() => setFieldTouched("exp")}
+                name="experience"
+                onKeyUp={() => setFieldTouched("experience")}
               />
             </GridItem>
 
@@ -358,7 +348,7 @@ function CoachDetails({ coachData, coachId, onClose }: FormItems) {
                 h={"80px"}
                 onClick={() => handleActivate(coachId)}
               >
-                DeActivate Coach
+                Deactivate Coach
               </Button>
             ) : (
               <Button
