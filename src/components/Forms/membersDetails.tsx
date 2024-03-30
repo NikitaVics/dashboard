@@ -251,7 +251,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
               <Text>{memberData?.name}</Text>
             </Flex>
 
-            <Button
+            {/* <Button
               bg="none"
               fontSize="16px"
               color="green.100"
@@ -259,7 +259,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
               fontWeight={"400"}
             >
               Edit Profile
-            </Button>
+            </Button> */}
           </HStack>
 
           <Grid
@@ -496,6 +496,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
               color={"white"}
               bgColor={"green.100"}
               w="full"
+              _hover={{ color: "green.100", border: "1px solid rgba(78, 203, 113, 1)", bg:"none" }}
               h={"60px"}
               onClick={() => handleDeactivate(id)}
             >
