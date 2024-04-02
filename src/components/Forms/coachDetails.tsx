@@ -61,8 +61,8 @@ function CoachDetails({ coachData, coachId, onClose }: FormItems) {
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/coach`);
             onClose?.();
+            await mutate(`/api/coach?searchTerm=${""}`);
           }
         }
       } catch (error) {
@@ -104,8 +104,8 @@ function CoachDetails({ coachData, coachId, onClose }: FormItems) {
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/coach`);
             onClose?.();
+            await mutate(`/api/coach?searchTerm=${""}`);
           }
         }
       } catch (error) {
