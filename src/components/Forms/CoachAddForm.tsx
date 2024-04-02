@@ -277,9 +277,8 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
 
             <GridItem rowSpan={1} colSpan={2}>
       <DatePicker
-        onDateSelect={handleDateSelect}
-        onClear={handleClearDate}
-      />
+                onDateSelect={handleDateSelect}
+                onClear={handleClearDate} value={null} placeholder={"Coach From"} border={""}      />
               {/* <DatePicker
   onDateSelect={(date) => console.log('Selected Date:', date)}
   onClear={() => console.log('Clearing date')}
