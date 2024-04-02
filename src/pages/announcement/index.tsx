@@ -473,7 +473,7 @@ const borderColor = useColorModeValue("rgba(211, 211, 211, 1)","rgba(57, 57, 57,
 
         <DrawerBody>
       
-   <AnnouncementForm message={undefined} onClose={onClose} id={""}   />
+   <AnnouncementForm message={undefined} onClose={() => setAddAnnouncementDrawerOpen(false)} id={""}   />
           
         </DrawerBody>
       </DrawerContent>
@@ -495,7 +495,7 @@ const borderColor = useColorModeValue("rgba(211, 211, 211, 1)","rgba(57, 57, 57,
       </DrawerHeader>
 
       <DrawerBody>
-        <EventAnnouncement  onClose={onClose} id={""} />
+        <EventAnnouncement onClose={() => setIsEventDrawerOpen(false)} id={""} />
       </DrawerBody>
     </DrawerContent>
   </Drawer>}

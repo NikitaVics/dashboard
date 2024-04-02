@@ -22,6 +22,7 @@ import { ChangeEvent, useState } from "react";
 import ky from "ky";
 import SuccessDrawer from "./successDrawer";
 import { mutate } from "swr";
+import DatePicker from "@/pages/coachDatePicker";
 
 type FormItems = {
   id: string;
@@ -30,13 +31,17 @@ type FormItems = {
     eventDate: string;
     eventTime: string;
     eventName: string;
-    images: string;
+    images: string | string[]; // Changed to handle array of images
   };
 
   onClose?: () => void;
 };
 
 const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
+
+
+    const [showErrorBorder, setShowErrorBorder] = useState(false);
+
   const { t } = useTranslation("announcement");
   const bgColor = useColorModeValue("light.200", "dark.300");
   const color = useColorModeValue(
@@ -58,15 +63,6 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
     setIsSuccessDrawerOpen(false);
     onClose?.();
   };
-  const formatDate = (dateString: string | undefined): string => {
-    if (!dateString) return "";
-
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
 
   const formatTime = (timeString: string | undefined): string => {
     if (!timeString) return "";
@@ -80,33 +76,21 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
 
     return `${formattedHours}:${formattedMinutes}`;
   };
+
   const [eventName, setEventName] = useState<string>(
     eventData?.eventName || ""
   );
-  const [selectedDate, setSelectedDate] = useState<string>(
-    formatDate(eventData?.eventDate) || ""
-  );
+
   const [selectedTime, setSelectedTime] = useState<string>(
     formatTime(eventData?.eventTime) || ""
   );
+  
   const [message, setMessage] = useState<string>(eventData?.message || "");
 
-  const [selectedScheduledDate, setSelectedScheduledDate] = useState("");
+ 
   const [selectedScheduledTime, setSelectedScheduledTime] = useState("");
 
-  const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const selectedDates = event.target.value;
-    const [year, month, day] = selectedDates.split("-");
-    const reversedDate = `${year}-${month}-${day}`;
-    setSelectedDate(reversedDate);
-  };
 
-  const handleScheduledDateChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const selectedDates = event.target.value;
-    const [year, month, day] = selectedDates.split("-");
-    const reversedDate = `${year}-${month}-${day}`;
-    setSelectedScheduledDate(reversedDate);
-  };
 
   const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedTime(event.target.value);
@@ -152,16 +136,72 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
     }
   };
 
+  const[eventError,setEventError] = useState(false)
+  const[dateError,setDateError] = useState(false);
+
   const handleSendClick = async () => {
     try {
-      const data = new FormData();
-      data.append("Message", message);
-      data.append("EventName", eventName);
 
-      const event = new Date(
-        `${selectedDate}T${selectedTime}:00.000Z`
-      ).toISOString();
-      data.append("EventDateTime", event);
+ 
+      const data = new FormData();
+      if (message.trim() !== "") {
+        data.append("Message", message);
+      } else {
+        toast({
+          description: "Message is required",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        setShowErrorBorder(true)
+
+        setTimeout(() => {
+          setShowErrorBorder(false);
+        }, 3000);
+      }
+  
+
+      if (!selectedDate) {
+        toast({
+          description: "Event Date is required",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+
+        setDateError(true)
+
+        setTimeout(() => {
+          setDateError(false);
+        }, 3000);
+      }
+
+      if (eventName.trim() !== "") {
+        data.append("EventName", eventName);
+
+      } else {
+        toast({
+          description: "EventName is required",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        setEventError(true)
+
+        setTimeout(() => {
+          setEventError(false);
+        }, 3000);
+      }
+  
+    
+
+      
+      const scheduledDateTimes = selectedDate?.toISOString() || "";
+
+      data.append("EventDateTime", scheduledDateTimes);
 
       if (formData.images) {
         formData.images.forEach((image) => {
@@ -191,26 +231,43 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
     }
   };
 
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date);
+  };
+
+  const handleClearDate = () => {
+    setSelectedDate(null);
+  };
+
+  const [selectedScheduleDate, setSelectedSelectedDate] = useState<Date | null>(null);
+
+  const handleDateSelects = (date: Date) => {
+    setSelectedSelectedDate(date);
+  };
+
+
+
+  const handleClearDates = () => {
+    setSelectedSelectedDate(null);
+  };
+
   const handleSchedule = async () => {
     try {
       const data = new FormData();
       data.append("Message", message);
       data.append("EventName", eventName);
 
-      const event = new Date(
-        `${selectedDate}T${selectedTime}:00.000Z`
-      ).toISOString();
-
-      data.append("EventDateTime", event);
+      const scheduledDateTimes = selectedDate?.toISOString() || "";
+      data.append("EventDateTime", scheduledDateTimes);
 
       if (formData.images) {
         formData.images.forEach((image) => {
           data.append(`Images`, image);
         });
       }
-      const scheduledDateTime = new Date(
-        `${selectedScheduledDate}T${selectedScheduledTime}:00.000Z`
-      ).toISOString();
+      const scheduledDateTime = selectedScheduleDate?.toISOString() || "";
 
       data.append("SceduledDataTime", scheduledDateTime);
 
@@ -222,14 +279,7 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
       );
 
       if (response) {
-        toast({
-          description: "Successfully added",
-          status: "success",
-          position: "top",
-          duration: 3000,
-          isClosable: true,
-        });
-        onClose?.();
+        setIsSuccessDrawerOpen(true);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -254,8 +304,10 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
           data.append(`Images`, image);
         });
       }
+
+      const scheduledDate = selectedScheduleDate?.toISOString() || "";
       const scheduledDateTime = new Date(
-        `${selectedScheduledDate}T${selectedScheduledTime}:00.000Z`
+        `${scheduledDate}T${selectedScheduledTime}:00.000Z`
       ).toISOString();
 
       data.append("SceduledDataTime", scheduledDateTime);
@@ -300,24 +352,33 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
             <GridItem rowSpan={1} colSpan={2}>
               <Input
                 type="text"
+                h="60px"
                 value={eventName}
                 bgColor={bgColor}
                 placeholder="Event Name"
                 _placeholder={{ color: "rgba(124, 124, 125, 1)" }}
                 onChange={handleMessageChange}
+                border={eventError ? "2px solid red" : undefined} 
+        
               />
             </GridItem>
+
             <GridItem rowSpan={1} colSpan={1}>
-              <Input
-                type="date"
-                bgColor={bgColor}
-                value={selectedDate}
-                onChange={handleDateChange}
+              <DatePicker
+                onDateSelect={handleDateSelect}
+                onClear={handleClearDate}
+                value={eventData?.eventDate || null}
+                placeholder="Select Date"
+                  // eslint-disable-next-line
+                //@ts-ignore
+                border={dateError ? "2px solid red" : undefined}
               />
             </GridItem>
+
             <GridItem rowSpan={1} colSpan={1}>
               <Input
                 type="time"
+                h="60px"
                 bgColor={bgColor}
                 value={selectedTime}
                 onChange={handleTimeChange}
@@ -354,28 +415,40 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                     h="120px"
                   />
                   <Flex>
-                    {eventData?.images &&
-                    typeof eventData.images === "string" ? (
-                      <Image
-                        src={eventData.images}
-                        alt="Attached Image"
-                        ml={1}
-                        w="150px"
-                      />
+                    {formData.images && formData.images.length > 0 ? (
+                      formData.images.map((image, index) => (
+                        <Image
+                          key={index}
+                          src={URL.createObjectURL(image)}
+                          alt={`Selected Image ${index}`}
+                          ml={1}
+                          w="110px"
+                        />
+                      ))
                     ) : (
                       eventData?.images &&
-                      Array.isArray(eventData.images) && (
-                        <>
-                          {eventData.images.map((imageUrl, index) => (
-                            <Image
-                              key={index}
-                              src={imageUrl}
-                              alt={`Attached Image ${index}`}
-                              ml={1}
-                              w="150px"
-                            />
-                          ))}
-                        </>
+                      typeof eventData.images === "string" ? (
+                        <Image
+                          src={eventData.images}
+                          alt="Attached Image"
+                          ml={1}
+                          w="150px"
+                        />
+                      ) : (
+                        eventData?.images &&
+                        Array.isArray(eventData.images) && (
+                          <>
+                            {eventData.images.map((imageUrl, index) => (
+                              <Image
+                                key={index}
+                                src={imageUrl}
+                                alt={`Attached Image ${index}`}
+                                ml={1}
+                                w="150px"
+                              />
+                            ))}
+                          </>
+                        )
                       )
                     )}
                   </Flex>
@@ -395,6 +468,8 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                 onChange={handleTextChange}
                 value={message}
                 name="message"
+                border={showErrorBorder ? "2px solid red" : undefined} 
+        
               />
             </GridItem>
             {id ? (
@@ -408,7 +483,6 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                     border="1px solid"
                     color="rgba(78, 203, 113, 1)"
                     h="80px"
-                    // type="submit"
                     onClick={handleEditModalOpen}
                   >
                     {t(`common:buttons.reSchedule`)}
@@ -441,7 +515,72 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                     border="1px solid"
                     color="rgba(78, 203, 113, 1)"
                     h="80px"
-                    onClick={handleEditModalOpen}
+                    onClick={() => {
+                      if (
+                        message.trim() === "" &&
+                        eventName.trim() === "" &&
+                        !selectedDate
+                      ) {
+                        toast({
+                          description: "Message, Event Name, and Event Date are required to schedule",
+                          status: "error",
+                          position: "top",
+                          duration: 3000,
+                          isClosable: true,
+                        });
+                        setShowErrorBorder(true);
+                        setEventError(true);
+                        setDateError(true);
+
+                        setTimeout(() => {
+                          setShowErrorBorder(false);
+                          setEventError(false);
+                          setDateError(false);
+                        }, 3000);
+                      } else if (message.trim() === "") {
+                        toast({
+                          description: "Message is required to schedule",
+                          status: "error",
+                          position: "top",
+                          duration: 3000,
+                          isClosable: true,
+                        });
+                        setShowErrorBorder(true);
+
+                        setTimeout(() => {
+                          setShowErrorBorder(false);
+                        }, 3000);
+                      } else if (eventName.trim() === "") {
+                        toast({
+                          description: "Event Name is required to schedule",
+                          status: "error",
+                          position: "top",
+                          duration: 3000,
+                          isClosable: true,
+                        });
+                        setEventError(true);
+
+                        setTimeout(() => {
+                          setEventError(false);
+                        }, 3000);
+                      } else if (!selectedDate) {
+                        toast({
+                          description: "Event Date is required to schedule",
+                          status: "error",
+                          position: "top",
+                          duration: 3000,
+                          isClosable: true,
+                        });
+                        setDateError(true);
+
+                        setTimeout(() => {
+                          setDateError(false);
+                        }, 3000);
+                      } else {
+                        handleEditModalOpen();
+                      }
+                    }}
+                    
                   >
                     {t(`common:buttons.schedule`)}
                   </Button>
@@ -450,7 +589,7 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                   <Button
                     w="full"
                     bgColor="rgba(78, 203, 113, 1)"
-                    type="submit"
+                    // type="submit"
                     color="#fff"
                     h="80px"
                     _hover={{
@@ -505,16 +644,16 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                           borderRadius={"20px"}
                         >
                           <GridItem rowSpan={1} colSpan={1}>
-                            <Input
-                              type="date"
-                              bgColor={bgColor}
-                              value={selectedScheduledDate}
-                              onChange={handleScheduledDateChange}
-                            />
+                          <DatePicker
+                              onDateSelect={handleDateSelects}
+                              onClear={handleClearDates}
+                              value={""}
+                              placeholder="Date" border={""}              />
                           </GridItem>
                           <GridItem rowSpan={1} colSpan={1}>
                             <Input
                               type="time"
+                              h={"60px"}
                               bgColor={bgColor}
                               value={selectedScheduledTime}
                               onChange={handleScheduledTimeChange}

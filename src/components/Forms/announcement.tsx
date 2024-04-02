@@ -1,34 +1,57 @@
 import React, { ChangeEvent, useRef, useState } from "react";
-import { Button, Drawer, DrawerBody, DrawerCloseButton, Image,DrawerContent, DrawerHeader,Text, DrawerOverlay, Grid, GridItem, IconButton, Input, Textarea, Tooltip,  useColorModeValue, useToast, Box, Flex } from "@chakra-ui/react";
+import {
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  Image,
+  DrawerContent,
+  DrawerHeader,
+  Text,
+  DrawerOverlay,
+  Grid,
+  GridItem,
+  IconButton,
+  Input,
+  Textarea,
+  Tooltip,
+  useColorModeValue,
+  useToast,
+  Box,
+  Flex,
+  FormControl,
+} from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import useTranslation from "next-translate/useTranslation";
 import ky, { HTTPError } from "ky";
 import { AttachmentIcon } from "@chakra-ui/icons";
 import SuccessDrawer from "./successDrawer";
 import { mutate } from "swr";
+import DatePicker from "@/pages/coachDatePicker";
 
 type FormItems = {
   // eslint-disable-next-line
   message: any;
-  id : string
+  id: string;
   Data?: {
     id?: string;
     message: string;
     scheduledDateTime: string;
-    images:string;
+    images: string;
     date: string;
     time: string;
   };
   onClose?: () => void;
 };
 
-const AnnouncementForm = ({ Data ,onClose,id}: FormItems) => {
+const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const handleEditModalOpen = () => {
     setIsEditModalOpen(true);
   };
 
-  const [selectedDate, setSelectedDate] = useState("");
+  const[attachImage,setAttachImage] = useState(false)
+
   const [selectedTime, setSelectedTime] = useState("");
 
   const [isSuccessDrawerOpen, setIsSuccessDrawerOpen] = useState(false);
@@ -36,13 +59,6 @@ const AnnouncementForm = ({ Data ,onClose,id}: FormItems) => {
   const handleCloseSuccessDrawer = () => {
     setIsSuccessDrawerOpen(false);
     onClose?.();
-  };
-
-  const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const selectedDates = event.target.value;
-    const [year, month, day] = selectedDates.split("-");
-    const reversedDate = `${year}-${month}-${day}`;
-    setSelectedDate(reversedDate);
   };
 
   const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -53,26 +69,20 @@ const AnnouncementForm = ({ Data ,onClose,id}: FormItems) => {
     setIsEditModalOpen(false);
   };
 
-
   const toast = useToast();
   const [formData, setFormData] = useState({
-    message: '',
+    message: "",
     scheduledDateTime: null,
-    images:   [] as File[],
+    images: [] as File[],
   });
   const [message, setMessage] = useState<string>("");
 
   const handleMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
   };
-  
-  
-
-
 
   const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
-    if ('files' in e.target && e.target.files) {
-    
+    if ("files" in e.target && e.target.files) {
       setFormData({
         ...formData,
         images: Array.from(e.target.files),
@@ -84,16 +94,48 @@ const AnnouncementForm = ({ Data ,onClose,id}: FormItems) => {
       });
     }
   };
-  
 
 
-const handleSendClick = async () => {
+
+  const [showErrorBorder, setShowErrorBorder] = useState(false);
+
+  const handleSendClick = async () => {
     try {
-     
-     
       const data = new FormData();
-      data.append('Message', message);
+     if (message.trim() !== "") {
+        data.append("Message", message);
+      } else {
+        toast({
+          description: "Message is required",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
 
+        setShowErrorBorder(true);
+
+
+        setTimeout(() => {
+          setShowErrorBorder(false);
+        }, 3000);
+      }
+
+      if (formData.images.length === 0) {
+        toast({
+          description: "Please attach an image",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        setAttachImage(true)
+
+        setTimeout(() => {
+          setAttachImage(false);
+        }, 3000);
+        return;
+      }
 
       if (formData.images) {
         formData.images.forEach((image) => {
@@ -114,20 +156,26 @@ const handleSendClick = async () => {
           isClosable: true,
         });
         onClose?.();
-
-      
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date);
+  };
+
+  const handleClearDate = () => {
+    setSelectedDate(null);
+  };
+
   const handleSchedule = async () => {
     try {
-      
       const data = new FormData();
-      data.append('Message', message);
-
+      data.append("Message", message);
 
       if (formData.images) {
         formData.images.forEach((image) => {
@@ -135,29 +183,21 @@ const handleSendClick = async () => {
         });
       }
 
-
-
-
       if (formData.images) {
-       
         data.append("Images", formData.images[0]);
-        
       }
 
-      const scheduledDateTime = new Date(`${selectedDate}T${selectedTime}:00.000Z`).toISOString();
+      const scheduledDateTime = selectedDate?.toISOString() || "";
 
-      data.append("ScheduledDateTime",scheduledDateTime)
+      data.append("ScheduledDateTime", scheduledDateTime);
 
       const response = await ky.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement/create Announcement`, {
         body: data,
       });
-    
 
-    
-     
       if (response) {
         setIsSuccessDrawerOpen(true);
-        await mutate(`/api/getAnnouncement`)
+        await mutate(`/api/getAnnouncement`);
       }
     } catch (error) {
       if (error instanceof HTTPError && error.response.status === 400) {
@@ -182,10 +222,9 @@ const handleSendClick = async () => {
 
   const handleEdits = async () => {
     try {
-      
       const data = new FormData();
-      data.append('Message', message);
-
+      
+      data.append("Message", message);
 
       if (formData.images) {
         formData.images.forEach((image) => {
@@ -193,23 +232,19 @@ const handleSendClick = async () => {
         });
       }
 
-
-      data.append("Id",id)
+      data.append("Id", id);
 
       const scheduledDateTime = new Date(`${selectedDate}T${selectedTime}:00.000Z`).toISOString();
 
-      data.append("ScheduledDateTime",scheduledDateTime)
+      data.append("ScheduledDateTime", scheduledDateTime);
 
       const response = await ky.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement`, {
         body: data,
       });
-    
 
-    
-     
       if (response) {
         setIsSuccessDrawerOpen(true);
-        await mutate(`/api/getAnnouncement`)
+        await mutate(`/api/getAnnouncement`);
       }
     } catch (error) {
       if (error instanceof HTTPError && error.response.status === 400) {
@@ -243,8 +278,9 @@ const handleSendClick = async () => {
       fileInputRef.current.click();
     }
   };
-  
+
  
+
   return (
     <Formik
       initialValues={{
@@ -253,8 +289,9 @@ const handleSendClick = async () => {
         image: Data?.images || "",
       }}
       onSubmit={handleSendClick}
+    
     >
-      {() => (
+      {({ errors }) => (
         <Form noValidate>
           <Grid
             templateRows="repeat(1, 1fr)"
@@ -269,214 +306,269 @@ const handleSendClick = async () => {
             borderRadius={"20px"}
           >
             <GridItem rowSpan={1} colSpan={2}>
-           <Flex>
-    {Data?.images && typeof Data.images === 'string' ? (
-      <Image src={Data.images} alt="Attached Image" ml={1} w="150px" />
-    ) : (
-      Data?.images && Array.isArray(Data.images) && (
-        <>
-          {Data.images.map((imageUrl, index) => (
-            <Image key={index} src={imageUrl} alt={`Attached Image ${index}`} ml={1} w="150px" />
-          ))}
-        </>
-      )
-    )}
-  </Flex>
-<Box position="relative">
-
-  <Textarea
-    h="174px"
-    placeholder="Type Message ..."
-    paddingLeft="40px"
-    bgColor={bgColor} 
-    onChange={handleMessageChange}
-    value={message || Data?.message} 
-    name="message"
-  />
-
-  <input
-    type="file"
-    name={"Images"}
-    ref={fileInputRef}
-    style={{ display: "none" }}
-    onChange={handleChange}
-    accept="image/*"
-  />
-  <Tooltip label="Attach Image" placement="top">
-    <IconButton
-      icon={<AttachmentIcon />}
-      onClick={handleFileAttach}
-      position="absolute"
-      left="10px"
-      bg="transparent"
-      color="gray.500"
-      _hover={{ color: "gray.700" }}
-      aria-label="Attach Image"
-    />
-  </Tooltip>
-</Box>
+              <FormControl >
+                <Flex>
+                  {Data?.images && typeof Data.images === "string" ? (
+                    <Image src={Data.images} alt="Attached Image" ml={1} w="150px" />
+                  ) : (
+                    Data?.images && Array.isArray(Data.images) && (
+                      <>
+                        {Data.images.map((imageUrl, index) => (
+                          <Image key={index} src={imageUrl} alt={`Attached Image ${index}`} ml={1} w="150px" />
+                        ))}
+                      </>
+                    )
+                  )}
+                </Flex>
+                <Box position="relative">
+                  <Textarea
+                    h="174px"
+                    placeholder="Type Message ..."
+                    paddingLeft="40px"
+                    bgColor={bgColor}
+                    onChange={handleMessageChange}
+                    value={message || Data?.message}
+               
+                    border={showErrorBorder ? "2px solid red" : undefined} 
+                    name="message"
+                  />
+                  <input
+                    type="file"
+                    name={"Images"}
+                    ref={fileInputRef}
+                    style={{ display: "none" }}
+                    onChange={handleChange}
+                    accept="image/*"
+                  />
+                  <Tooltip label="Attach Image" placement="top">
+                    <IconButton
+                      icon={<AttachmentIcon />}
+                      onClick={handleFileAttach}
+                      position="absolute"
+                      left="10px"
+                      bg="transparent"
+                      // color="gray.500"
+                      color ={attachImage ? "red" : "gray500"}
+                      _hover={{ color: "gray.700" }}
+                      aria-label="Attach Image"
+                    />
+                  </Tooltip>
+                  <Text mt={2} color="#E53E3E">{errors.message}</Text>
+                </Box>
+              </FormControl>
             </GridItem>
             {id ? (
-  <>
-  <GridItem rowSpan={1} colSpan={1}>
-    <Button
-      w="full"
-      bg="none"
-      variant={"outline"}
-      borderColor="rgba(78, 203, 113, 1)"
-      border="1px solid"
-      color="rgba(78, 203, 113, 1)"
-      h="80px"
-      // type="submit"
-      onClick={handleEditModalOpen}
-    >
-      {t(`common:buttons.reSchedule`)}
-    </Button>
-  </GridItem>
-  <GridItem rowSpan={1} colSpan={1}>
-    <Button
-      w="full"
-      bgColor="rgba(78, 203, 113, 1)"
-     
-      color="#fff"
-      h="80px"
-      _hover={{
-        bg: "none",
-        color: "rgba(78, 203, 113, 1)",
-        border: "1px solid rgba(78, 203, 113, 1)",
-      }}
-    >
-      {t(`common:buttons.cancelSchedule`)}
-    </Button>
-  </GridItem>
-</>
-) : (
-  <>
-    <GridItem rowSpan={1} colSpan={1}>
-      <Button
-        w="full"
-        bg="none"
-        variant={"outline"}
-        borderColor="rgba(78, 203, 113, 1)"
-        border="1px solid"
-        color="rgba(78, 203, 113, 1)"
-        h="80px"
-        onClick={handleEditModalOpen}
-      >
-        {t(`common:buttons.schedule`)}
-      </Button>
-    </GridItem>
-    <GridItem rowSpan={1} colSpan={1}>
-      <Button
-        w="full"
-        bgColor="rgba(78, 203, 113, 1)"
-        type="submit"
-        color="#fff"
-        h="80px"
-        _hover={{
-          bg: "none",
-          color: "rgba(78, 203, 113, 1)",
-          border: "1px solid rgba(78, 203, 113, 1)",
-        }}
-        // onClick={handleSubmit}
-      >
-        {t(`common:buttons.send`)}
-      </Button>
-    </GridItem>
-  </>
-)}
+              <>
+                <GridItem rowSpan={1} colSpan={1}>
+                  <Button
+                    w="full"
+                    bg="none"
+                    variant={"outline"}
+                    borderColor="rgba(78, 203, 113, 1)"
+                    border="1px solid"
+                    color="rgba(78, 203, 113, 1)"
+                    h="80px"
+                    onClick={handleEditModalOpen}
+                  >
+                    {t(`common:buttons.reSchedule`)}
+                  </Button>
+                </GridItem>
+                <GridItem rowSpan={1} colSpan={1}>
+                  <Button
+                    w="full"
+                    bgColor="rgba(78, 203, 113, 1)"
+                    color="#fff"
+                    h="80px"
+                    _hover={{
+                      bg: "none",
+                      color: "rgba(78, 203, 113, 1)",
+                      border: "1px solid rgba(78, 203, 113, 1)",
+                    }}
+                  >
+                    {t(`common:buttons.cancelSchedule`)}
+                  </Button>
+                </GridItem>
+              </>
+            ) : (
+              <>
+              <GridItem rowSpan={1} colSpan={1}>
+  <Button
+    w="full"
+    bg="none"
+    variant={"outline"}
+    borderColor="rgba(78, 203, 113, 1)"
+    border="1px solid"
+    color="rgba(78, 203, 113, 1)"
+    h="80px"
+    onClick={() => {
+      if (message.trim() === "" && formData.images.length === 0) {
+        toast({
+          description: "Message  are required to schedule",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        toast({
+          description: "Please Attach Image to schedule",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        setShowErrorBorder(true);
+     setAttachImage(true)
+        
+        setTimeout(() => {
+          setShowErrorBorder(false);
+          setAttachImage(false)
+        }, 3000);
+      } else if (message.trim() === "") {
+        toast({
+          description: "Message is required to schedule",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        setShowErrorBorder(true);
+    
+       
+        setTimeout(() => {
+          setShowErrorBorder(false);
+        }, 3000);
+      } else if (formData.images.length === 0) {
+        toast({
+          description: "Please Attach image",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        setAttachImage(true);
+    
+       
+        setTimeout(() => {
+          setAttachImage(false);
+        }, 3000);
+      } else {
+        handleEditModalOpen();
+      }
+    }}
+    
+  >
+    {t(`common:buttons.schedule`)}
+  </Button>
+</GridItem>
+
+                <GridItem rowSpan={1} colSpan={1}>
+                  <Button
+                    w="full"
+                    bgColor="rgba(78, 203, 113, 1)"
+                    type="submit"
+                    color="#fff"
+                    h="80px"
+                    _hover={{
+                      bg: "none",
+                      color: "rgba(78, 203, 113, 1)",
+                      border: "1px solid rgba(78, 203, 113, 1)",
+                    }}
+                  >
+                    {t(`common:buttons.send`)}
+                  </Button>
+                </GridItem>
+              </>
+            )}
           </Grid>
           {isEditModalOpen && (
-              <Drawer
-                placement="right"
-                isOpen={isEditModalOpen}
-                onClose={handleCloseDrawer}
-                size="md"
-              >
-                <DrawerOverlay />
-                <DrawerContent >
-                  <DrawerCloseButton
-                    h="40px"
-                    w="40px"
-                    mt={3}
-                    bgColor="rgba(0, 0, 0, 0.08)"
-                  />
-                  <DrawerHeader fontSize="28px" fontWeight="700">
-                    Schedule Announcement
-                  </DrawerHeader>
+            <Drawer
+              placement="right"
+              isOpen={isEditModalOpen}
+              onClose={handleCloseDrawer}
+              size="md"
+            >
+              <DrawerOverlay />
+              <DrawerContent>
+                <DrawerCloseButton
+                  h="40px"
+                  w="40px"
+                  mt={3}
+                  bgColor="rgba(0, 0, 0, 0.08)"
+                />
+                <DrawerHeader fontSize="28px" fontWeight="700">
+                  Schedule Announcement
+                </DrawerHeader>
 
-                  <DrawerBody maxW="full">
-                    <Formik
-                      initialValues={{
-                        scheduledDateTime: Data?.scheduledDateTime || "",
-                        message: Data?.message || "",
-                        date: Data?.date || "",
-                        time: Data?.time || "",
-                      }}
-                      onSubmit={id ? handleEdits : handleSchedule}
-                    >
-                      {() => (
-                        <Form noValidate>
-                          <Grid
-                            templateRows="repeat(1, 1fr)"
-                            templateColumns={{
-                              base: "repeat(1, 1fr)",
-                              md: "repeat(2, 1fr)",
-                            }}
-                            gap="8"
-                            mt={10}
-                            pt={7}
-                            pl={4}
-                            borderRadius={"20px"}
-                          >
-                            <GridItem rowSpan={1} colSpan={1}>
-                              <Input
-                                type="date"
-                                bgColor={bgColor}
-                                value={selectedDate}
-                                onChange={handleDateChange}
-                              />
-                            </GridItem>
-                            <GridItem rowSpan={1} colSpan={1}>
-                              <Input
-                                type="time"
-                                bgColor={bgColor}
-                                value={selectedTime}
-                                onChange={handleTimeChange}
-                              />
-                            </GridItem>
+                <DrawerBody maxW="full">
+                  <Formik
+                    initialValues={{
+                      scheduledDateTime: Data?.scheduledDateTime || "",
+                      message: Data?.message || "",
+                      date: Data?.date || "",
+                      time: Data?.time || "",
+                    }}
+                    onSubmit={id ? handleEdits : handleSchedule}
+                  >
+                    {() => (
+                      <Form noValidate>
+                        <Grid
+                          templateRows="repeat(1, 1fr)"
+                          templateColumns={{
+                            base: "repeat(1, 1fr)",
+                            md: "repeat(2, 1fr)",
+                          }}
+                          gap="8"
+                          mt={10}
+                          pt={7}
+                          pl={4}
+                          borderRadius={"20px"}
+                        >
+                          <GridItem rowSpan={1} colSpan={1}>
+                            <DatePicker
+                              onDateSelect={handleDateSelect}
+                              onClear={handleClearDate}
+                              value={""}
+                              placeholder={"Date"} border={""}                            />
+                          </GridItem>
+                          <GridItem rowSpan={1} colSpan={1}>
+                            <Input
+                              type="time"
+                              h="60px"
+                              bgColor={bgColor}
+                              value={selectedTime}
+                              onChange={handleTimeChange}
+                            />
+                          </GridItem>
 
-                            <GridItem rowSpan={1} colSpan={2}>
-                              <Button
-                                w="full"
-                                bgColor="rgba(78, 203, 113, 1)"
-                                color="#fff"
-                                h="80px"
-                                _hover={{
-                                  bg: "none",
-                                  color: "rgba(78, 203, 113, 1)",
-                                  border: "1px solid rgba(78, 203, 113, 1)",
-                                }}
-                                type="submit"
-                              >
-                               {t(`common:buttons.schedule`)}
-                              </Button>
-                            </GridItem>
-                          </Grid>
-                        </Form>
-                      )}
-                    </Formik>
-                  </DrawerBody>
-                </DrawerContent>
-              </Drawer>
-            )}
-            {isSuccessDrawerOpen && <SuccessDrawer isOpen={isSuccessDrawerOpen} onClose={handleCloseSuccessDrawer} />}
+                          <GridItem rowSpan={1} colSpan={2}>
+                            <Button
+                              w="full"
+                              bgColor="rgba(78, 203, 113, 1)"
+                              color="#fff"
+                              h="80px"
+                              _hover={{
+                                bg: "none",
+                                color: "rgba(78, 203, 113, 1)",
+                                border: "1px solid rgba(78, 203, 113, 1)",
+                              }}
+                              type="submit"
+                            >
+                              {t(`common:buttons.schedule`)}
+                            </Button>
+                          </GridItem>
+                        </Grid>
+                      </Form>
+                    )}
+                  </Formik>
+                </DrawerBody>
+              </DrawerContent>
+            </Drawer>
+          )}
+          {isSuccessDrawerOpen && <SuccessDrawer isOpen={isSuccessDrawerOpen} onClose={handleCloseSuccessDrawer} />}
         </Form>
       )}
     </Formik>
   );
 };
-
-
 
 export default AnnouncementForm;
