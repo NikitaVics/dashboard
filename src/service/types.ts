@@ -13,6 +13,7 @@ export type User = {
 
   export interface ErrorResponse {
     messages: string[]
+    errorMessage:string[]
     source: string
     exception: string
     errors:string[]

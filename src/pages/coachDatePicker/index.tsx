@@ -51,10 +51,13 @@ const DatePicker = ({ onDateSelect, onClear, value, placeholder,border }: Custom
     setShowDatePicker(!showDatePicker);
   };
 
+   const [input,setInput] = useState("")
   const applyDateSelection = () => {
+  setInput(formattedDate)
     if (selectedDate) {
       onDateSelect(selectedDate);
       setShowDatePicker(false);
+     
     }
   };
 
@@ -67,7 +70,7 @@ const DatePicker = ({ onDateSelect, onClear, value, placeholder,border }: Custom
               <Input
                 h="56px"
                 placeholder={placeholder}
-                value={formattedDate}
+                value={input}
                 bgColor={bgColor}
                 border = {border ? border : undefined}
                 readOnly

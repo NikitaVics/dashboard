@@ -60,7 +60,7 @@ const Announcemnet = () => {
     setSelectedMenuItem(menuItem);
   };
   const [searchInput, setSearchInput] = useState("");
-  const [debouncedSearchInput] = useDebounce(searchInput, 800);
+  const [debouncedSearchInput] = useDebounce(searchInput, 1500);
   const { data: announcementData } = useSWR(
     ` /api/announcement/getAnnouncement?announcementType=${debouncedSearchInput}${selectedMenuItem}`
   );

@@ -108,7 +108,7 @@ export class BehrainClient {
             const accessToken = cookies.get("access_token");
 
             if (!accessToken) {
-            
+            res.status(401).end()
               throw new Error("missing valid session");
               
             }

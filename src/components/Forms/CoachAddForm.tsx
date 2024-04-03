@@ -147,6 +147,8 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
     }
   };
 
+  const emailRules = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+
   const validationSchema = Yup.object().shape({
     firstName: Yup.string()
       .required("First name is required")
@@ -162,7 +164,15 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
         /^[a-zA-Z ]+$/,
         "Last name must contain only letters and spaces"
       ),
-    email: Yup.string().email("Invalid email").required("Email is required"),
+      email: Yup
+      .string()
+      .required("Email is Required")
+      .test("is-email", "Invalid Email address", function (value) {
+        if (!value || value.trim() === "") {
+          return false
+        }
+        return emailRules.test(value)
+      }),
     phoneNumber: Yup.string()
       .matches(/^[0-9]+$/, "Phone number must contain only digits")
       .required("Phone number is required"),

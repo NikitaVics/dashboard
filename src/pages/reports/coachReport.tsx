@@ -240,7 +240,9 @@ function CoachReportDetails() {
   };
 
   const handleClearDate = () => {
-    setDate("")
+    setInputValue("");
+    setDate("");
+    setEndDate("")
   };
 
   const handleClearCourt = () => {

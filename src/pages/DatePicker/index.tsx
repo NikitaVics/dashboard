@@ -69,7 +69,7 @@ const CustomDateRangePicker = ({ onDateRangeSelect, onClear ,inputValue}: Custom
               <Input
                 h="56px"
                 placeholder="Select Date"
-                value={inputValue}
+                value={ inputValue }
                 readOnly
               />
               <InputRightElement>
@@ -89,7 +89,7 @@ const CustomDateRangePicker = ({ onDateRangeSelect, onClear ,inputValue}: Custom
                   onChange={(ranges) => handleSelect(ranges as { selection: Range })}
                   months={2}
                   direction="horizontal"
-                  // initialDates={null} // Prevents automatic selection of current date
+                 
                 />
               </ModalBody>
               <ModalFooter>

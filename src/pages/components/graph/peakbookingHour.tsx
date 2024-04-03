@@ -20,20 +20,29 @@ interface MonthData {
 
 interface CustomTooltipProps {
   active: boolean;
-  payload?: { value: number }[];
+  payload?: { value: number}[];
+  label?: string;
 }
 
 interface YearlyGraphItem {
   peakDailyBooking: number;
   slot: string;
   bookingsMade: number;
- 
 }
 
 
-const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
+const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload,label }) => {
+  const { data: bookingyearlyGraph } = useSWR("/api/bookings/peakBookingHour");
+ 
+  const yearlyGraph=bookingyearlyGraph?.result;
+
+  console.log(yearlyGraph)
+  const slot = yearlyGraph?.slot
+  console.log(slot)
   if (active && payload && payload.length) {
-    const point = payload[0];
+    // const point = payload[0];
+    // const value = point.value;
+    const month = label; 
     const bgColor = useColorModeValue("rgba(255, 255, 255, 0.9)","rgba(14, 14, 14, 1)")
     return (
       <Box
@@ -45,11 +54,11 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
         borderRadius="5px"
         boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
         position="relative"
-       width= '54px'
-      
-      >
-         <Flex justifyContent="center" alignItems="center" height="100%">
-          <Text>{`${point.value}`}</Text>
+        width="100px" 
+        >
+       
+        <Flex justifyContent="center" alignItems="center" height="100%">
+          <Text fontSize="sm">{`${month}`}</Text> {/* Display value */}
         </Flex>
        
       </Box>
@@ -68,12 +77,14 @@ const PeakBooking: React.FC = () => {
 const yearlyGraph=bookingyearlyGraph?.result;
 
 const monthData: MonthData[] = [
-    { month: '', value: 0 },
+    
     ...(yearlyGraph || []).map((item: YearlyGraphItem) => ({
       month: item.slot,
       value: item.bookingsMade,
     })),
   ];
+
+
 
 
   const color2 = useColorModeValue("rgba(67, 67, 69, 1)","rgba(224, 224, 226, 1)")
