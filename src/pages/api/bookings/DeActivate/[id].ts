@@ -17,7 +17,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const response = await client.bookings.cancelBookings(params)
       res.status(200).json(response)
     } catch (error) {
-      console.log("id:::",error)
+      console.log(error)
     }
   }
 }

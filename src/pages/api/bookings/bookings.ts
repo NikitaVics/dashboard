@@ -17,7 +17,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       res.status(200).json(response)
     } catch (error) {
      
-      res.status(401).end()
+      res.status(403).end()
     }
   }
 }

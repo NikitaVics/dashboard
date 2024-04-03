@@ -1,6 +1,7 @@
 
 import { BehrainClient } from "@/service/client"
-import { getAnnouncementProps } from "@/service/types"
+import { ErrorResponse, getAnnouncementProps } from "@/service/types"
+import { HTTPError } from "ky"
 import type { NextApiRequest, NextApiResponse } from "next"
 
 
@@ -21,8 +22,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const response = await client.announcement.getAnnouncement(params)
       res.status(200).json(response)
     } catch (error) {
-      console.log(error)
-      res.status(401).end()
+      if (error instanceof HTTPError && error.response.status === 400) {
+        const errorResponse: ErrorResponse = await error.response.json();
+        const { errorMessage } = errorResponse;
+        res.status(400).json({
+          error: { errorMessage },
+          status: 400,
+        });
+      }
     }
   }
 }

@@ -56,8 +56,12 @@ export default function App(props: AppProps) {
       );
 
       if (res.status === 401) {
-        setIsLoginModalOpen(true);
-        return;
+        router.push("/login")
+      }
+
+      if (res.status === 403) {
+       setIsLoginModalOpen(true);
+       return;
       }
 
       // Attach extra info to the error object.
