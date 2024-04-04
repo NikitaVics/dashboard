@@ -165,7 +165,7 @@ const Table = ({ columns, data }) => {
       </div>
       <Flex justifyContent="end" m={3} alignItems="center" gap={2} mx="4">
         <Flex alignItems="center" gap={3}>
-          <Text flexShrink="0">Rows per page :</Text>{" "}
+          <Text flexShrink="0">Rows per page:</Text>{" "}
           <Select
             value={pageSize}
             width={20}
