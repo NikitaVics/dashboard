@@ -58,7 +58,8 @@ const Dashboard = () => {
   const menuBg = useColorModeValue("", "rgba(20, 20, 20, 1)");
 
   return (
-    <Layout title={t(`dashboard.title`)} description={""}>
+    <Layout title={t(`dashboard.title`)} description={""}
+    >
       <PageContainer bgColor={bgColor2}>
         <Grid
           templateRows="repeat(1, 1fr)"

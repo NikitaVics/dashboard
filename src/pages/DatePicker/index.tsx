@@ -81,7 +81,7 @@ const CustomDateRangePicker = ({ onDateRangeSelect, onClear ,inputValue}: Custom
           <Modal isOpen={showDatePicker} onClose={toggleDatePicker} size="5xl">
             <ModalOverlay />
             <ModalContent bgColor={bgColor} color="black">
-              <ModalHeader>Select Date Range</ModalHeader>
+              <ModalHeader style={{cursor:"pointer"}}>Select Date Range</ModalHeader>
               <ModalCloseButton />
               <ModalBody bgColor={bgColor}>
                 <DateRangePicker
