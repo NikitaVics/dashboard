@@ -452,7 +452,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
                     {succesData}
                   </Text>
                   <Text fontSize={"14px"} color={color2}>
-                    Succesfull Booking
+                    Successful Booking
                   </Text>
                 </Stack>
               </GridItem>

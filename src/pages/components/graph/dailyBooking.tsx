@@ -71,7 +71,7 @@ const monthData: MonthData[] = [
     { month: '', value: 0 },
     ...(yearlyGraph || []).map((item: YearlyGraphItem) => ({
       month: item.monthName,
-      value: item.averagePeakHour,
+      value: item.peakDailyBooking,
     })),
   ];
 
@@ -107,7 +107,7 @@ const monthData: MonthData[] = [
             
             </linearGradient>
           </defs>
-          <Area type="natural" dataKey="value" stroke="rgba(78, 203, 113, 1)" strokeWidth={"3px"} fill="url(#colorGradient)" />
+          <Area type="basis" dataKey="value" stroke="rgba(78, 203, 113, 1)" strokeWidth={"3px"} fill="url(#colorGradient)" />
           <CartesianGrid vertical={false}  stroke="transparent" strokeDasharray="solid" />
         </AreaChart>
       </ResponsiveContainer>

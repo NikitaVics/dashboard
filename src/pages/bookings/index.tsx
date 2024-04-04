@@ -331,7 +331,7 @@ const toast = useToast()
   
             if (response) {
               toast({
-                description: "Successfully DeActivated",
+                description: "Successfully Cancelled",
                 status: "success",
                 position: "top",
                 duration: 3000,
@@ -456,7 +456,7 @@ const toast = useToast()
         <ClockIcon onClick={handleClockIconClick} cursor="pointer"/>
       </Flex>
 
-      {showPeakBooking ? <PeakBooking /> : <DailyBooking />} 
+      {showPeakBooking ? <PeakBooking/> : <DailyBooking />} 
     </Box>
   </GridItem>
      

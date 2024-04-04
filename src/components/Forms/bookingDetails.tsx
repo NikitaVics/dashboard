@@ -37,7 +37,7 @@ type FormItems = {
       name: string;
       courtImages: string;
     };
-    teamMembers?: {
+    participatingMembers?: {
       name: string;
       imageUrl: string;
     };
@@ -63,7 +63,7 @@ function BookingDetails({ memberData, onClose }: FormItems) {
 
           if (response) {
             toast({
-              description: "Successfully Deactivated",
+              description: "Successfully Cancelled",
               status: "success",
               position: "top",
               duration: 3000,
@@ -146,8 +146,8 @@ function BookingDetails({ memberData, onClose }: FormItems) {
         userImage: memberData?.userImage || "",
         court: memberData?.tennisCourt?.name || "",
         courtImages: memberData?.tennisCourt?.courtImages || "",
-        teamMembers: memberData?.teamMembers?.imageUrl || "",
-        teamName: memberData?.teamMembers?.name || "",
+        participatingMembers: memberData?.participatingMembers?.imageUrl || "",
+        participatingName: memberData?.participatingMembers?.name || "",
       }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
@@ -281,24 +281,29 @@ function BookingDetails({ memberData, onClose }: FormItems) {
               </Text>
             </GridItem>
 
-            <GridItem rowSpan={1} colSpan={1}>
-              <Flex align={"center"} gap={5}>
-                <Avatar src={memberData?.userImage} size="md" />
-                <Text>{memberData?.userName}</Text>
+           
+            {Array.isArray(memberData?.participatingMembers) &&
+  memberData.participatingMembers.map((participatingMember, index) => (
+    <React.Fragment key={index}>
+      {participatingMember.name === memberData?.userName ? (
+        <GridItem rowSpan={1} colSpan={1}>
+          <Flex align="center" gap={5}>
+            <Avatar src={participatingMember.imageUrl} name={participatingMember.name} />
+            <Text mt={2}>{participatingMember.name}</Text>
+            <BookingsIcon stroke={"rgba(78, 203, 113, 1)"} mt={2} />
+          </Flex>
+        </GridItem>
+      ) : (
+        <GridItem key={index} rowSpan={1} colSpan={1}>
+          <Flex align="center" gap={5}>
+            <Avatar src={participatingMember.imageUrl} name={participatingMember.name} />
+            <Text mt={2}>{participatingMember.name}</Text>
+          </Flex>
+        </GridItem>
+      )}
+    </React.Fragment>
+  ))}
 
-                <BookingsIcon stroke={"rgba(78, 203, 113, 1)"} />
-              </Flex>
-            </GridItem>
-
-            {Array.isArray(memberData?.teamMembers) &&
-              memberData.teamMembers.map((teamMember, index) => (
-                <GridItem key={index} rowSpan={1} colSpan={1}>
-                  <Flex align="center" gap={5}>
-                    <Avatar src={teamMember.imageUrl} name={teamMember.name} />
-                    <Text mt={2}>{teamMember.name}</Text>
-                  </Flex>
-                </GridItem>
-              ))}
           </Grid>
 
           {!isBookingDatePast && memberData?.bookingStatus === "Booked" && (
