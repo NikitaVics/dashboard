@@ -21,7 +21,6 @@ import {
   DrawerHeader,
   DrawerOverlay,
   useToast,
-
 } from "@chakra-ui/react";
 import Layout from "../components/Layout";
 import useTranslation from "next-translate/useTranslation";
@@ -51,12 +50,11 @@ import InActivateIcon from "../components/Icons/InActivate";
 import ky, { HTTPError } from "ky";
 import FilterIcon from "../components/Icons/FilterIcon";
 
-
 const Announcemnet = () => {
   const { t } = useTranslation("announcement");
-  const [selectedMenuItem, setSelectedMenuItem] = useState(""); 
+  const [selectedMenuItem, setSelectedMenuItem] = useState("");
 
-  const handleMenuItemClick = (menuItem : string) => {
+  const handleMenuItemClick = (menuItem: string) => {
     setSelectedMenuItem(menuItem);
   };
   const [searchInput, setSearchInput] = useState("");
@@ -96,9 +94,8 @@ const Announcemnet = () => {
   };
 
   const color = useColorModeValue("rgba(248, 248, 248, 1)", "dark.500");
-  
-  
-  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const bgColor = useColorModeValue("light.300", "dark.600");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -114,9 +111,9 @@ const Announcemnet = () => {
   const handleEvent = () => {
     setIsEventDrawerOpen(true);
   };
-  
 
-  const [addAnnouncementDrawerOpen, setAddAnnouncementDrawerOpen] = useState(false);
+  const [addAnnouncementDrawerOpen, setAddAnnouncementDrawerOpen] =
+    useState(false);
 
   const AddAnnouncementOpen = () => {
     setAddAnnouncementDrawerOpen(true);
@@ -134,10 +131,9 @@ const Announcemnet = () => {
     xl: true,
   });
 
-  
   const hover = useColorModeValue("rgba(237, 250, 241, 1)", "#181818");
 
-  const toast = useToast()
+  const toast = useToast();
 
   const handleDelete = async (id: string) => {
     if (id) {
@@ -247,7 +243,7 @@ const Announcemnet = () => {
       Header: t("common:menu.action"),
       // eslint-disable-next-line
       Cell: ({ row }: any) => {
-        const eventStatus = row.original.eventStatus; 
+        const eventStatus = row.original.eventStatus;
         return (
           <Menu>
             <MenuButton
@@ -255,7 +251,6 @@ const Announcemnet = () => {
               icon={<MoreVertIcon />}
               variant="ghost"
               _hover={{ bg: "none" }}
-            
             />
             <MenuList
               right="0"
@@ -269,20 +264,26 @@ const Announcemnet = () => {
                 icon={<EditIcon />}
                 bgColor={background}
                 _hover={{ bgColor: hover }}
-                onClick={() => handleAnnouncement(row?.original?.id, row?.original?.announcementType)}
+                onClick={() =>
+                  handleAnnouncement(
+                    row?.original?.id,
+                    row?.original?.announcementType
+                  )
+                }
               >
                 {t("common:buttons.view")}
               </MenuItem>
-              {eventStatus === "Scheduled" && 
-              <MenuItem
-                icon={<InActivateIcon />}
-                bgColor={background}
-                _hover={{ bgColor: hover }}
-               color = "rgba(235, 87, 87, 1)"
-               onClick={() => handleDelete(row?.original?.id)}
-              >
-                {t("common:buttons.cancelSchedule")}
-              </MenuItem>}
+              {eventStatus === "Scheduled" && (
+                <MenuItem
+                  icon={<InActivateIcon />}
+                  bgColor={background}
+                  _hover={{ bgColor: hover }}
+                  color="rgba(235, 87, 87, 1)"
+                  onClick={() => handleDelete(row?.original?.id)}
+                >
+                  {t("common:buttons.cancelSchedule")}
+                </MenuItem>
+              )}
             </MenuList>
           </Menu>
         );
@@ -291,14 +292,16 @@ const Announcemnet = () => {
     },
   ];
 
-  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)","")
+  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)", "");
 
-const sentColor = useColorModeValue("green.50","")
+  const sentColor = useColorModeValue("green.50", "");
 
-const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
+  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)", "");
 
-const borderColor = useColorModeValue("rgba(211, 211, 211, 1)","rgba(57, 57, 57, 1)")
-
+  const borderColor = useColorModeValue(
+    "rgba(211, 211, 211, 1)",
+    "rgba(57, 57, 57, 1)"
+  );
 
   return (
     <>
@@ -306,67 +309,120 @@ const borderColor = useColorModeValue("rgba(211, 211, 211, 1)","rgba(57, 57, 57,
         {isLoading ? (
           <TableSkeleton />
         ) : (
-        <>
-        <Grid
-         templateRows="repeat(1, 1fr)"
-         templateColumns={{
-          //  base: "repeat(1, 1fr)",
-          lg :"repeat(3, 1fr)",
-           md: "repeat(2, 1fr)",
-           sm: "repeat(1, 1fr)",
-         }}
-         gap="5"
-         mt="10">
-        <GridItem rowSpan={1} colSpan={1}>
-        <Box  bgColor={bgColor} h="150px"   borderRadius="20px" px={3} py={8}>
-            <Flex gap={10}>
-            <Maintanence  />
-              <Stack gap={4} >
-            <Text  fontSize={"18px"} fontWeight={"700"} >{t(`announce.maintain`)}</Text>
-            <Button bg="none" color="rgba(78, 203, 113, 1)" borderRadius={"51px"} border="1px solid  rgba(78, 203, 113, 1)"
-             fontWeight={"500"} fontSize="14px" cursor="pointer" onClick={onOpen} leftIcon={<PlusIcon />}>{t(`announce.create`)}</Button>
-            </Stack>
-          
-            </Flex>
-           
-        </Box>
-        </GridItem>
-       
-       
-        <GridItem rowSpan={1} colSpan={1}>
-        <Box  bgColor={bgColor} h="150px"   borderRadius="20px" px={3} py={8} >
-        <Flex gap={10}>
-        <Event />
-              <Stack gap={4}>
-            <Text  fontSize={"20px"} fontWeight={"700"}>{t(`announce.event`)}</Text>
-            <Button bg="none" color="rgba(78, 203, 113, 1)" borderRadius={"51px"}  textAlign={"center"}
-             border="1px solid  rgba(78, 203, 113, 1)" fontWeight={"500"} fontSize="14px" cursor="pointer"  onClick={()=>handleEvent()} leftIcon={<PlusIcon />}>{t(`announce.create`)}</Button>
-            </Stack>
-         
-            </Flex>
-           
-        </Box>
-        </GridItem>
-        <GridItem rowSpan={1} colSpan={1}>
-         <Box  bgColor={bgColor} h="150px"   borderRadius="20px" px={3} py={8}>
-         <Flex gap={10}>
-             
-           <Announce />
-            <Stack gap={4}>
-            <Text  fontSize={"20px"} fontWeight={"700"}>{t(`announce.announce`)}</Text>
-            <Button bg="none" color="rgba(78, 203, 113, 1)" borderRadius={"51px"} border="1px solid  rgba(78, 203, 113, 1)"
-             fontWeight={"500"} fontSize="14px" cursor="pointer" onClick={()=>AddAnnouncementOpen()} leftIcon={<PlusIcon />}>{t(`announce.create`)}</Button>
-            </Stack> 
-            </Flex>
-           
-        </Box>
-        </GridItem>
-        
-      </Grid>
-      <PageContainer    as="section"
-            maxW="full"
-            p="3"
-            mt={{ base: 8, md: 18, lg: 8 }}>
+          <>
+            <Grid
+              templateRows="repeat(1, 1fr)"
+              templateColumns={{
+                //  base: "repeat(1, 1fr)",
+                lg: "repeat(3, 1fr)",
+                md: "repeat(2, 1fr)",
+                sm: "repeat(1, 1fr)",
+              }}
+              gap="5"
+              mt="10"
+            >
+              <GridItem rowSpan={1} colSpan={1}>
+                <Box
+                  bgColor={bgColor}
+                  h="150px"
+                  borderRadius="20px"
+                  px={3}
+                  py={8}
+                >
+                  <Flex gap={10}>
+                    <Maintanence />
+                    <Stack gap={4}>
+                      <Text fontSize={"18px"} fontWeight={"700"}>
+                        {t(`announce.maintain`)}
+                      </Text>
+                      <Button
+                        bg="none"
+                        color="rgba(78, 203, 113, 1)"
+                        borderRadius={"51px"}
+                        border="1px solid  rgba(78, 203, 113, 1)"
+                        fontWeight={"500"}
+                        fontSize="14px"
+                        cursor="pointer"
+                        onClick={onOpen}
+                        leftIcon={<PlusIcon />}
+                      >
+                        {t(`announce.create`)}
+                      </Button>
+                    </Stack>
+                  </Flex>
+                </Box>
+              </GridItem>
+
+              <GridItem rowSpan={1} colSpan={1}>
+                <Box
+                  bgColor={bgColor}
+                  h="150px"
+                  borderRadius="20px"
+                  px={3}
+                  py={8}
+                >
+                  <Flex gap={10}>
+                    <Event />
+                    <Stack gap={4}>
+                      <Text fontSize={"20px"} fontWeight={"700"}>
+                        {t(`announce.event`)}
+                      </Text>
+                      <Button
+                        bg="none"
+                        color="rgba(78, 203, 113, 1)"
+                        borderRadius={"51px"}
+                        textAlign={"center"}
+                        border="1px solid  rgba(78, 203, 113, 1)"
+                        fontWeight={"500"}
+                        fontSize="14px"
+                        cursor="pointer"
+                        onClick={() => handleEvent()}
+                        leftIcon={<PlusIcon />}
+                      >
+                        {t(`announce.create`)}
+                      </Button>
+                    </Stack>
+                  </Flex>
+                </Box>
+              </GridItem>
+              <GridItem rowSpan={1} colSpan={1}>
+                <Box
+                  bgColor={bgColor}
+                  h="150px"
+                  borderRadius="20px"
+                  px={3}
+                  py={8}
+                >
+                  <Flex gap={10}>
+                    <Announce />
+                    <Stack gap={4}>
+                      <Text fontSize={"20px"} fontWeight={"700"}>
+                        {t(`announce.announce`)}
+                      </Text>
+                      <Button
+                        bg="none"
+                        color="rgba(78, 203, 113, 1)"
+                        borderRadius={"51px"}
+                        border="1px solid  rgba(78, 203, 113, 1)"
+                        fontWeight={"500"}
+                        fontSize="14px"
+                        cursor="pointer"
+                        onClick={() => AddAnnouncementOpen()}
+                        leftIcon={<PlusIcon />}
+                      >
+                        {t(`announce.create`)}
+                      </Button>
+                    </Stack>
+                  </Flex>
+                </Box>
+              </GridItem>
+            </Grid>
+            <PageContainer
+              as="section"
+              maxW="full"
+              p="3"
+              mt={{ base: 8, md: 18, lg: 8 }}
+            >
               <Stack py={{ base: 3, md: 5 }}>
                 <Formik
                   initialValues={{
@@ -374,7 +430,6 @@ const borderColor = useColorModeValue("rgba(211, 211, 211, 1)","rgba(57, 57, 57,
                   }}
                   onSubmit={() => {}}
                 >
-                
                   <Flex px={5} align="center" gap={10}>
                     <InputControl
                       {...(isDesktopView && { width: "30%" })}
@@ -392,121 +447,146 @@ const borderColor = useColorModeValue("rgba(211, 211, 211, 1)","rgba(57, 57, 57,
                       inputRightElement={<SearchIcon />}
                     />
 
-
-<Menu>
-      <MenuButton
-        as={IconButton}
-        icon={<FilterIcon />}
-        variant="ghost"
-        _hover={{ bg: "none" }}
-        h={"55px"}
-        w={"60px"}
-        border="1px solid"
-        borderColor={borderColor}
-      />
-      <MenuList
-        left="0"
-        position="fixed"
-        bgColor={background}
-               
-        zIndex={9999}
-        transform="translateY(20px)"
-      >
-        <MenuItem
-           bgColor={background}
-           _hover={{ bgColor: hover }}
-          onClick={() => handleMenuItemClick("CourtMaintenance")}
-        >
-          Court Maintenance
-        </MenuItem>
-        <MenuItem
-         bgColor={background}
-         _hover={{ bgColor: hover }}
-          onClick={() => handleMenuItemClick("EventAnnouncement")}
-        >
-          Event Announcement
-        </MenuItem>
-        <MenuItem
-           bgColor={background}
-           _hover={{ bgColor: hover }}
-          onClick={() => handleMenuItemClick("Announcement")}
-        >
-          Announcement
-        </MenuItem>
-      </MenuList>
-    </Menu>
+                    <Menu>
+                      <MenuButton
+                        as={IconButton}
+                        icon={<FilterIcon />}
+                        variant="ghost"
+                        _hover={{ bg: "none" }}
+                        h={"55px"}
+                        w={"60px"}
+                        border="1px solid"
+                        borderColor={borderColor}
+                      />
+                      <MenuList
+                        left="0"
+                        position="fixed"
+                        bgColor={background}
+                        zIndex={9999}
+                        transform="translateY(20px)"
+                      >
+                        <MenuItem
+                          bgColor={background}
+                          _hover={{ bgColor: hover }}
+                          onClick={() =>
+                            handleMenuItemClick("CourtMaintenance")
+                          }
+                        >
+                          Court Maintenance
+                        </MenuItem>
+                        <MenuItem
+                          bgColor={background}
+                          _hover={{ bgColor: hover }}
+                          onClick={() =>
+                            handleMenuItemClick("EventAnnouncement")
+                          }
+                        >
+                          Event Announcement
+                        </MenuItem>
+                        <MenuItem
+                          bgColor={background}
+                          _hover={{ bgColor: hover }}
+                          onClick={() => handleMenuItemClick("Announcement")}
+                        >
+                          Announcement
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
                   </Flex>
-                 
                 </Formik>
                 <Box>
-                 <Table columns={columnConfig} data={responseData} /> 
+                  <Table columns={columnConfig} data={responseData} />
                 </Box>
-                <Drawer placement="right" isOpen={isOpen} onClose={onClose} size="md">
-      <DrawerOverlay />
-      <DrawerContent bgColor={color}>
-        <DrawerCloseButton
-          h="40px"
-          w="40px"
-          mt={3}
-          bgColor="rgba(0, 0, 0, 0.08)"
-        />
-        <DrawerHeader fontSize="28px" fontWeight="700">
-          {t(`announce.courtAnnouncement`)}
-        </DrawerHeader>
+                <Drawer
+                  placement="right"
+                  isOpen={isOpen}
+                  onClose={onClose}
+                  size="md"
+                >
+                  <DrawerOverlay />
+                  <DrawerContent bgColor={color}>
+                    <DrawerCloseButton
+                      h="40px"
+                      w="40px"
+                      mt={3}
+                      bgColor="rgba(0, 0, 0, 0.08)"
+                    />
+                    <DrawerHeader fontSize="28px" fontWeight="700">
+                      {t(`announce.courtAnnouncement`)}
+                    </DrawerHeader>
 
-        <DrawerBody>
-       
-       
-       <CourtMaintainence message={undefined} onClose={onClose} courtId={""} />
-          
-        </DrawerBody>
-      </DrawerContent>
-    </Drawer>
+                    <DrawerBody>
+                      <CourtMaintainence
+                        message={undefined}
+                        onClose={onClose}
+                        courtId={""}
+                      />
+                    </DrawerBody>
+                  </DrawerContent>
+                </Drawer>
 
-   {addAnnouncementDrawerOpen &&  <Drawer placement="right"  isOpen={addAnnouncementDrawerOpen}
-        onClose={() => setAddAnnouncementDrawerOpen(false)} size="md" >
-      <DrawerOverlay />
-      <DrawerContent bgColor={color}>
+                {addAnnouncementDrawerOpen && (
+                  <Drawer
+                    placement="right"
+                    isOpen={addAnnouncementDrawerOpen}
+                    onClose={() => setAddAnnouncementDrawerOpen(false)}
+                    size="md"
+                  >
+                    <DrawerOverlay />
+                    <DrawerContent bgColor={color}>
+                      <DrawerCloseButton
+                        h="40px"
+                        w="40px"
+                        mt={3}
+                        bgColor="rgba(0, 0, 0, 0.08)"
+                      />
+                      <DrawerHeader fontSize="28px" fontWeight="700">
+                        {t(`announce.announce`)}
+                      </DrawerHeader>
 
-        <DrawerCloseButton  h="40px" w="40px" mt={3} bgColor="rgba(0, 0, 0, 0.08)"/>
-        <DrawerHeader fontSize="28px" fontWeight="700">{t(`announce.announce`)}</DrawerHeader>
+                      <DrawerBody>
+                        <AnnouncementForm
+                          message={undefined}
+                          onClose={onClose}
+                          id={""}
+                        />
+                      </DrawerBody>
+                    </DrawerContent>
+                  </Drawer>
+                )}
 
-        <DrawerBody>
-      
-   <AnnouncementForm message={undefined} onClose={onClose} id={""}   />
-          
-        </DrawerBody>
-      </DrawerContent>
-    </Drawer> }
+                {isEventDrawerOpen && (
+                  <Drawer
+                    placement="right"
+                    isOpen={isEventDrawerOpen}
+                    onClose={() => setIsEventDrawerOpen(false)}
+                    size="md"
+                  >
+                    <DrawerOverlay />
+                    <DrawerContent bgColor={color}>
+                      <DrawerCloseButton
+                        h="40px"
+                        w="40px"
+                        mt={3}
+                        bgColor="rgba(0, 0, 0, 0.08)"
+                      />
+                      <DrawerHeader fontSize="28px" fontWeight="700">
+                        {t(`announce.eventAnnoun`)}
+                      </DrawerHeader>
 
-    {isEventDrawerOpen && 
-    <Drawer placement="right" isOpen={isEventDrawerOpen}
-    onClose={() => setIsEventDrawerOpen(false)} size="md">
-    <DrawerOverlay />
-    <DrawerContent bgColor={color}>
-      <DrawerCloseButton
-        h="40px"
-        w="40px"
-        mt={3}
-        bgColor="rgba(0, 0, 0, 0.08)"
-      />
-      <DrawerHeader fontSize="28px" fontWeight="700">
-        {t(`announce.eventAnnoun`)}
-      </DrawerHeader>
-
-      <DrawerBody>
-        <EventAnnouncement  onClose={onClose} id={""} />
-      </DrawerBody>
-    </DrawerContent>
-  </Drawer>}
-
-
+                      <DrawerBody>
+                        <EventAnnouncement onClose={onClose} id={""} />
+                      </DrawerBody>
+                    </DrawerContent>
+                  </Drawer>
+                )}
 
                 {isEditModalOpen && (
                   <>
                     <MaintainenceForm
-                        isOpen={isEditModalOpen}
-                        onClose={() => setIsEditModalOpen(false)} id={courtId}                      
+                      isOpen={isEditModalOpen}
+                      onClose={() => setIsEditModalOpen(false)}
+                      id={courtId}
                     />
                   </>
                 )}
@@ -527,7 +607,6 @@ const borderColor = useColorModeValue("rgba(211, 211, 211, 1)","rgba(57, 57, 57,
                       isOpen={isAnnouncementOpen}
                       onClose={() => setIsAnnouncementOpen(false)}
                       id={announcementId}
-                      
                     />
                   </>
                 )}
