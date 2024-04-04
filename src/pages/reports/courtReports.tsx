@@ -235,7 +235,9 @@ function CourtReportDetails() {
   const isLoading = !responseData;
 
   const handleClearDate = () => {
-   setDate("")
+    setInputValue("");
+    setDate("");
+    setEndDate("")
   };
 
   const handleClearCourt = () => {

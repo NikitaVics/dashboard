@@ -28,6 +28,7 @@ import { Form, Formik } from "formik";
 import ky, { HTTPError } from "ky";
 import SuccessDrawer from "./successDrawer";
 import { mutate } from "swr";
+import DatePicker from "@/pages/coachDatePicker";
 
 interface ImageItem {
   id: number;
@@ -62,7 +63,6 @@ const CourtMaintainence: React.FC<FormItems> = ({
     setIsEditModalOpen(true);
   };
 
-  const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
 
   const [isSuccessDrawerOpen, setIsSuccessDrawerOpen] = useState(false);
@@ -72,12 +72,8 @@ const CourtMaintainence: React.FC<FormItems> = ({
     onClose?.();
   };
 
-  const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const selectedDates = event.target.value;
-    const [year, month, day] = selectedDates.split("-");
-    const reversedDate = `${year}-${month}-${day}`;
-    setSelectedDate(reversedDate);
-  };
+  const [showErrorBorder, setShowErrorBorder] = useState(false);
+  
 
   const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedTime(event.target.value);
@@ -124,6 +120,7 @@ const CourtMaintainence: React.FC<FormItems> = ({
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
+    setShowErrorBorder(false); // Reset error border when text changes
   };
 
   const handleSubmit = async () => {
@@ -133,23 +130,39 @@ const CourtMaintainence: React.FC<FormItems> = ({
         .map((image) => t(`announce.${image.name.toLowerCase()}`))
         .join(", ");
 
-      const updatedValues = {
-        message: message,
-        courtNames,
-      };
-      const response = await ky.post(`/api/announcement/AddCourtMaintainence`, {
-        json: updatedValues,
-      });
+      if (message.trim() !== "") {
+        const updatedValues = {
+          message: message,
+          courtNames,
+        };
 
-      if (response) {
+        const response = await ky.post(`/api/announcement/AddCourtMaintainence`, {
+          json: updatedValues,
+        });
+
+        if (response) {
+          toast({
+            description: "Successfully added",
+            status: "success",
+            position: "top",
+            duration: 3000,
+            isClosable: true,
+          });
+          onClose?.();
+        }
+      } else {
         toast({
-          description: "Successfully added",
-          status: "success",
+          description: "Message is required",
+          status: "error",
           position: "top",
           duration: 3000,
           isClosable: true,
         });
-        onClose?.();
+        setShowErrorBorder(true)
+
+        setTimeout(() => {
+          setShowErrorBorder(false);
+        }, 3000);
       }
     } catch (error) {
       if (error instanceof HTTPError && error.response.status === 400) {
@@ -172,6 +185,16 @@ const CourtMaintainence: React.FC<FormItems> = ({
     }
   };
 
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date);
+  };
+
+  const handleClearDate = () => {
+    setSelectedDate(null);
+  };
+
   const handleSchedule = async () => {
     try {
       const selectedImages = images.filter((image) => image.selected);
@@ -179,9 +202,7 @@ const CourtMaintainence: React.FC<FormItems> = ({
         .map((image) => t(`announce.${image.name.toLowerCase()}`))
         .join(", ");
 
-      const scheduledDateTime = new Date(
-        `${selectedDate}T${selectedTime}:00.000Z`
-      ).toISOString();
+      const scheduledDateTime = selectedDate?.toISOString() || "";
 
       const updatedValues = {
         scheduledDateTime,
@@ -216,6 +237,50 @@ const CourtMaintainence: React.FC<FormItems> = ({
     }
   };
 
+  const handleDelete = async (id: string) => {
+    if (id) {
+      try {
+        const updatedValues = { id };
+        if (id) {
+          const response = await ky.put(`/api/announcement/delete/${id}`, {
+            json: updatedValues,
+          });
+
+          if (response) {
+            toast({
+              description: "Successfully Deleted",
+              status: "success",
+              position: "top",
+              duration: 3000,
+              isClosable: true,
+            });
+            await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
+            onClose?.();
+
+          }
+        }
+      } catch (error) {
+        if (error instanceof HTTPError && error.response.status === 400) {
+          const errorResponse = await error.response.json();
+          const messages = errorResponse.error.messages;
+          toast({
+            description: (
+              <>
+                {messages.map((message: string, index: number) => (
+                  <Text key={index}>{message}</Text>
+                ))}
+              </>
+            ),
+            status: "error",
+            position: "top",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      }
+    }
+  };
+
   const handleEdits = async () => {
     try {
       const data = new FormData();
@@ -246,6 +311,8 @@ const CourtMaintainence: React.FC<FormItems> = ({
 
   const bgColor = useColorModeValue("light.200", "dark.300");
 
+
+
   return (
     <Box>
       <Formik
@@ -256,6 +323,7 @@ const CourtMaintainence: React.FC<FormItems> = ({
           courtId: "",
         }}
         onSubmit={handleSubmit}
+    
       >
         {({ setFieldTouched }) => (
           <Form noValidate>
@@ -298,7 +366,11 @@ const CourtMaintainence: React.FC<FormItems> = ({
               onChange={handleTextareaChange}
               onBlur={() => setFieldTouched("message")}
               bgColor={bgColor}
+              border={showErrorBorder ? "2px solid red" : undefined} 
+        
             />
+
+         
 
             <Grid
               templateRows="repeat(1, 1fr)"
@@ -320,7 +392,6 @@ const CourtMaintainence: React.FC<FormItems> = ({
                       border="1px solid"
                       color="rgba(78, 203, 113, 1)"
                       h="80px"
-                      // type="submit"
                       onClick={handleEditModalOpen}
                     >
                       {t(`common:buttons.reSchedule`)}
@@ -332,6 +403,7 @@ const CourtMaintainence: React.FC<FormItems> = ({
                       bgColor="rgba(78, 203, 113, 1)"
                       color="#fff"
                       h="80px"
+                      onClick={() => handleDelete(courtId)}
                       _hover={{
                         bg: "none",
                         color: "rgba(78, 203, 113, 1)",
@@ -353,7 +425,24 @@ const CourtMaintainence: React.FC<FormItems> = ({
                       border="1px solid"
                       color="rgba(78, 203, 113, 1)"
                       h="80px"
-                      onClick={handleEditModalOpen}
+                      onClick={() => {
+                        if (message.trim() !== "") {
+                          handleEditModalOpen();
+                        } else {
+                          toast({
+                            description: "Message is required to schedule",
+                            status: "error",
+                            position: "top",
+                            duration: 3000,
+                            isClosable: true,
+                          });
+                          setShowErrorBorder(true);
+
+                          setTimeout(() => {
+                            setShowErrorBorder(false);
+                          }, 3000);
+                        }
+                      }}
                     >
                       {t(`common:buttons.schedule`)}
                     </Button>
@@ -370,7 +459,6 @@ const CourtMaintainence: React.FC<FormItems> = ({
                         color: "rgba(78, 203, 113, 1)",
                         border: "1px solid rgba(78, 203, 113, 1)",
                       }}
-                      // onClick={handleSubmit}
                     >
                       {t(`common:buttons.send`)}
                     </Button>
@@ -423,16 +511,16 @@ const CourtMaintainence: React.FC<FormItems> = ({
                             borderRadius={"20px"}
                           >
                             <GridItem rowSpan={1} colSpan={1}>
-                              <Input
-                                type="date"
-                                bgColor={bgColor}
-                                value={selectedDate}
-                                onChange={handleDateChange}
-                              />
+                              <DatePicker
+                                onDateSelect={handleDateSelect}
+                                onClear={handleClearDate}
+                                value={""}
+                                placeholder={"Date"} border={""}                              />
                             </GridItem>
                             <GridItem rowSpan={1} colSpan={1}>
                               <Input
                                 type="time"
+                                h="60px"
                                 bgColor={bgColor}
                                 value={selectedTime}
                                 onChange={handleTimeChange}

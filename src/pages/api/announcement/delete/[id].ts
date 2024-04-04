@@ -26,7 +26,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           status: 400,
         })
       } else {
-        res.status(400).end
+        res.status(403).end
       }
     }
   }

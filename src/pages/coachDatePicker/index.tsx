@@ -22,12 +22,15 @@ import { format } from 'date-fns';
 interface CustomDatePickerProps {
   onDateSelect: (date: Date) => void;
   onClear: () => void;
+  value: string | null;
+  placeholder: string;
+  border : string;
 }
 
-const DatePicker = ({ onDateSelect, onClear }: CustomDatePickerProps) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+const DatePicker = ({ onDateSelect, onClear, value, placeholder,border }: CustomDatePickerProps) => {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(value ? new Date(value) : null);
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
-  const [formattedDate, setFormattedDate] = useState<string>('');
+  const [formattedDate, setFormattedDate] = useState<string>(value || '');
 
   const bgColor = useColorModeValue("light.200", "dark.300");
 
@@ -40,7 +43,7 @@ const DatePicker = ({ onDateSelect, onClear }: CustomDatePickerProps) => {
 
   const handleSelect = (date: Date) => {
     setSelectedDate(date);
-    const formatted = format(date, 'dd/MM/yyyy');
+    const formatted = format(date, 'yyyy-MM-dd');
     setFormattedDate(formatted);
   };
 
@@ -48,15 +51,15 @@ const DatePicker = ({ onDateSelect, onClear }: CustomDatePickerProps) => {
     setShowDatePicker(!showDatePicker);
   };
 
+   const [input,setInput] = useState("")
   const applyDateSelection = () => {
+  setInput(formattedDate)
     if (selectedDate) {
-     
       onDateSelect(selectedDate);
       setShowDatePicker(false);
+     
     }
   };
-
-
 
   return (
     <>
@@ -66,9 +69,10 @@ const DatePicker = ({ onDateSelect, onClear }: CustomDatePickerProps) => {
             <InputGroup>
               <Input
                 h="56px"
-                placeholder="Select Date"
-                value={formattedDate}
+                placeholder={placeholder}
+                value={input}
                 bgColor={bgColor}
+                border = {border ? border : undefined}
                 readOnly
               />
               <InputRightElement>
@@ -84,11 +88,10 @@ const DatePicker = ({ onDateSelect, onClear }: CustomDatePickerProps) => {
               <ModalCloseButton />
               <ModalBody bgColor={bgColor}>
                 <Calendar
-                 // eslint-disable-next-line
+                   // eslint-disable-next-line
                 //@ts-ignore
                   date={selectedDate}
                   onChange={(date) => handleSelect(date as Date)}
-                 
                 />
               </ModalBody>
               <ModalFooter>
@@ -105,7 +108,6 @@ const DatePicker = ({ onDateSelect, onClear }: CustomDatePickerProps) => {
                   bgColor={"rgb(61, 145, 255)"}
                   _hover={{ bgColor: "#fff", color: "rgb(61, 145, 255)" }}
                   onClick={applyDateSelection}
-                  // isDisabled={!selectedDate}
                 >
                   Apply
                 </Button>
