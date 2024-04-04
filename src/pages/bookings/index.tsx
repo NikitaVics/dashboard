@@ -306,7 +306,7 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
 
           if (response) {
             toast({
-              description: "Successfully DeActivated",
+              description: "Successfully Cancelled",
               status: "success",
               position: "top",
               duration: 3000,

@@ -97,7 +97,7 @@ const monthData: MonthData[] = [
  useTranslation("bookings")
 
   return (
-    <Box borderWidth="1px" p={4} mx={4 } border="none" h={120}>
+    <Box   borderWidth="1px" p={4} mx={4 } border="none" h={120}>
     
       <ResponsiveContainer width="100%" >
         
@@ -118,7 +118,7 @@ const monthData: MonthData[] = [
             
             </linearGradient>
           </defs>
-          <Area type="natural" dataKey="value" stroke="rgba(78, 203, 113, 1)" strokeWidth={"3px"} fill="url(#colorGradient)" />
+          <Area type="basis" dataKey="value" stroke="rgba(78, 203, 113, 1)" strokeWidth={"3px"}  fill="url(#colorGradient)" />
           <CartesianGrid vertical={false}  stroke="transparent" strokeDasharray="solid" />
         </AreaChart>
       </ResponsiveContainer>
