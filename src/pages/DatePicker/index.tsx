@@ -70,6 +70,7 @@ const CustomDateRangePicker = ({ onDateRangeSelect, onClear ,inputValue}: Custom
                 h="56px"
                 placeholder="Select Date"
                 value={ inputValue }
+                cursor={"pointer"}
                 readOnly
               />
               <InputRightElement>
