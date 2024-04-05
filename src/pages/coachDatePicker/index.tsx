@@ -73,7 +73,6 @@ const DatePicker = ({ onDateSelect, onClear, value, placeholder,border }: Custom
                 value={input}
                 bgColor={bgColor}
                 border = {border ? border : undefined}
-                cursor={"pointer"}
                 readOnly
               />
               <InputRightElement>
