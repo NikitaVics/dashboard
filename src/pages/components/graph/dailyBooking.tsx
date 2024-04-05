@@ -90,7 +90,7 @@ const monthData: MonthData[] = [
     
       <ResponsiveContainer width="100%" >
         
-        <AreaChart data={monthData} ref={chartRef} margin={{ bottom: 20 }}>
+        <AreaChart data={monthData} ref={chartRef} margin={{ top: 5, right: 30, left: 0, bottom: 20 }}>
         <XAxis dataKey="month" tickLine={false} axisLine={false} orientation="bottom"  interval={0}
             textAnchor="end"
             dy={20}
