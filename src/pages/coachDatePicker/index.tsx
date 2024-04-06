@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Calendar } from 'react-date-range';
-import 'react-date-range/dist/styles.css';
-import 'react-date-range/dist/theme/default.css';
+import React, { useState } from "react";
+import { Calendar } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 import {
   Button,
   Input,
@@ -15,9 +15,9 @@ import {
   ModalHeader,
   ModalOverlay,
   useColorModeValue,
-} from '@chakra-ui/react';
-import CalenderIcon from '../components/Icons/calenderIcon';
-import { format } from 'date-fns';
+} from "@chakra-ui/react";
+import CalenderIcon from "../components/Icons/calenderIcon";
+import { format } from "date-fns";
 
 interface CustomDatePickerProps {
   onDateSelect: (date: Date) => void;
@@ -30,7 +30,7 @@ interface CustomDatePickerProps {
 const DatePicker = ({ onDateSelect, onClear, value, placeholder, border }: CustomDatePickerProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(value ? new Date(value) : null);
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
-  const [formattedDate, setFormattedDate] = useState<string>(value || '');
+  const [formattedDate, setFormattedDate] = useState<string>(value || "");
 
   const [input, setInput] = useState("");
 
@@ -46,7 +46,7 @@ const DatePicker = ({ onDateSelect, onClear, value, placeholder, border }: Custo
 
   const handleSelect = (date: Date) => {
     setSelectedDate(date);
-    const formatted = format(date, 'yyyy-MM-dd');
+    const formatted = format(date, "yyyy-MM-dd");
     setFormattedDate(formatted);
     setInput(formatted); 
   };
@@ -67,7 +67,7 @@ const DatePicker = ({ onDateSelect, onClear, value, placeholder, border }: Custo
     <>
       <div className="w-full">
         <div className="relative">
-          <div onClick={toggleDatePicker} style={{ cursor: 'pointer' }}>
+          <div onClick={toggleDatePicker} style={{ cursor: "pointer" }}>
             <InputGroup>
               <Input
                 h="56px"

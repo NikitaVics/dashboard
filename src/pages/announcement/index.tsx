@@ -544,111 +544,108 @@ const Announcemnet = () => {
                                               {t(`announce.courtAnnouncement`)}
                                             </DrawerHeader>
 
-                                            <DrawerBody>
-                                              <CourtMaintainence
-                                                message={undefined}
-                                                onClose={onClose}
-                                                courtId={""}
-                                              />
-                                            </DrawerBody>
-                                          </DrawerContent>
-                                        </Drawer>
+                    <DrawerBody>
+                      <CourtMaintainence
+                        message={undefined}
+                        onClose={onClose}
+                        courtId={""}
+                      />
+                    </DrawerBody>
+                  </DrawerContent>
+                </Drawer>
 
-                                        {addAnnouncementDrawerOpen && (
-                                          <Drawer
-                                            placement="right"
-                                            isOpen={addAnnouncementDrawerOpen}
-                                            onClose={() => setAddAnnouncementDrawerOpen(false)}
-                                            size="md"
-                                          >
-                                            <DrawerOverlay />
-                                            <DrawerContent bgColor={color}>
-                                              <DrawerCloseButton
-                                                h="40px"
-                                                w="40px"
-                                                mt={3}
-                                                bgColor="rgba(0, 0, 0, 0.08)"
-                                              />
-                                              <DrawerHeader fontSize="28px" fontWeight="700">
-                                                {t(`announce.announce`)}
-                                              </DrawerHeader>
+                {addAnnouncementDrawerOpen && (
+                  <Drawer
+                    placement="right"
+                    isOpen={addAnnouncementDrawerOpen}
+                    onClose={() => setAddAnnouncementDrawerOpen(false)}
+                    size="md"
+                  >
+                    <DrawerOverlay />
+                    <DrawerContent bgColor={color}>
+                      <DrawerCloseButton
+                        h="40px"
+                        w="40px"
+                        mt={3}
+                        bgColor="rgba(0, 0, 0, 0.08)"
+                      />
+                      <DrawerHeader fontSize="28px" fontWeight="700">
+                        {t(`announce.announce`)}
+                      </DrawerHeader>
 
-                                              <DrawerBody>
-                                                <AnnouncementForm
-                                                  message={undefined}
-                                                  onClose={onClose}
-                                                  id={""}
-                                                />
-                                              </DrawerBody>
-                                            </DrawerContent>
-                                          </Drawer>
-                                        )}
+                      <DrawerBody>
+                        <AnnouncementForm
+                          message={undefined}
+                          onClose={onClose}
+                          id={""}
+                        />
+                      </DrawerBody>
+                    </DrawerContent>
+                  </Drawer>
+                )}
 
-                                        {isEventDrawerOpen && (
-                                          <Drawer
-                                            placement="right"
-                                            isOpen={isEventDrawerOpen}
-                                            onClose={() => setIsEventDrawerOpen(false)}
-                                            size="md"
-                                          >
-                                            <DrawerOverlay />
-                                            <DrawerContent bgColor={color}>
-                                              <DrawerCloseButton
-                                                h="40px"
-                                                w="40px"
-                                                mt={3}
-                                                bgColor="rgba(0, 0, 0, 0.08)"
-                                              />
-                                              <DrawerHeader fontSize="28px" fontWeight="700">
-                                                {t(`announce.eventAnnoun`)}
-                                              </DrawerHeader>
+                {isEventDrawerOpen && (
+                  <Drawer
+                    placement="right"
+                    isOpen={isEventDrawerOpen}
+                    onClose={() => setIsEventDrawerOpen(false)}
+                    size="md"
+                  >
+                    <DrawerOverlay />
+                    <DrawerContent bgColor={color}>
+                      <DrawerCloseButton
+                        h="40px"
+                        w="40px"
+                        mt={3}
+                        bgColor="rgba(0, 0, 0, 0.08)"
+                      />
+                      <DrawerHeader fontSize="28px" fontWeight="700">
+                        {t(`announce.eventAnnoun`)}
+                      </DrawerHeader>
 
-                                              <DrawerBody>
-                                                <EventAnnouncement
-                                                  onClose={onClose}
-                                                  id={""}
-                                                />
-                                              </DrawerBody>
-                                            </DrawerContent>
-                                          </Drawer>
-                                        )}
+                      <DrawerBody>
+                        <EventAnnouncement onClose={onClose} id={""} />
+                      </DrawerBody>
+                    </DrawerContent>
+                  </Drawer>
+                )}
 
-                                        {isEditModalOpen && (
-                                          <>
-                                            <MaintainenceForm
-                                              isOpen={isEditModalOpen}
-                                              onClose={() => setIsEditModalOpen(false)}
-                                              id={courtId}
-                                            />
-                                          </>
-                                        )}
+                {isEditModalOpen && (
+                  <>
+                    <MaintainenceForm
+                      isOpen={isEditModalOpen}
+                      onClose={() => setIsEditModalOpen(false)}
+                      id={courtId}
+                    />
+                  </>
+                )}
 
-                                        {isEventOpen && (
-                                          <>
-                                            <EventsForm
-                                              isOpen={isEventOpen}
-                                              onClose={() => setIsEventOpen(false)}
-                                              id={eventId}
-                                            />
-                                          </>
-                                        )}
+                {isEventOpen && (
+                  <>
+                    <EventsForm
+                      isOpen={isEventOpen}
+                      onClose={() => setIsEventOpen(false)}
+                      id={eventId}
+                    />
+                  </>
+                )}
 
-                                        {isAnnouncementOpen && (
-                                          <>
-                                            <Announcement
-                                              isOpen={isAnnouncementOpen}
-                                              onClose={() => setIsAnnouncementOpen(false)}
-                                              id={announcementId}
-                                            />
-                                          </>
-                                        )}
-                                      </Stack>
-                                    </PageContainer>
-                                  </>
-                                )}
-                              </Layout>
-                            </>
-                          );
-                        };
+                {isAnnouncementOpen && (
+                  <>
+                    <Announcement
+                      isOpen={isAnnouncementOpen}
+                      onClose={() => setIsAnnouncementOpen(false)}
+                      id={announcementId}
+                    />
+                  </>
+                )}
+              </Stack>
+            </PageContainer>
+          </>
+        )}
+      </Layout>
+    </>
+  );
+};
 
-                        export default Announcemnet;
+export default Announcemnet;
