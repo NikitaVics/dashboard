@@ -33,6 +33,7 @@ import { InputControl } from "@/components/Input/Input";
 import { useDebounce } from "use-debounce";
 import ActivateIcon from "../components/Icons/activateIcon";
 
+
 type EditTaxDetailsProps = {
   memberData: MemberProps;
 };
@@ -53,7 +54,7 @@ function Member({ memberData }: EditTaxDetailsProps) {
   const [searchInput, setSearchInput] = useState("");
   const [debouncedSearchInput] = useDebounce(searchInput, 800);
   const { data: responseData } = useSWR(
-    `/api/members?searchTerm=${debouncedSearchInput}`
+    `/api/members?namefilter=${debouncedSearchInput}`
   );
 
   const data = responseData?.result;

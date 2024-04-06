@@ -73,7 +73,6 @@ const CourtMaintainence: React.FC<FormItems> = ({
   };
 
   const [showErrorBorder, setShowErrorBorder] = useState(false);
-  
 
   const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedTime(event.target.value);
@@ -120,7 +119,7 @@ const CourtMaintainence: React.FC<FormItems> = ({
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
-    setShowErrorBorder(false); // Reset error border when text changes
+    setShowErrorBorder(false); 
   };
 
   const handleSubmit = async () => {
@@ -136,9 +135,12 @@ const CourtMaintainence: React.FC<FormItems> = ({
           courtNames,
         };
 
-        const response = await ky.post(`/api/announcement/AddCourtMaintainence`, {
-          json: updatedValues,
-        });
+        const response = await ky.post(
+          `/api/announcement/AddCourtMaintainence`,
+          {
+            json: updatedValues,
+          }
+        );
 
         if (response) {
           toast({
@@ -158,7 +160,7 @@ const CourtMaintainence: React.FC<FormItems> = ({
           duration: 3000,
           isClosable: true,
         });
-        setShowErrorBorder(true)
+        setShowErrorBorder(true);
 
         setTimeout(() => {
           setShowErrorBorder(false);
@@ -209,9 +211,12 @@ const CourtMaintainence: React.FC<FormItems> = ({
         message: message,
         courtNames,
       };
-      const response = await ky.post(`/api/announcement/AddCourtMaintainence`, {
-        json: updatedValues,
-      });
+      const response = await ky.post(
+        `/api/announcement/AddCourtMaintainence`,
+        {
+          json: updatedValues,
+        }
+      );
 
       if (response) {
         setIsSuccessDrawerOpen(true);
@@ -254,9 +259,10 @@ const CourtMaintainence: React.FC<FormItems> = ({
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
+            await mutate(
+              `/api/announcement/getAnnouncement?announcementType=${""}`
+            );
             onClose?.();
-
           }
         }
       } catch (error) {
@@ -311,8 +317,6 @@ const CourtMaintainence: React.FC<FormItems> = ({
 
   const bgColor = useColorModeValue("light.200", "dark.300");
 
-
-
   return (
     <Box>
       <Formik
@@ -323,7 +327,6 @@ const CourtMaintainence: React.FC<FormItems> = ({
           courtId: "",
         }}
         onSubmit={handleSubmit}
-    
       >
         {({ setFieldTouched }) => (
           <Form noValidate>
@@ -341,12 +344,15 @@ const CourtMaintainence: React.FC<FormItems> = ({
                 <GridItem key={image.id} rowSpan={1} colSpan={1}>
                   <Stack
                     bgColor={bgColor}
-                    border={
-                      image.selected ? "1px solid rgba(78, 203, 113, 1)" : ""
-                    }
+                    border={`2px solid ${image.selected ? 'rgba(78, 203, 113, 1)' : 'transparent'}`}
                     p={4}
+                    
                     borderRadius={"20px"}
                     onClick={() => handleImageClick(image.id)}
+                    _hover={{
+                      cursor: "pointer",
+                      border: "2px solid rgba(78, 203, 113, 1)",
+                    }}
                   >
                     {image.icon}
                     <Text fontSize={"18px"} fontWeight="700">
@@ -366,11 +372,8 @@ const CourtMaintainence: React.FC<FormItems> = ({
               onChange={handleTextareaChange}
               onBlur={() => setFieldTouched("message")}
               bgColor={bgColor}
-              border={showErrorBorder ? "2px solid red" : undefined} 
-        
+              border={showErrorBorder ? "2px solid red" : undefined}
             />
-
-         
 
             <Grid
               templateRows="repeat(1, 1fr)"
@@ -515,7 +518,9 @@ const CourtMaintainence: React.FC<FormItems> = ({
                                 onDateSelect={handleDateSelect}
                                 onClear={handleClearDate}
                                 value={""}
-                                placeholder={"Date"} border={""}                              />
+                                placeholder={"Date"}
+                                border={""}
+                              />
                             </GridItem>
                             <GridItem rowSpan={1} colSpan={1}>
                               <Input

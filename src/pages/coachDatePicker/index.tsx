@@ -24,19 +24,22 @@ interface CustomDatePickerProps {
   onClear: () => void;
   value: string | null;
   placeholder: string;
-  border : string;
+  border: string;
 }
 
-const DatePicker = ({ onDateSelect, onClear, value, placeholder,border }: CustomDatePickerProps) => {
+const DatePicker = ({ onDateSelect, onClear, value, placeholder, border }: CustomDatePickerProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(value ? new Date(value) : null);
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
   const [formattedDate, setFormattedDate] = useState<string>(value || '');
+
+  const [input, setInput] = useState("");
 
   const bgColor = useColorModeValue("light.200", "dark.300");
 
   const handleClear = () => {
     setSelectedDate(null);
     setFormattedDate('');
+    setInput(''); 
     setShowDatePicker(false);
     onClear();
   };
@@ -45,19 +48,18 @@ const DatePicker = ({ onDateSelect, onClear, value, placeholder,border }: Custom
     setSelectedDate(date);
     const formatted = format(date, 'yyyy-MM-dd');
     setFormattedDate(formatted);
+    setInput(formatted); 
   };
 
   const toggleDatePicker = () => {
     setShowDatePicker(!showDatePicker);
   };
 
-   const [input,setInput] = useState("")
   const applyDateSelection = () => {
-  setInput(formattedDate)
+    setInput(formattedDate);
     if (selectedDate) {
       onDateSelect(selectedDate);
       setShowDatePicker(false);
-     
     }
   };
 
@@ -70,9 +72,9 @@ const DatePicker = ({ onDateSelect, onClear, value, placeholder,border }: Custom
               <Input
                 h="56px"
                 placeholder={placeholder}
-                value={input}
+                value={value ? value : input}
                 bgColor={bgColor}
-                border = {border ? border : undefined}
+                border={border ? border : undefined}
                 readOnly
               />
               <InputRightElement>
@@ -88,7 +90,7 @@ const DatePicker = ({ onDateSelect, onClear, value, placeholder,border }: Custom
               <ModalCloseButton />
               <ModalBody bgColor={bgColor}>
                 <Calendar
-                   // eslint-disable-next-line
+                 // eslint-disable-next-line
                 //@ts-ignore
                   date={selectedDate}
                   onChange={(date) => handleSelect(date as Date)}

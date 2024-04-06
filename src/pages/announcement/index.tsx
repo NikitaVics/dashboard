@@ -4,7 +4,7 @@ import {
   Flex,
   Grid,
   GridItem,
-  Text,
+  Icon,
   useColorModeValue,
   Stack,
   IconButton,
@@ -21,11 +21,13 @@ import {
   DrawerHeader,
   DrawerOverlay,
   useToast,
+  Text,
+  HStack,
+  CloseButton,
 } from "@chakra-ui/react";
 import Layout from "../components/Layout";
 import useTranslation from "next-translate/useTranslation";
 import Maintanence from "../components/Icons/maintanence";
-import PlusIcon from "../components/Icons/PlusIcon";
 import Event from "../components/Icons/event";
 import Announce from "../components/Icons/announce";
 import MaintainenceForm from "@/components/maintainence";
@@ -35,6 +37,7 @@ import Announcement from "@/components/announcement";
 import Table from "@/components/Table";
 import MoreVertIcon from "../components/Icons/MoreVertIcon";
 import useSWR, { mutate } from "swr";
+import { FaPlus } from "react-icons/fa6";
 import PageContainer from "../components/PageContainer";
 
 import TableSkeleton from "@/components/Skeleton/TableSkeleton";
@@ -69,14 +72,14 @@ const Announcemnet = () => {
   const [eventId, setEventId] = useState("");
 
   const handleAnnouncement = (id: string, announcementType: string) => {
-    if (announcementType === "CourtMaintenance") {
+    if (announcementType === "Court Maintenance") {
       handleEditModalOpen();
       if (id) {
         // eslint-disable-next-line
         //@ts-ignore
         setCourtId(id);
       }
-    } else if (announcementType === "EventAnnouncement") {
+    } else if (announcementType === "Event Announcement") {
       handleEventModalOpen();
       if (id) {
         // eslint-disable-next-line
@@ -329,25 +332,36 @@ const Announcemnet = () => {
                   px={3}
                   py={8}
                 >
-                  <Flex gap={10}>
+                  <Flex  gap={10}>
                     <Maintanence />
-                    <Stack gap={4}>
+                   
+
+
+                    <Stack gap={4}  > 
+                   
                       <Text fontSize={"18px"} fontWeight={"700"}>
                         {t(`announce.maintain`)}
                       </Text>
+                    
                       <Button
-                        bg="none"
-                        color="rgba(78, 203, 113, 1)"
-                        borderRadius={"51px"}
-                        border="1px solid  rgba(78, 203, 113, 1)"
-                        fontWeight={"500"}
-                        fontSize="14px"
-                        cursor="pointer"
-                                                onClick={onOpen}
-                                                leftIcon={<PlusIcon />}
-                                              >
-                                                {t(`announce.create`)}
-                                              </Button>
+                        w={"100px"}
+  bg="none"
+  color="rgba(78, 203, 113, 1)"
+  borderRadius={"51px"}
+  textAlign={"center"}
+  border="1px solid rgba(78, 203, 113, 1)"
+  fontWeight={"500"}
+  fontSize="14px"
+  cursor="pointer"
+  onClick={onOpen}
+  display="flex"
+  alignItems="center"
+  justifyContent="center"
+  gap={1}
+>
+  <Icon as={FaPlus} h={3.5} w={4} />
+  <Text>{t(`announce.create`)}</Text>
+</Button>;
                                             </Stack>
                                           </Flex>
                                         </Box>
@@ -368,19 +382,25 @@ const Announcemnet = () => {
                                                 {t(`announce.event`)}
                                               </Text>
                                               <Button
-                                                bg="none"
-                                                color="rgba(78, 203, 113, 1)"
-                                                borderRadius={"51px"}
-                                                textAlign={"center"}
-                                                border="1px solid  rgba(78, 203, 113, 1)"
-                                                fontWeight={"500"}
-                                                fontSize="14px"
-                                                cursor="pointer"
-                                                onClick={() => handleEvent()}
-                                                leftIcon={<PlusIcon />}
-                                              >
-                                                {t(`announce.create`)}
-                                              </Button>
+                                              w={"100px"}
+  bg="none"
+  color="rgba(78, 203, 113, 1)"
+  borderRadius={"51px"}
+  textAlign={"center"}
+  border="1px solid rgba(78, 203, 113, 1)"
+  fontWeight={"500"}
+  fontSize="14px"
+  cursor="pointer"
+  onClick={() => handleEvent()}
+  display="flex"
+  alignItems="center"
+  justifyContent="center"
+  gap={1}
+>
+  <Icon as={FaPlus} h={3.5} w={4} />
+  <Text>{t(`announce.create`)}</Text>
+</Button>;
+
                                             </Stack>
                                           </Flex>
                                         </Box>
@@ -393,25 +413,31 @@ const Announcemnet = () => {
                                           px={3}
                                           py={8}
                                         >
-                                          <Flex gap={10}>
+                                          <Flex  gap={10}>
                                             <Announce />
                                             <Stack gap={4}>
                                               <Text fontSize={"20px"} fontWeight={"700"}>
                                                 {t(`announce.announce`)}
                                               </Text>
                                               <Button
-                                                bg="none"
-                                                color="rgba(78, 203, 113, 1)"
-                                                borderRadius={"51px"}
-                                                border="1px solid  rgba(78, 203, 113, 1)"
-                                                fontWeight={"500"}
-                                                fontSize="14px"
-                                                cursor="pointer"
-                                                onClick={() => AddAnnouncementOpen()}
-                                                leftIcon={<PlusIcon />}
-                                              >
-                                                {t(`announce.create`)}
-                                              </Button>
+                                                w={"100px"}
+  bg="none"
+  color="rgba(78, 203, 113, 1)"
+  borderRadius={"51px"}
+  textAlign={"center"}
+  border="1px solid rgba(78, 203, 113, 1)"
+  fontWeight={"500"}
+  fontSize="14px"
+  cursor="pointer"
+  onClick={() => AddAnnouncementOpen()}
+  display="flex"
+  alignItems="center"
+  justifyContent="center"
+  gap={1}
+>
+  <Icon as={FaPlus} h={3.5} w={4} />
+  <Text>{t(`announce.create`)}</Text>
+</Button>;
                                             </Stack>
                                           </Flex>
                                         </Box>
@@ -446,9 +472,9 @@ const Announcemnet = () => {
                                               name="description"
                                               inputRightElement={<SearchIcon />}
                                             />
-
-                                            <Menu>
-                                              <MenuButton
+<HStack gap={4}>
+<Menu>
+<MenuButton
                                                 as={IconButton}
                                                 icon={<FilterIcon />}
                                                 variant="ghost"
@@ -458,40 +484,43 @@ const Announcemnet = () => {
                                                 border="1px solid"
                                                 borderColor={borderColor}
                                               />
-                                              <MenuList
-                                                left="0"
-                                                position="fixed"
-                                                bgColor={background}
-                                                zIndex={9999}
-                                                transform="translateY(20px)"
-                                              >
-                                                <MenuItem
-                                                  bgColor={background}
-                                                  _hover={{ bgColor: hover }}
-                                                  onClick={() =>
-                                                    handleMenuItemClick("CourtMaintenance")
-                                                  }
-                                                >
-                                                  Court Maintenance
-                                                </MenuItem>
-                                                <MenuItem
-                                                  bgColor={background}
-                                                  _hover={{ bgColor: hover }}
-                                                  onClick={() =>
-                                                    handleMenuItemClick("EventAnnouncement")
-                                                  }
-                                                >
-                                                  Event Announcement
-                                                </MenuItem>
-                                                <MenuItem
-                                                  bgColor={background}
-                                                  _hover={{ bgColor: hover }}
-                                                  onClick={() => handleMenuItemClick("Announcement")}
-                                                >
-                                                  Announcement
-                                                </MenuItem>
-                                              </MenuList>
-                                            </Menu>
+              <MenuList
+                left="0"
+                position="fixed"
+                bgColor={background}
+                zIndex={9999}
+                transform="translateY(20px)"
+              >
+                <MenuItem
+                  bgColor={background}
+                  _hover={{ bgColor: hover }}
+                  onClick={() => handleMenuItemClick("CourtMaintenance")}
+                >
+                  Court Maintenance
+                </MenuItem>
+                <MenuItem
+                  bgColor={background}
+                  _hover={{ bgColor: hover }}
+                  onClick={() => handleMenuItemClick("EventAnnouncement")}
+                >
+                  Event Announcement
+                </MenuItem>
+                <MenuItem
+                  bgColor={background}
+                  _hover={{ bgColor: hover }}
+                  onClick={() => handleMenuItemClick("Announcement")}
+                >
+                  Announcement
+                </MenuItem>
+               
+              </MenuList>
+            </Menu>
+            {
+              selectedMenuItem && <IconButton aria-label={""}   onClick={() => setSelectedMenuItem("")} bg="none"  color="red" >
+              <CloseButton size={"3xl"}/>
+            </IconButton>
+            }
+            </HStack>
                                           </Flex>
                                         </Formik>
                                         <Box>

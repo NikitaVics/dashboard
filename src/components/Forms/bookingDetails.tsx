@@ -186,7 +186,7 @@ function BookingDetails({ memberData, onClose }: FormItems) {
             p={7}
             borderRadius="20px"
           >
-            <Stack gap={10} pt={8}>
+            <Stack gap={memberData?.tennisCourt?.courtImages.length === 3 ? 20 : "" || memberData?.tennisCourt?.courtImages.length === 2 ? 8 : 8  } pt={8}>
               <CustomInput
                 inputProps={{
                   type: "text",

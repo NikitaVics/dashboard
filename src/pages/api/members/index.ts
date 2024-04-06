@@ -12,9 +12,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   async function getMembers() {
     try {
-      const { searchTerm = "" } = req.query;
+      const { namefilter = "" } = req.query;
       const params = {
-        searchTerm: searchTerm as string,
+        namefilter: namefilter as string,
       } as getMember;
       const response = await client.members.getMembersList(params);
       res.status(200).json(response);

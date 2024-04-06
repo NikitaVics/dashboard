@@ -42,6 +42,7 @@ import EditIcon from "../components/Icons/EditIcon";
 import SearchIcon from "../components/Icons/searchIcon";
 import CustomDateRangePicker from "../DatePicker";
 
+
 type EditTaxDetailsProps = {
   memberData: BookingsProps;
 };
