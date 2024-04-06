@@ -119,7 +119,7 @@ const CourtMaintainence: React.FC<FormItems> = ({
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
-    setShowErrorBorder(false); // Reset error border when text changes
+    setShowErrorBorder(false); 
   };
 
   const handleSubmit = async () => {
@@ -211,9 +211,12 @@ const CourtMaintainence: React.FC<FormItems> = ({
         message: message,
         courtNames,
       };
-      const response = await ky.post(`/api/announcement/AddCourtMaintainence`, {
-        json: updatedValues,
-      });
+      const response = await ky.post(
+        `/api/announcement/AddCourtMaintainence`,
+        {
+          json: updatedValues,
+        }
+      );
 
       if (response) {
         setIsSuccessDrawerOpen(true);
@@ -341,16 +344,14 @@ const CourtMaintainence: React.FC<FormItems> = ({
                 <GridItem key={image.id} rowSpan={1} colSpan={1}>
                   <Stack
                     bgColor={bgColor}
-                    border={
-                      image.selected ? "1px solid rgba(78, 203, 113, 1)" : ""
-                    }
+                    border={`2px solid ${image.selected ? 'rgba(78, 203, 113, 1)' : 'transparent'}`}
                     p={4}
+                    
                     borderRadius={"20px"}
                     onClick={() => handleImageClick(image.id)}
                     _hover={{
                       cursor: "pointer",
-                      transform: "scale(1.1)",
-                      transition: "transform 0.5s",
+                      border: "2px solid rgba(78, 203, 113, 1)",
                     }}
                   >
                     {image.icon}

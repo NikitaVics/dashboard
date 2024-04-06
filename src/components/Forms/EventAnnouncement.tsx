@@ -15,6 +15,7 @@ import {
   useColorModeValue,
   useToast,
   Image,
+  IconButton,
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import useTranslation from "next-translate/useTranslation";
@@ -23,6 +24,7 @@ import ky from "ky";
 import SuccessDrawer from "./successDrawer";
 import { mutate } from "swr";
 import DatePicker from "@/pages/coachDatePicker";
+import { CloseIcon } from "@chakra-ui/icons";
 
 type FormItems = {
   id: string;
@@ -34,13 +36,11 @@ type FormItems = {
     images: string | string[]; // Changed to handle array of images
   };
 
-  onClose?: () => void;
+  onClose: () => void;
 };
 
 const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
-
-
-    const [showErrorBorder, setShowErrorBorder] = useState(false);
+  const [showErrorBorder, setShowErrorBorder] = useState(false);
 
   const { t } = useTranslation("announcement");
   const bgColor = useColorModeValue("light.200", "dark.300");
@@ -84,13 +84,10 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
   const [selectedTime, setSelectedTime] = useState<string>(
     formatTime(eventData?.eventTime) || ""
   );
-  
+
   const [message, setMessage] = useState<string>(eventData?.message || "");
 
- 
   const [selectedScheduledTime, setSelectedScheduledTime] = useState("");
-
-
 
   const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedTime(event.target.value);
@@ -136,13 +133,11 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
     }
   };
 
-  const[eventError,setEventError] = useState(false)
-  const[dateError,setDateError] = useState(false);
+  const [eventError, setEventError] = useState(false);
+  const [dateError, setDateError] = useState(false);
 
   const handleSendClick = async () => {
     try {
-
- 
       const data = new FormData();
       if (message.trim() !== "") {
         data.append("Message", message);
@@ -154,13 +149,12 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
           duration: 3000,
           isClosable: true,
         });
-        setShowErrorBorder(true)
+        setShowErrorBorder(true);
 
         setTimeout(() => {
           setShowErrorBorder(false);
         }, 3000);
       }
-  
 
       if (!selectedDate) {
         toast({
@@ -171,7 +165,7 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
           isClosable: true,
         });
 
-        setDateError(true)
+        setDateError(true);
 
         setTimeout(() => {
           setDateError(false);
@@ -180,7 +174,6 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
 
       if (eventName.trim() !== "") {
         data.append("EventName", eventName);
-
       } else {
         toast({
           description: "EventName is required",
@@ -189,16 +182,13 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
           duration: 3000,
           isClosable: true,
         });
-        setEventError(true)
+        setEventError(true);
 
         setTimeout(() => {
           setEventError(false);
         }, 3000);
       }
-  
-    
 
-      
       const scheduledDateTimes = selectedDate?.toISOString() || "";
 
       data.append("EventDateTime", scheduledDateTimes);
@@ -239,18 +229,20 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
 
   const handleClearDate = () => {
     setSelectedDate(null);
+    
   };
 
-  const [selectedScheduleDate, setSelectedSelectedDate] = useState<Date | null>(null);
+  const [selectedScheduleDate, setSelectedScheduleDate] = useState<Date | null>(
+    null
+  );
 
   const handleDateSelects = (date: Date) => {
-    setSelectedSelectedDate(date);
+    setSelectedScheduleDate(date);
   };
 
-
-
   const handleClearDates = () => {
-    setSelectedSelectedDate(null);
+    setSelectedScheduleDate(null);
+    
   };
 
   const handleSchedule = async () => {
@@ -279,12 +271,18 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
       );
 
       if (response) {
+      
         setIsSuccessDrawerOpen(true);
+        setIsSuccessDrawerOpen(true);
+  
+       
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
+
+  
 
   const handleEdits = async () => {
     try {
@@ -321,12 +319,20 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
 
       if (response) {
         setIsSuccessDrawerOpen(true);
+        setIsEditModalOpen(false);
         await mutate(`/api/getAnnouncement`);
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
+
+  const handleRemoveImage = (index: number) => {
+    const updatedImages = [...formData.images];
+    updatedImages.splice(index, 1);
+    setFormData({ ...formData, images: updatedImages });
+  };
+  
 
   return (
     <Formik
@@ -358,8 +364,7 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                 placeholder="Event Name"
                 _placeholder={{ color: "rgba(124, 124, 125, 1)" }}
                 onChange={handleMessageChange}
-                border={eventError ? "2px solid red" : undefined} 
-        
+                border={eventError ? "2px solid red" : undefined}
               />
             </GridItem>
 
@@ -369,7 +374,8 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                 onClear={handleClearDate}
                 value={eventData?.eventDate || null}
                 placeholder="Select Date"
-                  // eslint-disable-next-line
+                
+                    // eslint-disable-next-line
                 //@ts-ignore
                 border={dateError ? "2px solid red" : undefined}
               />
@@ -395,8 +401,37 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  position: "relative",
                 }}
               >
+                {formData.images &&
+                  formData.images.map((image, index) => (
+                   <>
+                    <Flex key={index} position="relative">
+                      <Image
+                        src={URL.createObjectURL(image)}
+                        alt={`Selected Image ${index}`}
+                        ml={1}
+                        w="150px"
+                        h="100px"
+                        objectFit="cover"
+                      />
+                     
+                    </Flex>
+                     <IconButton
+                     icon={<CloseIcon />}
+                     aria-label="Remove Image"
+                     onClick={()=>handleRemoveImage(index)}
+                     position="absolute"
+                     top="2"
+                     right="2"
+                     bg="transparent"
+                     _hover={{ bg: "transparent" }}
+                     color="red.500"
+                     zIndex={2}
+                   />
+                   </>
+                  ))}
                 <label
                   htmlFor="attachment"
                   style={{
@@ -414,44 +449,6 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                     onChange={handleChange}
                     h="120px"
                   />
-                  <Flex>
-                    {formData.images && formData.images.length > 0 ? (
-                      formData.images.map((image, index) => (
-                        <Image
-                          key={index}
-                          src={URL.createObjectURL(image)}
-                          alt={`Selected Image ${index}`}
-                          ml={1}
-                          w="110px"
-                        />
-                      ))
-                    ) : (
-                      eventData?.images &&
-                      typeof eventData.images === "string" ? (
-                        <Image
-                          src={eventData.images}
-                          alt="Attached Image"
-                          ml={1}
-                          w="150px"
-                        />
-                      ) : (
-                        eventData?.images &&
-                        Array.isArray(eventData.images) && (
-                          <>
-                            {eventData.images.map((imageUrl, index) => (
-                              <Image
-                                key={index}
-                                src={imageUrl}
-                                alt={`Attached Image ${index}`}
-                                ml={1}
-                                w="150px"
-                              />
-                            ))}
-                          </>
-                        )
-                      )
-                    )}
-                  </Flex>
                   <Text ml={2} color={"rgba(124, 124, 125, 1)"}>
                     + Images
                   </Text>
@@ -468,8 +465,7 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                 onChange={handleTextChange}
                 value={message}
                 name="message"
-                border={showErrorBorder ? "2px solid red" : undefined} 
-        
+                border={showErrorBorder ? "2px solid red" : undefined}
               />
             </GridItem>
             {id ? (
@@ -522,7 +518,8 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                         !selectedDate
                       ) {
                         toast({
-                          description: "Message, Event Name, and Event Date are required to schedule",
+                          description:
+                            "Message, Event Name, and Event Date are required to schedule",
                           status: "error",
                           position: "top",
                           duration: 3000,
@@ -580,7 +577,6 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                         handleEditModalOpen();
                       }
                     }}
-                    
                   >
                     {t(`common:buttons.schedule`)}
                   </Button>
@@ -589,7 +585,6 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                   <Button
                     w="full"
                     bgColor="rgba(78, 203, 113, 1)"
-                    // type="submit"
                     color="#fff"
                     h="80px"
                     _hover={{
@@ -644,11 +639,13 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                           borderRadius={"20px"}
                         >
                           <GridItem rowSpan={1} colSpan={1}>
-                          <DatePicker
+                            <DatePicker
                               onDateSelect={handleDateSelects}
                               onClear={handleClearDates}
                               value={""}
-                              placeholder="Date" border={""}              />
+                              placeholder="Date"
+                              border={""}
+                            />
                           </GridItem>
                           <GridItem rowSpan={1} colSpan={1}>
                             <Input
@@ -684,7 +681,6 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
               </DrawerContent>
             </Drawer>
           )}
-
           {isSuccessDrawerOpen && (
             <SuccessDrawer
               isOpen={isSuccessDrawerOpen}

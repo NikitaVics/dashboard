@@ -4,7 +4,7 @@ import {
   Flex,
   Grid,
   GridItem,
-  Text,
+  Icon,
   useColorModeValue,
   Stack,
   IconButton,
@@ -21,11 +21,13 @@ import {
   DrawerHeader,
   DrawerOverlay,
   useToast,
+  Text,
+  HStack,
+  CloseButton,
 } from "@chakra-ui/react";
 import Layout from "../components/Layout";
 import useTranslation from "next-translate/useTranslation";
 import Maintanence from "../components/Icons/maintanence";
-import PlusIcon from "../components/Icons/PlusIcon";
 import Event from "../components/Icons/event";
 import Announce from "../components/Icons/announce";
 import MaintainenceForm from "@/components/maintainence";
@@ -35,6 +37,7 @@ import Announcement from "@/components/announcement";
 import Table from "@/components/Table";
 import MoreVertIcon from "../components/Icons/MoreVertIcon";
 import useSWR, { mutate } from "swr";
+import { FaPlus } from "react-icons/fa6";
 import PageContainer from "../components/PageContainer";
 
 import TableSkeleton from "@/components/Skeleton/TableSkeleton";
@@ -69,14 +72,14 @@ const Announcemnet = () => {
   const [eventId, setEventId] = useState("");
 
   const handleAnnouncement = (id: string, announcementType: string) => {
-    if (announcementType === "CourtMaintenance") {
+    if (announcementType === "Court Maintenance") {
       handleEditModalOpen();
       if (id) {
         // eslint-disable-next-line
         //@ts-ignore
         setCourtId(id);
       }
-    } else if (announcementType === "EventAnnouncement") {
+    } else if (announcementType === "Event Announcement") {
       handleEventModalOpen();
       if (id) {
         // eslint-disable-next-line
@@ -329,191 +332,217 @@ const Announcemnet = () => {
                   px={3}
                   py={8}
                 >
-                  <Flex gap={10}>
+                  <Flex  gap={10}>
                     <Maintanence />
-                    <Stack gap={4}>
+                   
+
+
+                    <Stack gap={4}  > 
+                   
                       <Text fontSize={"18px"} fontWeight={"700"}>
                         {t(`announce.maintain`)}
                       </Text>
+                    
                       <Button
-                        bg="none"
-                        color="rgba(78, 203, 113, 1)"
-                        borderRadius={"51px"}
-                        border="1px solid  rgba(78, 203, 113, 1)"
-                        fontWeight={"500"}
-                        fontSize="14px"
-                        cursor="pointer"
-                        onClick={onOpen}
-                        leftIcon={<PlusIcon />}
-                      >
-                        {t(`announce.create`)}
-                      </Button>
-                    </Stack>
-                  </Flex>
-                </Box>
-              </GridItem>
+                        w={"100px"}
+  bg="none"
+  color="rgba(78, 203, 113, 1)"
+  borderRadius={"51px"}
+  textAlign={"center"}
+  border="1px solid rgba(78, 203, 113, 1)"
+  fontWeight={"500"}
+  fontSize="14px"
+  cursor="pointer"
+  onClick={onOpen}
+  display="flex"
+  alignItems="center"
+  justifyContent="center"
+  gap={1}
+>
+  <Icon as={FaPlus} h={3.5} w={4} />
+  <Text>{t(`announce.create`)}</Text>
+</Button>;
+                                            </Stack>
+                                          </Flex>
+                                        </Box>
+                                      </GridItem>
 
-              <GridItem rowSpan={1} colSpan={1}>
-                <Box
-                  bgColor={bgColor}
-                  h="150px"
-                  borderRadius="20px"
-                  px={3}
-                  py={8}
-                >
-                  <Flex gap={10}>
-                    <Event />
-                    <Stack gap={4}>
-                      <Text fontSize={"20px"} fontWeight={"700"}>
-                        {t(`announce.event`)}
-                      </Text>
-                      <Button
-                        bg="none"
-                        color="rgba(78, 203, 113, 1)"
-                        borderRadius={"51px"}
-                        textAlign={"center"}
-                        border="1px solid  rgba(78, 203, 113, 1)"
-                        fontWeight={"500"}
-                        fontSize="14px"
-                        cursor="pointer"
-                        onClick={() => handleEvent()}
-                        leftIcon={<PlusIcon />}
-                      >
-                        {t(`announce.create`)}
-                      </Button>
-                    </Stack>
-                  </Flex>
-                </Box>
-              </GridItem>
-              <GridItem rowSpan={1} colSpan={1}>
-                <Box
-                  bgColor={bgColor}
-                  h="150px"
-                  borderRadius="20px"
-                  px={3}
-                  py={8}
-                >
-                  <Flex gap={10}>
-                    <Announce />
-                    <Stack gap={4}>
-                      <Text fontSize={"20px"} fontWeight={"700"}>
-                        {t(`announce.announce`)}
-                      </Text>
-                      <Button
-                        bg="none"
-                        color="rgba(78, 203, 113, 1)"
-                        borderRadius={"51px"}
-                        border="1px solid  rgba(78, 203, 113, 1)"
-                        fontWeight={"500"}
-                        fontSize="14px"
-                        cursor="pointer"
-                        onClick={() => AddAnnouncementOpen()}
-                        leftIcon={<PlusIcon />}
-                      >
-                        {t(`announce.create`)}
-                      </Button>
-                    </Stack>
-                  </Flex>
-                </Box>
-              </GridItem>
-            </Grid>
-            <PageContainer
-              as="section"
-              maxW="full"
-              p="3"
-              mt={{ base: 8, md: 18, lg: 8 }}
-            >
-              <Stack py={{ base: 3, md: 5 }}>
-                <Formik
-                  initialValues={{
-                    firstName: "",
-                  }}
-                  onSubmit={() => {}}
-                >
-                  <Flex px={5} align="center" gap={10}>
-                    <InputControl
-                      {...(isDesktopView && { width: "30%" })}
-                      inputProps={{
-                        type: "text",
-                        placeholder: t(`announce.search`),
-                        fontSize: "md",
-                        fontWeight: "medium",
-                        color: "gray.500",
-                        h: "64px",
-                        value: searchInput,
-                        onChange: (e) => setSearchInput(e.target.value),
-                      }}
-                      name="description"
-                      inputRightElement={<SearchIcon />}
-                    />
+                                      <GridItem rowSpan={1} colSpan={1}>
+                                        <Box
+                                          bgColor={bgColor}
+                                          h="150px"
+                                          borderRadius="20px"
+                                          px={3}
+                                          py={8}
+                                        >
+                                          <Flex gap={10}>
+                                            <Event />
+                                            <Stack gap={4}>
+                                              <Text fontSize={"20px"} fontWeight={"700"}>
+                                                {t(`announce.event`)}
+                                              </Text>
+                                              <Button
+                                              w={"100px"}
+  bg="none"
+  color="rgba(78, 203, 113, 1)"
+  borderRadius={"51px"}
+  textAlign={"center"}
+  border="1px solid rgba(78, 203, 113, 1)"
+  fontWeight={"500"}
+  fontSize="14px"
+  cursor="pointer"
+  onClick={() => handleEvent()}
+  display="flex"
+  alignItems="center"
+  justifyContent="center"
+  gap={1}
+>
+  <Icon as={FaPlus} h={3.5} w={4} />
+  <Text>{t(`announce.create`)}</Text>
+</Button>;
 
-                    <Menu>
-                      <MenuButton
-                        as={IconButton}
-                        icon={<FilterIcon />}
-                        variant="ghost"
-                        _hover={{ bg: "none" }}
-                        h={"55px"}
-                        w={"60px"}
-                        border="1px solid"
-                        borderColor={borderColor}
-                      />
-                      <MenuList
-                        left="0"
-                        position="fixed"
-                        bgColor={background}
-                        zIndex={9999}
-                        transform="translateY(20px)"
-                      >
-                        <MenuItem
-                          bgColor={background}
-                          _hover={{ bgColor: hover }}
-                          onClick={() =>
-                            handleMenuItemClick("CourtMaintenance")
-                          }
-                        >
-                          Court Maintenance
-                        </MenuItem>
-                        <MenuItem
-                          bgColor={background}
-                          _hover={{ bgColor: hover }}
-                          onClick={() =>
-                            handleMenuItemClick("EventAnnouncement")
-                          }
-                        >
-                          Event Announcement
-                        </MenuItem>
-                        <MenuItem
-                          bgColor={background}
-                          _hover={{ bgColor: hover }}
-                          onClick={() => handleMenuItemClick("Announcement")}
-                        >
-                          Announcement
-                        </MenuItem>
-                      </MenuList>
-                    </Menu>
-                  </Flex>
-                </Formik>
-                <Box>
-                  <Table columns={columnConfig} data={responseData} />
-                </Box>
-                <Drawer
-                  placement="right"
-                  isOpen={isOpen}
-                  onClose={onClose}
-                  size="md"
+                                            </Stack>
+                                          </Flex>
+                                        </Box>
+                                      </GridItem>
+                                      <GridItem rowSpan={1} colSpan={1}>
+                                        <Box
+                                          bgColor={bgColor}
+                                          h="150px"
+                                          borderRadius="20px"
+                                          px={3}
+                                          py={8}
+                                        >
+                                          <Flex  gap={10}>
+                                            <Announce />
+                                            <Stack gap={4}>
+                                              <Text fontSize={"20px"} fontWeight={"700"}>
+                                                {t(`announce.announce`)}
+                                              </Text>
+                                              <Button
+                                                w={"100px"}
+  bg="none"
+  color="rgba(78, 203, 113, 1)"
+  borderRadius={"51px"}
+  textAlign={"center"}
+  border="1px solid rgba(78, 203, 113, 1)"
+  fontWeight={"500"}
+  fontSize="14px"
+  cursor="pointer"
+  onClick={() => AddAnnouncementOpen()}
+  display="flex"
+  alignItems="center"
+  justifyContent="center"
+  gap={1}
+>
+  <Icon as={FaPlus} h={3.5} w={4} />
+  <Text>{t(`announce.create`)}</Text>
+</Button>;
+                                            </Stack>
+                                          </Flex>
+                                        </Box>
+                                      </GridItem>
+                                    </Grid>
+                                    <PageContainer
+                                      as="section"
+                                      maxW="full"
+                                      p="3"
+                                      mt={{ base: 8, md: 18, lg: 8 }}
+                                    >
+                                      <Stack py={{ base: 3, md: 5 }}>
+                                        <Formik
+                                          initialValues={{
+                                            firstName: "",
+                                          }}
+                                          onSubmit={() => {}}
+                                        >
+                                          <Flex px={5} align="center" gap={10}>
+                                            <InputControl
+                                              {...(isDesktopView && { width: "30%" })}
+                                              inputProps={{
+                                                type: "text",
+                                                placeholder: t(`announce.search`),
+                                                fontSize: "md",
+                                                fontWeight: "medium",
+                                                color: "gray.500",
+                                                h: "64px",
+                                                value: searchInput,
+                                                onChange: (e) => setSearchInput(e.target.value),
+                                              }}
+                                              name="description"
+                                              inputRightElement={<SearchIcon />}
+                                            />
+<HStack gap={4}>
+<Menu>
+<MenuButton
+                                                as={IconButton}
+                                                icon={<FilterIcon />}
+                                                variant="ghost"
+                                                _hover={{ bg: "none" }}
+                                                h={"55px"}
+                                                w={"60px"}
+                                                border="1px solid"
+                                                borderColor={borderColor}
+                                              />
+              <MenuList
+                left="0"
+                position="fixed"
+                bgColor={background}
+                zIndex={9999}
+                transform="translateY(20px)"
+              >
+                <MenuItem
+                  bgColor={background}
+                  _hover={{ bgColor: hover }}
+                  onClick={() => handleMenuItemClick("CourtMaintenance")}
                 >
-                  <DrawerOverlay />
-                  <DrawerContent bgColor={color}>
-                    <DrawerCloseButton
-                      h="40px"
-                      w="40px"
-                      mt={3}
-                      bgColor="rgba(0, 0, 0, 0.08)"
-                    />
-                    <DrawerHeader fontSize="28px" fontWeight="700">
-                      {t(`announce.courtAnnouncement`)}
-                    </DrawerHeader>
+                  Court Maintenance
+                </MenuItem>
+                <MenuItem
+                  bgColor={background}
+                  _hover={{ bgColor: hover }}
+                  onClick={() => handleMenuItemClick("EventAnnouncement")}
+                >
+                  Event Announcement
+                </MenuItem>
+                <MenuItem
+                  bgColor={background}
+                  _hover={{ bgColor: hover }}
+                  onClick={() => handleMenuItemClick("Announcement")}
+                >
+                  Announcement
+                </MenuItem>
+               
+              </MenuList>
+            </Menu>
+            {
+              selectedMenuItem && <IconButton aria-label={""}   onClick={() => setSelectedMenuItem("")} bg="none"  color="red" >
+              <CloseButton size={"3xl"}/>
+            </IconButton>
+            }
+            </HStack>
+                                          </Flex>
+                                        </Formik>
+                                        <Box>
+                                          <Table columns={columnConfig} data={responseData} />
+                                        </Box>
+                                        <Drawer
+                                          placement="right"
+                                          isOpen={isOpen}
+                                          onClose={onClose}
+                                          size="md"
+                                        >
+                                          <DrawerOverlay />
+                                          <DrawerContent bgColor={color}>
+                                            <DrawerCloseButton
+                                              h="40px"
+                                              w="40px"
+                                              mt={3}
+                                              bgColor="rgba(0, 0, 0, 0.08)"
+                                            />
+                                            <DrawerHeader fontSize="28px" fontWeight="700">
+                                              {t(`announce.courtAnnouncement`)}
+                                            </DrawerHeader>
 
                     <DrawerBody>
                       <CourtMaintainence
