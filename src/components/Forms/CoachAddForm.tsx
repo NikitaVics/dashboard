@@ -97,6 +97,7 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
   };
 
   const handleSubmit = async (values: FormItems) => {
+   if (gender) {
     try {
 
       const data = new FormData();
@@ -145,6 +146,15 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
         });
       }
     }
+   } else {
+    toast({
+      description: "Gender is required",
+      status: "success",
+      position: "top",
+      duration: 3000,
+      isClosable: true,
+    });
+   }
   };
 
   const emailRules = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
@@ -154,29 +164,30 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
       .required("First name is required")
       .max(20, "First name must be at most 20 characters")
       .matches(
-        /^[a-zA-Z ]+$/,
-        "First name must contain only letters and spaces"
+        /^[a-zA-Z]+$/,
+        "First name must contain only letters and no spaces"
       ),
     lastName: Yup.string()
       .required("Last name is required")
       .max(20, "Last name must be at most 20 characters")
       .matches(
-        /^[a-zA-Z ]+$/,
-        "Last name must contain only letters and spaces"
+        /^[a-zA-Z]+$/,
+        "Last name must contain only letters and no spaces"
       ),
-      email: Yup
-      .string()
+    email: Yup.string()
       .required("Email is Required")
       .test("is-email", "Invalid Email address", function (value) {
         if (!value || value.trim() === "") {
-          return false
+          return false;
         }
-        return emailRules.test(value)
+        return emailRules.test(value);
       }),
     phoneNumber: Yup.string()
-      .matches(/^[0-9]+$/, "Phone number must contain only digits")
-      .required("Phone number is required"),
+      .required("Phone number is required")
+      .min(7, "Phone number must be at least 7 digits")
+      .matches(/^[0-9]+$/, "Phone number must contain only digits"),
   });
+  
 
 
 

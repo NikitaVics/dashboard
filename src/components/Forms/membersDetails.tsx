@@ -31,6 +31,7 @@ type FormItems = {
     gender: string;
     isActive?: string;
     membershipLeft: string;
+    countryCode : string
     age: string;
     image: string;
     phoneNumber: string;
@@ -224,6 +225,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
         gender: memberData?.gender,
         email: memberData?.email,
         age: memberData?.age,
+        countryCode : memberData?.countryCode,
         membershipLeft: memberData?.membershipLeft,
         phoneNumber: memberData?.phoneNumber,
         membershipStatus: memberData?.membershipStatus,
@@ -350,6 +352,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
                   color: { color },
                   border: "none",
                   h: "45px",
+                  value: `${memberData?.countryCode || ''} ${memberData?.phoneNumber || ''}`,
                 }}
                 name="phoneNumber"
                 isReadOnly
@@ -368,6 +371,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
                   h: "45px",
                 }}
                 name="registrationDate"
+                isReadOnly
                 onKeyUp={() => setFieldTouched("registrationDate")}
               />
             </GridItem>
@@ -381,9 +385,11 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
                   fontWeight: "medium",
                   color: getColorForStatus(values.membershipStatus),
                   border: "none",
+               
                   h: "45px",
                 }}
                 name="membershipStatus"
+                isReadOnly
                 onKeyUp={() => setFieldTouched("membershipStatus")}
               />
             </GridItem>
