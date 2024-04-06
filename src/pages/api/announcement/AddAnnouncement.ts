@@ -15,9 +15,7 @@ async function AddAnnouncement(req: NextApiRequest, res: NextApiResponse) {
   try {
    
 
-    // const form = new IncomingForm();
-
-   
+    // const form = new IncomingForm();  
     // const data = await new Promise<{ fields: any, files: any }>((resolve, reject) => {
     //   form.parse(req, (err, fields, files) => {
     //     if (err) return reject(err);

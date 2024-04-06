@@ -27,14 +27,14 @@ const MembersForm = (props: MemberFormProps) => {
   const { data: responseData, isValidating } = useSWR<MemberProps>(
     `/api/members/member-detail?id=${memberId}`
   );
-// eslint-disable-next-line
+  // eslint-disable-next-line
   //@ts-ignore
   const memberData = responseData?.result;
 
   const color = useColorModeValue("dark.100", "dark.500");
 
   return (
-    <Drawer placement="right" isOpen={isOpen} onClose={onClose} size="md">
+    <Drawer placement="right" isOpen={isOpen} onClose={onClose} size="lg">
       <DrawerOverlay />
       <DrawerContent bgColor={color}>
         <DrawerCloseButton
@@ -49,12 +49,21 @@ const MembersForm = (props: MemberFormProps) => {
 
         <DrawerBody>
           {isValidating ? (
-            <Flex alignItems="center" justifyContent="center" height="full">
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              height="full"
+            >
               <Heading>Loading...</Heading>
             </Flex>
           ) : (
-         <MembersDetails memberId={memberId} onClose={onClose} memberData={memberData} status={undefined} membershipStatus={""}  />
-      
+            <MembersDetails
+              memberId={memberId}
+              onClose={onClose}
+              memberData={memberData}
+              status={undefined}
+              membershipStatus={""}
+            />
           )}
         </DrawerBody>
       </DrawerContent>

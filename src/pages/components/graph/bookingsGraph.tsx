@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Box, useColorModeValue,Text,Flex } from "@chakra-ui/react";
+import { Box, useColorModeValue, Text, Flex } from "@chakra-ui/react";
 import {
   XAxis,
   YAxis,
@@ -73,8 +73,7 @@ const BookingsGraph: React.FC = () => {
     "rgba(224, 224, 226, 1)"
   );
 
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const chartRef = useRef<any>(null);
 
   const { t } = useTranslation("dashboard");
@@ -109,13 +108,13 @@ const BookingsGraph: React.FC = () => {
               strokeDasharray: "5 5",
             }}
           />
-         
-         <CartesianGrid
+
+          <CartesianGrid
             vertical={false}
             stroke="#E5E4E2"
             strokeDasharray="solid"
           />
-         <Bar
+          <Bar
             dataKey="value"
             fill="url(#colorGradient)"
             radius={[4, 4, 4, 4]}

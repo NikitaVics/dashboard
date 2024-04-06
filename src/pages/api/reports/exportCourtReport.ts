@@ -14,7 +14,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   async function ExportCourt() {
     try {
-      const { fromBookingDate = "",toBookingDate="", court = "" } = req.query;
+      const {
+        fromBookingDate = "",
+        toBookingDate = "",
+        court = "",
+      } = req.query;
       const params = {
         fromBookingDate: fromBookingDate as string,
         toBookingDate: toBookingDate as string,
@@ -38,7 +42,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       );
 
       if (response.body !== null) {
-         // eslint-disable-next-line
+        // eslint-disable-next-line
         //@ts-ignore
         const readableStream = Readable.from(response.body);
 

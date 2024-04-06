@@ -58,7 +58,9 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
 };
 
 const MonthTabs: React.FC = () => {
-  const { data: yearlyGraph } = useSWR<YearlyGraphItem[]>("/api/dashboard/yearlyGrowth");
+  const { data: yearlyGraph } = useSWR<YearlyGraphItem[]>(
+    "/api/dashboard/yearlyGrowth"
+  );
 
   const monthData: MonthData[] = [
     ...(yearlyGraph || []).map((item: YearlyGraphItem) => ({
@@ -86,14 +88,13 @@ const MonthTabs: React.FC = () => {
         {t(`dashboard.year`)}
       </Text>
       <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={monthData} ref={chartRef} margin={{ bottom: 20 }} >
+        <BarChart data={monthData} ref={chartRef} margin={{ bottom: 20 }}>
           <XAxis
             dataKey="month"
             tickLine={false}
             axisLine={false}
             orientation="bottom"
             interval={0}
-            
             textAnchor="end"
             dy={20}
             dx={10}
@@ -113,12 +114,11 @@ const MonthTabs: React.FC = () => {
             stroke="#E5E4E2"
             strokeDasharray="solid"
           />
-         <Bar
+          <Bar
             dataKey="value"
             fill="url(#colorGradient)"
-            radius={[4, 4, 4, 4]} 
+            radius={[4, 4, 4, 4]}
             barSize={60}
-          
           />
           <defs>
             <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">

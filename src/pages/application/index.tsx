@@ -247,12 +247,11 @@ const Application = ({ memberData }: EditTaxDetailsProps) => {
     },
   ];
 
+  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)", "");
 
-  const scheduleColor = useColorModeValue("rgba(254, 245, 237, 1)","")
+  const sentColor = useColorModeValue("green.50", "");
 
-  const sentColor = useColorModeValue("green.50","")
-  
-  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)","")
+  const cancelColor = useColorModeValue("rgba(253, 238, 238, 1)", "");
 
   const toast = useToast();
   const handleActivate = async (memberId: string) => {

@@ -47,9 +47,8 @@ async function loginHandler(req: NextApiRequest, res: NextApiResponse) {
         error: { messages },
         status: 400,
       });
-    }  else {
-      res.status(401).end()
-       
+    } else {
+      res.status(401).end();
     }
   }
 }

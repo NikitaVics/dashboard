@@ -14,7 +14,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const response = await client.reports.coachDropdown();
       res.status(200).json(response);
     } catch (error) {
-      res.status(403).end()
+      res.status(403).end();
     }
   }
 }
