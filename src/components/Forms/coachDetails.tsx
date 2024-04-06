@@ -276,6 +276,7 @@ function CoachDetails({ coachData, coachId, onClose }: FormItems) {
                   h: "45px",
                 }}
                 name="experience"
+                isReadOnly
                 onKeyUp={() => setFieldTouched("experience")}
               />
             </GridItem>
