@@ -31,7 +31,7 @@ const CoachForm = (props: CoachFormProps) => {
   const color = useColorModeValue("dark.100", "dark.500");
 
   return (
-    <Drawer placement="right" isOpen={isOpen} onClose={onClose} size="md">
+    <Drawer placement="right" isOpen={isOpen} onClose={onClose} size="lg">
       <DrawerOverlay />
       <DrawerContent bgColor={color}>
         <DrawerCloseButton

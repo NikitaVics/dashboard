@@ -343,283 +343,280 @@ const Announcemnet = () => {
                         fontWeight={"500"}
                         fontSize="14px"
                         cursor="pointer"
-                                                onClick={onOpen}
-                                                leftIcon={<PlusIcon />}
-                                              >
-                                                {t(`announce.create`)}
-                                              </Button>
-                                            </Stack>
-                                          </Flex>
-                                        </Box>
-                                      </GridItem>
+                        onClick={onOpen}
+                        leftIcon={<PlusIcon />}
+                      >
+                        {t(`announce.create`)}
+                      </Button>
+                    </Stack>
+                  </Flex>
+                </Box>
+              </GridItem>
 
-                                      <GridItem rowSpan={1} colSpan={1}>
-                                        <Box
-                                          bgColor={bgColor}
-                                          h="150px"
-                                          borderRadius="20px"
-                                          px={3}
-                                          py={8}
-                                        >
-                                          <Flex gap={10}>
-                                            <Event />
-                                            <Stack gap={4}>
-                                              <Text fontSize={"20px"} fontWeight={"700"}>
-                                                {t(`announce.event`)}
-                                              </Text>
-                                              <Button
-                                                bg="none"
-                                                color="rgba(78, 203, 113, 1)"
-                                                borderRadius={"51px"}
-                                                textAlign={"center"}
-                                                border="1px solid  rgba(78, 203, 113, 1)"
-                                                fontWeight={"500"}
-                                                fontSize="14px"
-                                                cursor="pointer"
-                                                onClick={() => handleEvent()}
-                                                leftIcon={<PlusIcon />}
-                                              >
-                                                {t(`announce.create`)}
-                                              </Button>
-                                            </Stack>
-                                          </Flex>
-                                        </Box>
-                                      </GridItem>
-                                      <GridItem rowSpan={1} colSpan={1}>
-                                        <Box
-                                          bgColor={bgColor}
-                                          h="150px"
-                                          borderRadius="20px"
-                                          px={3}
-                                          py={8}
-                                        >
-                                          <Flex gap={10}>
-                                            <Announce />
-                                            <Stack gap={4}>
-                                              <Text fontSize={"20px"} fontWeight={"700"}>
-                                                {t(`announce.announce`)}
-                                              </Text>
-                                              <Button
-                                                bg="none"
-                                                color="rgba(78, 203, 113, 1)"
-                                                borderRadius={"51px"}
-                                                border="1px solid  rgba(78, 203, 113, 1)"
-                                                fontWeight={"500"}
-                                                fontSize="14px"
-                                                cursor="pointer"
-                                                onClick={() => AddAnnouncementOpen()}
-                                                leftIcon={<PlusIcon />}
-                                              >
-                                                {t(`announce.create`)}
-                                              </Button>
-                                            </Stack>
-                                          </Flex>
-                                        </Box>
-                                      </GridItem>
-                                    </Grid>
-                                    <PageContainer
-                                      as="section"
-                                      maxW="full"
-                                      p="3"
-                                      mt={{ base: 8, md: 18, lg: 8 }}
-                                    >
-                                      <Stack py={{ base: 3, md: 5 }}>
-                                        <Formik
-                                          initialValues={{
-                                            firstName: "",
-                                          }}
-                                          onSubmit={() => {}}
-                                        >
-                                          <Flex px={5} align="center" gap={10}>
-                                            <InputControl
-                                              {...(isDesktopView && { width: "30%" })}
-                                              inputProps={{
-                                                type: "text",
-                                                placeholder: t(`announce.search`),
-                                                fontSize: "md",
-                                                fontWeight: "medium",
-                                                color: "gray.500",
-                                                h: "64px",
-                                                value: searchInput,
-                                                onChange: (e) => setSearchInput(e.target.value),
-                                              }}
-                                              name="description"
-                                              inputRightElement={<SearchIcon />}
-                                            />
+              <GridItem rowSpan={1} colSpan={1}>
+                <Box
+                  bgColor={bgColor}
+                  h="150px"
+                  borderRadius="20px"
+                  px={3}
+                  py={8}
+                >
+                  <Flex gap={10}>
+                    <Event />
+                    <Stack gap={4}>
+                      <Text fontSize={"20px"} fontWeight={"700"}>
+                        {t(`announce.event`)}
+                      </Text>
+                      <Button
+                        bg="none"
+                        color="rgba(78, 203, 113, 1)"
+                        borderRadius={"51px"}
+                        textAlign={"center"}
+                        border="1px solid  rgba(78, 203, 113, 1)"
+                        fontWeight={"500"}
+                        fontSize="14px"
+                        cursor="pointer"
+                        onClick={() => handleEvent()}
+                        leftIcon={<PlusIcon />}
+                      >
+                        {t(`announce.create`)}
+                      </Button>
+                    </Stack>
+                  </Flex>
+                </Box>
+              </GridItem>
+              <GridItem rowSpan={1} colSpan={1}>
+                <Box
+                  bgColor={bgColor}
+                  h="150px"
+                  borderRadius="20px"
+                  px={3}
+                  py={8}
+                >
+                  <Flex gap={10}>
+                    <Announce />
+                    <Stack gap={4}>
+                      <Text fontSize={"20px"} fontWeight={"700"}>
+                        {t(`announce.announce`)}
+                      </Text>
+                      <Button
+                        bg="none"
+                        color="rgba(78, 203, 113, 1)"
+                        borderRadius={"51px"}
+                        border="1px solid  rgba(78, 203, 113, 1)"
+                        fontWeight={"500"}
+                        fontSize="14px"
+                        cursor="pointer"
+                        onClick={() => AddAnnouncementOpen()}
+                        leftIcon={<PlusIcon />}
+                      >
+                        {t(`announce.create`)}
+                      </Button>
+                    </Stack>
+                  </Flex>
+                </Box>
+              </GridItem>
+            </Grid>
+            <PageContainer
+              as="section"
+              maxW="full"
+              p="3"
+              mt={{ base: 8, md: 18, lg: 8 }}
+            >
+              <Stack py={{ base: 3, md: 5 }}>
+                <Formik
+                  initialValues={{
+                    firstName: "",
+                  }}
+                  onSubmit={() => {}}
+                >
+                  <Flex px={5} align="center" gap={10}>
+                    <InputControl
+                      {...(isDesktopView && { width: "30%" })}
+                      inputProps={{
+                        type: "text",
+                        placeholder: t(`announce.search`),
+                        fontSize: "md",
+                        fontWeight: "medium",
+                        color: "gray.500",
+                        h: "64px",
+                        value: searchInput,
+                        onChange: (e) => setSearchInput(e.target.value),
+                      }}
+                      name="description"
+                      inputRightElement={<SearchIcon />}
+                    />
 
-                                            <Menu>
-                                              <MenuButton
-                                                as={IconButton}
-                                                icon={<FilterIcon />}
-                                                variant="ghost"
-                                                _hover={{ bg: "none" }}
-                                                h={"55px"}
-                                                w={"60px"}
-                                                border="1px solid"
-                                                borderColor={borderColor}
-                                              />
-                                              <MenuList
-                                                left="0"
-                                                position="fixed"
-                                                bgColor={background}
-                                                zIndex={9999}
-                                                transform="translateY(20px)"
-                                              >
-                                                <MenuItem
-                                                  bgColor={background}
-                                                  _hover={{ bgColor: hover }}
-                                                  onClick={() =>
-                                                    handleMenuItemClick("CourtMaintenance")
-                                                  }
-                                                >
-                                                  Court Maintenance
-                                                </MenuItem>
-                                                <MenuItem
-                                                  bgColor={background}
-                                                  _hover={{ bgColor: hover }}
-                                                  onClick={() =>
-                                                    handleMenuItemClick("EventAnnouncement")
-                                                  }
-                                                >
-                                                  Event Announcement
-                                                </MenuItem>
-                                                <MenuItem
-                                                  bgColor={background}
-                                                  _hover={{ bgColor: hover }}
-                                                  onClick={() => handleMenuItemClick("Announcement")}
-                                                >
-                                                  Announcement
-                                                </MenuItem>
-                                              </MenuList>
-                                            </Menu>
-                                          </Flex>
-                                        </Formik>
-                                        <Box>
-                                          <Table columns={columnConfig} data={responseData} />
-                                        </Box>
-                                        <Drawer
-                                          placement="right"
-                                          isOpen={isOpen}
-                                          onClose={onClose}
-                                          size="md"
-                                        >
-                                          <DrawerOverlay />
-                                          <DrawerContent bgColor={color}>
-                                            <DrawerCloseButton
-                                              h="40px"
-                                              w="40px"
-                                              mt={3}
-                                              bgColor="rgba(0, 0, 0, 0.08)"
-                                            />
-                                            <DrawerHeader fontSize="28px" fontWeight="700">
-                                              {t(`announce.courtAnnouncement`)}
-                                            </DrawerHeader>
+                    <Menu>
+                      <MenuButton
+                        as={IconButton}
+                        icon={<FilterIcon />}
+                        variant="ghost"
+                        _hover={{ bg: "none" }}
+                        h={"55px"}
+                        w={"60px"}
+                        border="1px solid"
+                        borderColor={borderColor}
+                      />
+                      <MenuList
+                        left="0"
+                        position="fixed"
+                        bgColor={background}
+                        zIndex={9999}
+                        transform="translateY(20px)"
+                      >
+                        <MenuItem
+                          bgColor={background}
+                          _hover={{ bgColor: hover }}
+                          onClick={() =>
+                            handleMenuItemClick("CourtMaintenance")
+                          }
+                        >
+                          Court Maintenance
+                        </MenuItem>
+                        <MenuItem
+                          bgColor={background}
+                          _hover={{ bgColor: hover }}
+                          onClick={() =>
+                            handleMenuItemClick("EventAnnouncement")
+                          }
+                        >
+                          Event Announcement
+                        </MenuItem>
+                        <MenuItem
+                          bgColor={background}
+                          _hover={{ bgColor: hover }}
+                          onClick={() => handleMenuItemClick("Announcement")}
+                        >
+                          Announcement
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
+                  </Flex>
+                </Formik>
+                <Box>
+                  <Table columns={columnConfig} data={responseData} />
+                </Box>
+                <Drawer
+                  placement="right"
+                  isOpen={isOpen}
+                  onClose={onClose}
+                  size="md"
+                >
+                  <DrawerOverlay />
+                  <DrawerContent bgColor={color}>
+                    <DrawerCloseButton
+                      h="40px"
+                      w="40px"
+                      mt={3}
+                      bgColor="rgba(0, 0, 0, 0.08)"
+                    />
+                    <DrawerHeader fontSize="28px" fontWeight="700">
+                      {t(`announce.courtAnnouncement`)}
+                    </DrawerHeader>
 
-                                            <DrawerBody>
-                                              <CourtMaintainence
-                                                message={undefined}
-                                                onClose={onClose}
-                                                courtId={""}
-                                              />
-                                            </DrawerBody>
-                                          </DrawerContent>
-                                        </Drawer>
+                    <DrawerBody>
+                      <CourtMaintainence
+                        message={undefined}
+                        onClose={onClose}
+                        courtId={""}
+                      />
+                    </DrawerBody>
+                  </DrawerContent>
+                </Drawer>
 
-                                        {addAnnouncementDrawerOpen && (
-                                          <Drawer
-                                            placement="right"
-                                            isOpen={addAnnouncementDrawerOpen}
-                                            onClose={() => setAddAnnouncementDrawerOpen(false)}
-                                            size="md"
-                                          >
-                                            <DrawerOverlay />
-                                            <DrawerContent bgColor={color}>
-                                              <DrawerCloseButton
-                                                h="40px"
-                                                w="40px"
-                                                mt={3}
-                                                bgColor="rgba(0, 0, 0, 0.08)"
-                                              />
-                                              <DrawerHeader fontSize="28px" fontWeight="700">
-                                                {t(`announce.announce`)}
-                                              </DrawerHeader>
+                {addAnnouncementDrawerOpen && (
+                  <Drawer
+                    placement="right"
+                    isOpen={addAnnouncementDrawerOpen}
+                    onClose={() => setAddAnnouncementDrawerOpen(false)}
+                    size="md"
+                  >
+                    <DrawerOverlay />
+                    <DrawerContent bgColor={color}>
+                      <DrawerCloseButton
+                        h="40px"
+                        w="40px"
+                        mt={3}
+                        bgColor="rgba(0, 0, 0, 0.08)"
+                      />
+                      <DrawerHeader fontSize="28px" fontWeight="700">
+                        {t(`announce.announce`)}
+                      </DrawerHeader>
 
-                                              <DrawerBody>
-                                                <AnnouncementForm
-                                                  message={undefined}
-                                                  onClose={onClose}
-                                                  id={""}
-                                                />
-                                              </DrawerBody>
-                                            </DrawerContent>
-                                          </Drawer>
-                                        )}
+                      <DrawerBody>
+                        <AnnouncementForm
+                          message={undefined}
+                          onClose={onClose}
+                          id={""}
+                        />
+                      </DrawerBody>
+                    </DrawerContent>
+                  </Drawer>
+                )}
 
-                                        {isEventDrawerOpen && (
-                                          <Drawer
-                                            placement="right"
-                                            isOpen={isEventDrawerOpen}
-                                            onClose={() => setIsEventDrawerOpen(false)}
-                                            size="md"
-                                          >
-                                            <DrawerOverlay />
-                                            <DrawerContent bgColor={color}>
-                                              <DrawerCloseButton
-                                                h="40px"
-                                                w="40px"
-                                                mt={3}
-                                                bgColor="rgba(0, 0, 0, 0.08)"
-                                              />
-                                              <DrawerHeader fontSize="28px" fontWeight="700">
-                                                {t(`announce.eventAnnoun`)}
-                                              </DrawerHeader>
+                {isEventDrawerOpen && (
+                  <Drawer
+                    placement="right"
+                    isOpen={isEventDrawerOpen}
+                    onClose={() => setIsEventDrawerOpen(false)}
+                    size="md"
+                  >
+                    <DrawerOverlay />
+                    <DrawerContent bgColor={color}>
+                      <DrawerCloseButton
+                        h="40px"
+                        w="40px"
+                        mt={3}
+                        bgColor="rgba(0, 0, 0, 0.08)"
+                      />
+                      <DrawerHeader fontSize="28px" fontWeight="700">
+                        {t(`announce.eventAnnoun`)}
+                      </DrawerHeader>
 
-                                              <DrawerBody>
-                                                <EventAnnouncement
-                                                  onClose={onClose}
-                                                  id={""}
-                                                />
-                                              </DrawerBody>
-                                            </DrawerContent>
-                                          </Drawer>
-                                        )}
+                      <DrawerBody>
+                        <EventAnnouncement onClose={onClose} id={""} />
+                      </DrawerBody>
+                    </DrawerContent>
+                  </Drawer>
+                )}
 
-                                        {isEditModalOpen && (
-                                          <>
-                                            <MaintainenceForm
-                                              isOpen={isEditModalOpen}
-                                              onClose={() => setIsEditModalOpen(false)}
-                                              id={courtId}
-                                            />
-                                          </>
-                                        )}
+                {isEditModalOpen && (
+                  <>
+                    <MaintainenceForm
+                      isOpen={isEditModalOpen}
+                      onClose={() => setIsEditModalOpen(false)}
+                      id={courtId}
+                    />
+                  </>
+                )}
 
-                                        {isEventOpen && (
-                                          <>
-                                            <EventsForm
-                                              isOpen={isEventOpen}
-                                              onClose={() => setIsEventOpen(false)}
-                                              id={eventId}
-                                            />
-                                          </>
-                                        )}
+                {isEventOpen && (
+                  <>
+                    <EventsForm
+                      isOpen={isEventOpen}
+                      onClose={() => setIsEventOpen(false)}
+                      id={eventId}
+                    />
+                  </>
+                )}
 
-                                        {isAnnouncementOpen && (
-                                          <>
-                                            <Announcement
-                                              isOpen={isAnnouncementOpen}
-                                              onClose={() => setIsAnnouncementOpen(false)}
-                                              id={announcementId}
-                                            />
-                                          </>
-                                        )}
-                                      </Stack>
-                                    </PageContainer>
-                                  </>
-                                )}
-                              </Layout>
-                            </>
-                          );
-                        };
+                {isAnnouncementOpen && (
+                  <>
+                    <Announcement
+                      isOpen={isAnnouncementOpen}
+                      onClose={() => setIsAnnouncementOpen(false)}
+                      id={announcementId}
+                    />
+                  </>
+                )}
+              </Stack>
+            </PageContainer>
+          </>
+        )}
+      </Layout>
+    </>
+  );
+};
 
-                        export default Announcemnet;
+export default Announcemnet;

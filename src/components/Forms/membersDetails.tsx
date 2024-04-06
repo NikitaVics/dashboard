@@ -143,8 +143,8 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
 
           if (response) {
             toast({
-              description: "Successfully Updated",
-              status: "success",
+              description: "Successfully Rejected",
+              status: "error",
               position: "top",
               duration: 3000,
               isClosable: true,
@@ -245,7 +245,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
           <HStack justify={"space-between"}>
             <Flex alignItems={"center"} gap={6}>
               {/* <Hide below="sm"> */}
-                <Avatar src={memberData?.image} size="lg" />
+              <Avatar src={memberData?.image} size="lg" />
               {/* </Hide> */}
 
               <Text>{memberData?.name}</Text>
@@ -500,7 +500,11 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
               color={"white"}
               bgColor={"green.100"}
               w="full"
-              _hover={{ color: "green.100", border: "1px solid rgba(78, 203, 113, 1)", bg:"none" }}
+              _hover={{
+                color: "green.100",
+                border: "1px solid rgba(78, 203, 113, 1)",
+                bg: "none",
+              }}
               h={"60px"}
               onClick={() => handleDeactivate(id)}
             >

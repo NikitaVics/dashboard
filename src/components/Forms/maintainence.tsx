@@ -73,7 +73,6 @@ const CourtMaintainence: React.FC<FormItems> = ({
   };
 
   const [showErrorBorder, setShowErrorBorder] = useState(false);
-  
 
   const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedTime(event.target.value);
@@ -136,9 +135,12 @@ const CourtMaintainence: React.FC<FormItems> = ({
           courtNames,
         };
 
-        const response = await ky.post(`/api/announcement/AddCourtMaintainence`, {
-          json: updatedValues,
-        });
+        const response = await ky.post(
+          `/api/announcement/AddCourtMaintainence`,
+          {
+            json: updatedValues,
+          }
+        );
 
         if (response) {
           toast({
@@ -158,7 +160,7 @@ const CourtMaintainence: React.FC<FormItems> = ({
           duration: 3000,
           isClosable: true,
         });
-        setShowErrorBorder(true)
+        setShowErrorBorder(true);
 
         setTimeout(() => {
           setShowErrorBorder(false);
@@ -254,9 +256,10 @@ const CourtMaintainence: React.FC<FormItems> = ({
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
+            await mutate(
+              `/api/announcement/getAnnouncement?announcementType=${""}`
+            );
             onClose?.();
-
           }
         }
       } catch (error) {
@@ -311,8 +314,6 @@ const CourtMaintainence: React.FC<FormItems> = ({
 
   const bgColor = useColorModeValue("light.200", "dark.300");
 
-
-
   return (
     <Box>
       <Formik
@@ -323,7 +324,6 @@ const CourtMaintainence: React.FC<FormItems> = ({
           courtId: "",
         }}
         onSubmit={handleSubmit}
-    
       >
         {({ setFieldTouched }) => (
           <Form noValidate>
@@ -347,6 +347,11 @@ const CourtMaintainence: React.FC<FormItems> = ({
                     p={4}
                     borderRadius={"20px"}
                     onClick={() => handleImageClick(image.id)}
+                    _hover={{
+                      cursor: "pointer",
+                      transform: "scale(1.1)",
+                      transition: "transform 0.5s",
+                    }}
                   >
                     {image.icon}
                     <Text fontSize={"18px"} fontWeight="700">
@@ -366,11 +371,8 @@ const CourtMaintainence: React.FC<FormItems> = ({
               onChange={handleTextareaChange}
               onBlur={() => setFieldTouched("message")}
               bgColor={bgColor}
-              border={showErrorBorder ? "2px solid red" : undefined} 
-        
+              border={showErrorBorder ? "2px solid red" : undefined}
             />
-
-         
 
             <Grid
               templateRows="repeat(1, 1fr)"
@@ -515,7 +517,9 @@ const CourtMaintainence: React.FC<FormItems> = ({
                                 onDateSelect={handleDateSelect}
                                 onClear={handleClearDate}
                                 value={""}
-                                placeholder={"Date"} border={""}                              />
+                                placeholder={"Date"}
+                                border={""}
+                              />
                             </GridItem>
                             <GridItem rowSpan={1} colSpan={1}>
                               <Input

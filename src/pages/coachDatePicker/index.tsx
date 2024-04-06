@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Calendar } from 'react-date-range';
-import 'react-date-range/dist/styles.css';
-import 'react-date-range/dist/theme/default.css';
+import React, { useState } from "react";
+import { Calendar } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 import {
   Button,
   Input,
@@ -15,35 +15,43 @@ import {
   ModalHeader,
   ModalOverlay,
   useColorModeValue,
-} from '@chakra-ui/react';
-import CalenderIcon from '../components/Icons/calenderIcon';
-import { format } from 'date-fns';
+} from "@chakra-ui/react";
+import CalenderIcon from "../components/Icons/calenderIcon";
+import { format } from "date-fns";
 
 interface CustomDatePickerProps {
   onDateSelect: (date: Date) => void;
   onClear: () => void;
   value: string | null;
   placeholder: string;
-  border : string;
+  border: string;
 }
 
-const DatePicker = ({ onDateSelect, onClear, value, placeholder,border }: CustomDatePickerProps) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(value ? new Date(value) : null);
+const DatePicker = ({
+  onDateSelect,
+  onClear,
+  value,
+  placeholder,
+  border,
+}: CustomDatePickerProps) => {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    value ? new Date(value) : null
+  );
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
-  const [formattedDate, setFormattedDate] = useState<string>(value || '');
+  const [formattedDate, setFormattedDate] = useState<string>(value || "");
 
   const bgColor = useColorModeValue("light.200", "dark.300");
 
   const handleClear = () => {
     setSelectedDate(null);
-    setFormattedDate('');
+    setFormattedDate("");
     setShowDatePicker(false);
     onClear();
   };
 
   const handleSelect = (date: Date) => {
     setSelectedDate(date);
-    const formatted = format(date, 'yyyy-MM-dd');
+    const formatted = format(date, "yyyy-MM-dd");
     setFormattedDate(formatted);
   };
 
@@ -51,13 +59,12 @@ const DatePicker = ({ onDateSelect, onClear, value, placeholder,border }: Custom
     setShowDatePicker(!showDatePicker);
   };
 
-   const [input,setInput] = useState("")
+  const [input, setInput] = useState("");
   const applyDateSelection = () => {
-  setInput(formattedDate)
+    setInput(formattedDate);
     if (selectedDate) {
       onDateSelect(selectedDate);
       setShowDatePicker(false);
-     
     }
   };
 
@@ -65,14 +72,14 @@ const DatePicker = ({ onDateSelect, onClear, value, placeholder,border }: Custom
     <>
       <div className="w-full">
         <div className="relative">
-          <div onClick={toggleDatePicker} style={{ cursor: 'pointer' }}>
+          <div onClick={toggleDatePicker} style={{ cursor: "pointer" }}>
             <InputGroup>
               <Input
                 h="56px"
                 placeholder={placeholder}
                 value={input}
                 bgColor={bgColor}
-                border = {border ? border : undefined}
+                border={border ? border : undefined}
                 readOnly
               />
               <InputRightElement>
@@ -88,8 +95,8 @@ const DatePicker = ({ onDateSelect, onClear, value, placeholder,border }: Custom
               <ModalCloseButton />
               <ModalBody bgColor={bgColor}>
                 <Calendar
-                   // eslint-disable-next-line
-                //@ts-ignore
+                  // eslint-disable-next-line
+                  //@ts-ignore
                   date={selectedDate}
                   onChange={(date) => handleSelect(date as Date)}
                 />
