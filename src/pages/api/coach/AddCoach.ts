@@ -15,13 +15,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const response = await client.coach.AddCoach(params);
       res.status(200).json(response);
     } catch (error) {
-      if (error instanceof HTTPError && error.response.status === 500) {
-        const errorResponse: ErrorResponse = await error.response.json();
-        const { messages } = errorResponse;
-        res.status(500).json({
+      if (error instanceof HTTPError && error.response.status === 400) {
+        const errorResponse: ErrorResponse = await error.response.json()
+        const { messages } = errorResponse
+        res.status(400).json({
           error: { messages },
-          status: 500,
-        });
+          status: 400,
+        })
       }
     }
   }

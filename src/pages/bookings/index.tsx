@@ -306,7 +306,7 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
 
           if (response) {
             toast({
-              description: "Successfully DeActivated",
+              description: "Successfully Cancelled",
               status: "success",
               position: "top",
               duration: 3000,
@@ -346,8 +346,8 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
   const color2 = useColorModeValue("dark.400", "light.50");
 
   const handleClearDate = () => {
-    setDate("");
-  };
+      setDate("");
+    };
 
   const [showPeakBooking, setShowPeakBooking] = useState(true);
 

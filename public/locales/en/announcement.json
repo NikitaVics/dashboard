@@ -2,7 +2,7 @@
     "announce" : {
         "title":"Announcement Management",
         "courtAnnouncement":"Court Announcement",
-        "maintain":"Court Maintainence",
+        "maintain":"Court Maintenance",
         "create":"Create",
         "event":"Events",
         "announce":"Announcement",

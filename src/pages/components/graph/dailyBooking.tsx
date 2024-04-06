@@ -67,7 +67,7 @@ const DailyBooking: React.FC = () => {
     { month: "", value: 0 },
     ...(yearlyGraph || []).map((item: YearlyGraphItem) => ({
       month: item.monthName,
-      value: item.averagePeakHour,
+      value: item.peakDailyBooking,
     })),
   ];
 
@@ -82,15 +82,12 @@ const DailyBooking: React.FC = () => {
   useTranslation("bookings");
 
   return (
-    <Box borderWidth="1px" p={4} mx={4} border="none" h={120}>
-      <ResponsiveContainer width="100%">
+    <Box borderWidth="1px" p={4} mx={4 } border="none" h={120}>
+    
+      <ResponsiveContainer width="100%" >
+        
         <AreaChart data={monthData} ref={chartRef} margin={{ bottom: 20 }}>
-          <XAxis
-            dataKey="month"
-            tickLine={false}
-            axisLine={false}
-            orientation="bottom"
-            interval={0}
+        <XAxis dataKey="month" tickLine={false} axisLine={false} orientation="bottom"  interval={0}
             textAnchor="end"
             dy={20}
             tick={{ fill: color2 }}
@@ -124,18 +121,8 @@ const DailyBooking: React.FC = () => {
               />
             </linearGradient>
           </defs>
-          <Area
-            type="natural"
-            dataKey="value"
-            stroke="rgba(78, 203, 113, 1)"
-            strokeWidth={"3px"}
-            fill="url(#colorGradient)"
-          />
-          <CartesianGrid
-            vertical={false}
-            stroke="transparent"
-            strokeDasharray="solid"
-          />
+          <Area type="natural" dataKey="value" stroke="rgba(78, 203, 113, 1)" strokeWidth={"3px"} fill="url(#colorGradient)" />
+          <CartesianGrid vertical={false}  stroke="transparent" strokeDasharray="solid" />
         </AreaChart>
       </ResponsiveContainer>
     </Box>

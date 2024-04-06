@@ -79,7 +79,13 @@ function Member({ memberData }: EditTaxDetailsProps) {
     },
     {
       Header: t(`members.phone`),
-      accessor: "phoneNumber",
+         // eslint-disable-next-line
+      //@ts-ignore
+      accessor: (row) => {
+      
+        const phone = row.phoneNumber ? `${row.countryCode} ${row.phoneNumber}` : "";
+        return phone;
+      }
     },
     {
       Header: t(`members.gender`),
