@@ -55,7 +55,6 @@ export function Header({ title }: HeaderProps) {
         <Flex
           align="center"
           justify="space-between"
-          cursor="pointer"
           pos="relative"
           pb="8"
           flex="1"
@@ -88,6 +87,7 @@ export function Header({ title }: HeaderProps) {
                   as={Avatar}
                   src={profile?.imageUrl}
                   aria-label="Options"
+                  cursor = "pointer"
                   // size={{ base: "md", sm: "md" }}
                   size="md"
                 >
