@@ -134,22 +134,18 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
         }
       } catch (error) {
         if (error instanceof HTTPError && error.response.status === 400) {
-          const errorResponse = await error.response.json();
-          const messages = errorResponse.error.messages;
+          const errorResponse = await error.response.text();
+        
           toast({
-            description: (
-              <>
-                {messages.map((message: string, index: number) => (
-                  <Text key={index}>{message}</Text>
-                ))}
-              </>
-            ),
+            description: errorResponse,
             status: "error",
             position: "top",
             duration: 3000,
             isClosable: true,
           });
         }
+        
+        
       }
     } else {
       toast({

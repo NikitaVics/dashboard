@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import {
   Button,
   Drawer,
@@ -12,7 +12,6 @@ import {
   Grid,
   GridItem,
   IconButton,
-  Input,
   Textarea,
   Tooltip,
   useColorModeValue,
@@ -28,6 +27,7 @@ import { AttachmentIcon } from "@chakra-ui/icons";
 import SuccessDrawer from "./successDrawer";
 import { mutate } from "swr";
 import DatePicker from "@/pages/coachDatePicker";
+import CustomTimePicker from "../CustomTimePicker";
 
 type FormItems = {
   // eslint-disable-next-line
@@ -61,8 +61,14 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
     onClose?.();
   };
 
-  const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSelectedTime(event.target.value);
+  const handleTimeChange = (time : string) => {
+    const [hours, minutes] = time.split(':');
+    const hoursInt = parseInt(hours, 10);
+    const minutesInt = parseInt(minutes, 10);
+    const formattedHours = hoursInt < 10 ? `0${hoursInt}` : `${hoursInt}`;
+    const formattedMinutes = minutesInt < 10 ? `0${minutesInt}` : `${minutesInt}`;
+    const formattedTime = `${formattedHours}:${formattedMinutes}`;
+    setSelectedTime(formattedTime);
   };
 
   const handleCloseDrawer = () => {
@@ -81,12 +87,16 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
     setMessage(e.target.value);
   };
 
+  const [isImageAttached, setIsImageAttached] = useState(false);
+
+
   const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
     if ("files" in e.target && e.target.files) {
       setFormData({
         ...formData,
         images: Array.from(e.target.files),
       });
+      setIsImageAttached(true); 
     } else {
       setFormData({
         ...formData,
@@ -94,6 +104,20 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (isImageAttached) {
+      toast({
+        description: "Image Attached Successfully",
+        status: "success",
+        position: "top",
+        duration: 3000,
+        isClosable: true,
+      });
+      setIsImageAttached(false); 
+    }
+  }, [isImageAttached]);
+  
 
 
 
@@ -156,6 +180,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
           isClosable: true,
         });
         onClose?.();
+        await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -177,19 +202,30 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
       const data = new FormData();
       data.append("Message", message);
 
-      if (formData.images) {
-        formData.images.forEach((image) => {
-          data.append(`Images`, image);
-        });
-      }
+      // if (formData.images) {
+      //   formData.images.forEach((image) => {
+      //     data.append(`Images`, image);
+      //   });
+      // }
 
       if (formData.images) {
         data.append("Images", formData.images[0]);
       }
 
-      const scheduledDateTime = selectedDate?.toISOString() || "";
+      const scheduledDateTimes = selectedDate
+      ? `${selectedDate.getFullYear()}-${
+          String(selectedDate.getMonth() + 1).padStart(2, "0")
+        }-${String(selectedDate.getDate()).padStart(2, "0")}`
+      : "";
+    
+      const time = selectedTime;
+      const [hours, minutes] = time.split(':');
+      const utcTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00Z`;
+     
+      
+      const utcDate = `${scheduledDateTimes.split('T')[0]}T${utcTime}`;
 
-      data.append("ScheduledDateTime", scheduledDateTime);
+      data.append("ScheduledDateTime", utcDate);
 
       const response = await ky.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement/create Announcement`, {
         body: data,
@@ -197,7 +233,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
 
       if (response) {
         setIsSuccessDrawerOpen(true);
-        await mutate(`/api/getAnnouncement`);
+        await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
       }
     } catch (error) {
       if (error instanceof HTTPError && error.response.status === 400) {
@@ -234,9 +270,20 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
 
       data.append("Id", id);
 
-      const scheduledDateTime = new Date(`${selectedDate}T${selectedTime}:00.000Z`).toISOString();
+      const scheduledDateTimes = selectedDate
+      ? `${selectedDate.getFullYear()}-${
+          String(selectedDate.getMonth() + 1).padStart(2, "0")
+        }-${String(selectedDate.getDate()).padStart(2, "0")}`
+      : "";
+    
+      const time = selectedTime;
+      const [hours, minutes] = time.split(':');
+      const utcTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00Z`;
+     
+      
+      const utcDate = `${scheduledDateTimes.split('T')[0]}T${utcTime}`;
 
-      data.append("ScheduledDateTime", scheduledDateTime);
+      data.append("ScheduledDateTime", utcDate);
 
       const response = await ky.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement`, {
         body: data,
@@ -244,7 +291,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
 
       if (response) {
         setIsSuccessDrawerOpen(true);
-        await mutate(`/api/getAnnouncement`);
+        await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
       }
     } catch (error) {
       if (error instanceof HTTPError && error.response.status === 400) {
@@ -277,8 +324,11 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
+     
   };
 
+
+  
  
 
   return (
@@ -531,13 +581,14 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
                               placeholder={"Date"} border={""}                            />
                           </GridItem>
                           <GridItem rowSpan={1} colSpan={1}>
-                            <Input
+                            {/* <Input
                               type="time"
                               h="60px"
                               bgColor={bgColor}
                               value={selectedTime}
                               onChange={handleTimeChange}
-                            />
+                            /> */}
+                              <CustomTimePicker value={selectedTime} onChange={handleTimeChange} />
                           </GridItem>
 
                           <GridItem rowSpan={1} colSpan={2}>

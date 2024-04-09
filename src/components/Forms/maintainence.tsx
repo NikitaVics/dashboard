@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -10,7 +10,6 @@ import {
   DrawerOverlay,
   Grid,
   GridItem,
-  Input,
   Stack,
   Text,
   Textarea,
@@ -29,6 +28,7 @@ import ky, { HTTPError } from "ky";
 import SuccessDrawer from "./successDrawer";
 import { mutate } from "swr";
 import DatePicker from "@/pages/coachDatePicker";
+import CustomTimePicker from "../CustomTimePicker";
 
 interface ImageItem {
   id: number;
@@ -67,15 +67,22 @@ const CourtMaintainence: React.FC<FormItems> = ({
 
   const [isSuccessDrawerOpen, setIsSuccessDrawerOpen] = useState(false);
 
-  const handleCloseSuccessDrawer = () => {
+  const handleCloseSuccessDrawer =  () => {
     setIsSuccessDrawerOpen(false);
     onClose?.();
+  
   };
 
   const [showErrorBorder, setShowErrorBorder] = useState(false);
 
-  const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSelectedTime(event.target.value);
+  const handleTimeChange = (time : string) => {
+    const [hours, minutes] = time.split(':');
+    const hoursInt = parseInt(hours, 10);
+    const minutesInt = parseInt(minutes, 10);
+    const formattedHours = hoursInt < 10 ? `0${hoursInt}` : `${hoursInt}`;
+    const formattedMinutes = minutesInt < 10 ? `0${minutesInt}` : `${minutesInt}`;
+    const formattedTime = `${formattedHours}:${formattedMinutes}`;
+    setSelectedTime(formattedTime);
   };
 
   const handleCloseDrawer = () => {
@@ -143,6 +150,7 @@ const CourtMaintainence: React.FC<FormItems> = ({
         );
 
         if (response) {
+         
           toast({
             description: "Successfully added",
             status: "success",
@@ -150,7 +158,10 @@ const CourtMaintainence: React.FC<FormItems> = ({
             duration: 3000,
             isClosable: true,
           });
+          await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
           onClose?.();
+   
+         
         }
       } else {
         toast({
@@ -204,7 +215,19 @@ const CourtMaintainence: React.FC<FormItems> = ({
         .map((image) => t(`announce.${image.name.toLowerCase()}`))
         .join(", ");
 
-      const scheduledDateTime = selectedDate?.toISOString() || "";
+        const scheduledDateTimes = selectedDate
+        ? `${selectedDate.getFullYear()}-${
+            String(selectedDate.getMonth() + 1).padStart(2, "0")
+          }-${String(selectedDate.getDate()).padStart(2, "0")}`
+        : "";
+      
+        const times = selectedTime;
+        const [hour, minute] = times.split(':');
+        const utcTimess = `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}:00Z`;
+        
+       
+        
+        const scheduledDateTime = `${scheduledDateTimes.split('T')[0]}T${utcTimess}`;
 
       const updatedValues = {
         scheduledDateTime,
@@ -219,7 +242,11 @@ const CourtMaintainence: React.FC<FormItems> = ({
       );
 
       if (response) {
+        await mutate(`/api/announcement/getAnnouncement?announcementType=${""}${""}`);
         setIsSuccessDrawerOpen(true);
+       
+        
+       
       }
     } catch (error) {
       if (error instanceof HTTPError && error.response.status === 400) {
@@ -259,24 +286,17 @@ const CourtMaintainence: React.FC<FormItems> = ({
               duration: 3000,
               isClosable: true,
             });
-            await mutate(
-              `/api/announcement/getAnnouncement?announcementType=${""}`
-            );
+            await mutate(`/api/announcement/getAnnouncement?announcementType=${""}${""}`);
             onClose?.();
+           
+      
           }
         }
       } catch (error) {
         if (error instanceof HTTPError && error.response.status === 400) {
-          const errorResponse = await error.response.json();
-          const messages = errorResponse.error.messages;
+          const messages = "Already Sent can't be cancel";
           toast({
-            description: (
-              <>
-                {messages.map((message: string, index: number) => (
-                  <Text key={index}>{message}</Text>
-                ))}
-              </>
-            ),
+            description:messages,
             status: "error",
             position: "top",
             duration: 3000,
@@ -289,15 +309,30 @@ const CourtMaintainence: React.FC<FormItems> = ({
 
   const handleEdits = async () => {
     try {
+     
       const data = new FormData();
       data.append("Id", courtId);
       data.append("Message", message);
 
-      const event = new Date(
-        `${selectedDate}T${selectedTime}:00.000Z`
-      ).toISOString();
 
-      data.append("EventDateTime", event);
+      const scheduledDateTimes = selectedDate
+      ? `${selectedDate.getFullYear()}-${
+          String(selectedDate.getMonth() + 1).padStart(2, "0")
+        }-${String(selectedDate.getDate()).padStart(2, "0")}`
+      : "";
+      // const event = new Date(
+      //   `${selectedDate}T${selectedTime}:00.000Z`
+      // ).toISOString();
+
+      const time = selectedTime;
+      const [hours, minutes] = time.split(':');
+      const utcTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00Z`;
+      
+      console.log("Time in UTC format:", utcTime);
+      
+      const utcDate = `${scheduledDateTimes.split('T')[0]}T${utcTime}`;
+
+      data.append("ScheduledDateTime", utcDate);
 
       const response = await ky.put(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement`,
@@ -523,13 +558,15 @@ const CourtMaintainence: React.FC<FormItems> = ({
                               />
                             </GridItem>
                             <GridItem rowSpan={1} colSpan={1}>
-                              <Input
+                              {/* <Input
                                 type="time"
                                 h="60px"
                                 bgColor={bgColor}
                                 value={selectedTime}
                                 onChange={handleTimeChange}
-                              />
+                              /> */}
+                             <CustomTimePicker value={selectedTime} onChange={handleTimeChange} />
+              
                             </GridItem>
 
                             <GridItem rowSpan={1} colSpan={2}>
