@@ -19,12 +19,13 @@ import {
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import useTranslation from "next-translate/useTranslation";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import ky from "ky";
 import SuccessDrawer from "./successDrawer";
 import { mutate } from "swr";
 import DatePicker from "@/pages/coachDatePicker";
 import { CloseIcon } from "@chakra-ui/icons";
+import CustomTimePicker from "../CustomTimePicker";
 
 type FormItems = {
   id: string;
@@ -89,13 +90,30 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
 
   const [selectedScheduledTime, setSelectedScheduledTime] = useState("");
 
-  const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSelectedTime(event.target.value);
+  const handleTimeChange = (time : string) => {
+    const [hours, minutes] = time.split(':');
+    const hoursInt = parseInt(hours, 10);
+    const minutesInt = parseInt(minutes, 10);
+    const formattedHours = hoursInt < 10 ? `0${hoursInt}` : `${hoursInt}`;
+    const formattedMinutes = minutesInt < 10 ? `0${minutesInt}` : `${minutesInt}`;
+    const formattedTime = `${formattedHours}:${formattedMinutes}`;
+    setSelectedTime(formattedTime);
   };
 
-  const handleScheduledTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSelectedScheduledTime(event.target.value);
+  const handleScheduledTimeChange = (time : string) => {
+    const [hours, minutes] = time.split(':');
+    const hoursInt = parseInt(hours, 10);
+    const minutesInt = parseInt(minutes, 10);
+    const formattedHours = hoursInt < 10 ? `0${hoursInt}` : `${hoursInt}`;
+    const formattedMinutes = minutesInt < 10 ? `0${minutesInt}` : `${minutesInt}`;
+    const formattedTime = `${formattedHours}:${formattedMinutes}`;
+    setSelectedScheduledTime(formattedTime);
   };
+  
+
+  // const handleScheduledTimeChange = (time :  string) => {
+  //   setSelectedScheduledTime(time);
+  // };
 
   const handleCloseDrawer = () => {
     setIsEditModalOpen(false);
@@ -134,6 +152,7 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
   };
 
   const [eventError, setEventError] = useState(false);
+  const [imageError,setImageError] = useState(false)
   const [dateError, setDateError] = useState(false);
 
   const handleSendClick = async () => {
@@ -172,6 +191,21 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
         }, 3000);
       }
 
+      if (formData.images.length === 0) {
+        toast({
+          description: "Please upload  image",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        setImageError(true);
+
+        setTimeout(() => {
+          setImageError(false);
+        }, 3000);
+      }
+
       if (eventName.trim() !== "") {
         data.append("EventName", eventName);
       } else {
@@ -189,15 +223,32 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
         }, 3000);
       }
 
-      const scheduledDateTimes = selectedDate?.toISOString() || "";
+   
 
-      data.append("EventDateTime", scheduledDateTimes);
+      const scheduledDateTimes = selectedDate
+      ? `${selectedDate.getFullYear()}-${
+          String(selectedDate.getMonth() + 1).padStart(2, "0")
+        }-${String(selectedDate.getDate()).padStart(2, "0")}`
+      : "";
+    
+      const time = selectedTime;
+      const [hours, minutes] = time.split(':');
+      const utcTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00Z`;
+      
+     
+      
+      const utcDate = `${scheduledDateTimes.split('T')[0]}T${utcTime}`;
+      
+      data.append("EventDateTime", utcDate);
+      
+
+     
 
       if (formData.images) {
         formData.images.forEach((image) => {
           data.append(`Images`, image);
         });
-      }
+      } 
 
       const response = await ky.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement/create EventAnnouncement`,
@@ -214,7 +265,9 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
           duration: 3000,
           isClosable: true,
         });
+        
         onClose?.();
+        await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -223,9 +276,7 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  const handleDateSelect = (date: Date) => {
-    setSelectedDate(date);
-  };
+
 
   const handleClearDate = () => {
     setSelectedDate(null);
@@ -245,23 +296,58 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
     
   };
 
+  console.log(selectedTime)
+
   const handleSchedule = async () => {
     try {
       const data = new FormData();
       data.append("Message", message);
       data.append("EventName", eventName);
 
-      const scheduledDateTimes = selectedDate?.toISOString() || "";
-      data.append("EventDateTime", scheduledDateTimes);
+    
 
       if (formData.images) {
         formData.images.forEach((image) => {
           data.append(`Images`, image);
         });
       }
-      const scheduledDateTime = selectedScheduleDate?.toISOString() || "";
+  
 
-      data.append("SceduledDataTime", scheduledDateTime);
+      const scheduledDateTimes = selectedDate
+      ? `${selectedDate.getFullYear()}-${
+          String(selectedDate.getMonth() + 1).padStart(2, "0")
+        }-${String(selectedDate.getDate()).padStart(2, "0")}`
+      : "";
+    
+      const times = selectedTime;
+      const [hour, minute] = times.split(':');
+      const utcTimess = `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}:00Z`;
+      
+     
+      
+      const utcDates = `${scheduledDateTimes.split('T')[0]}T${utcTimess}`;
+      
+      data.append("EventDateTime", utcDates);
+
+
+
+
+      const scheduledDate = selectedScheduleDate
+      ? `${selectedScheduleDate.getFullYear()}-${
+          String(selectedScheduleDate.getMonth() + 1).padStart(2, "0")
+        }-${String(selectedScheduleDate.getDate()).padStart(2, "0")}`
+      : "";
+    
+      const time = selectedScheduledTime;
+      const [hours, minutes] = time.split(':');
+      const utcTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00Z`;
+      
+      console.log("Time in UTC format:", utcTime);
+      
+      const utcDate = `${scheduledDate.split('T')[0]}T${utcTime}`;
+    
+
+      data.append("SceduledDataTime", utcDate);
 
       const response = await ky.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement/create EventAnnouncement`,
@@ -274,15 +360,17 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
       
         setIsSuccessDrawerOpen(true);
         setIsSuccessDrawerOpen(true);
-  
+        await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
        
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
-
   
+  const [format, setFormat] = useState("");
+
+
 
   const handleEdits = async () => {
     try {
@@ -291,11 +379,25 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
       data.append("Message", message);
       data.append("EventName", eventName);
 
-      const event = new Date(
-        `${selectedDate}T${selectedTime}:00.000Z`
-      ).toISOString();
-
-      data.append("EventDateTime", event);
+      // const event = new Date(
+      //   `${selectedDate}T${selectedTime}:00.000Z`
+      // ).toISOString();
+      
+      const scheduledDateTimes = selectedDate
+      ? `${selectedDate.getFullYear()}-${
+          String(selectedDate.getMonth() + 1).padStart(2, "0")
+        }-${String(selectedDate.getDate()).padStart(2, "0")}`
+      : "";
+    
+      const times = selectedTime;
+      const [hour, minute] = times.split(':');
+      const utcTimes = `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}:00Z`;
+      
+     
+      
+      const utcDates = `${scheduledDateTimes ? scheduledDateTimes.split('T')[0] : format.split('T')[0] }T${utcTimes}`;
+      
+      data.append("EventDateTime", utcDates);
 
       if (formData.images) {
         formData.images.forEach((image) => {
@@ -303,12 +405,31 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
         });
       }
 
-      const scheduledDate = selectedScheduleDate?.toISOString() || "";
-      const scheduledDateTime = new Date(
-        `${scheduledDate}T${selectedScheduledTime}:00.000Z`
-      ).toISOString();
+      // const scheduledDate = selectedScheduleDate?.toISOString() || "";
+      // const scheduledDateTime = new Date(
+      //   `${scheduledDate}T${selectedScheduledTime}:00.000Z`
+      // ).toISOString();
 
-      data.append("SceduledDataTime", scheduledDateTime);
+      const scheduledDate = selectedScheduleDate
+      ? `${selectedScheduleDate.getFullYear()}-${
+          String(selectedScheduleDate.getMonth() + 1).padStart(2, "0")
+        }-${String(selectedScheduleDate.getDate()).padStart(2, "0")}`
+      : "";
+      // const event = new Date(
+      //   `${selectedDate}T${selectedTime}:00.000Z`
+      // ).toISOString();
+
+      const time = selectedScheduledTime;
+      const [hours, minutes] = time.split(':');
+      const utcTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00Z`;
+      
+
+      
+      const utcDate = `${scheduledDate.split('T')[0]}T${utcTime}`;
+
+
+
+      data.append("SceduledDataTime", utcDate);
 
       const response = await ky.put(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement`,
@@ -319,8 +440,9 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
 
       if (response) {
         setIsSuccessDrawerOpen(true);
-        setIsEditModalOpen(false);
-        await mutate(`/api/getAnnouncement`);
+        setIsSuccessDrawerOpen(true);
+        await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
+  
       }
     } catch (error) {
       console.error("Error:", error);
@@ -332,7 +454,39 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
     updatedImages.splice(index, 1);
     setFormData({ ...formData, images: updatedImages });
   };
+
+
+
+const eventDate = eventData?.eventDate;
+
+useEffect(() => {
+  if (eventDate) {
+    const eventDates = eventDate.trim(); 
+    const months: { [key: string]: string } = {
+      Jan: '01', Feb: '02', Mar: '03', Apr: '04',
+      May: '05', Jun: '06', Jul: '07', Aug: '08',
+      Sep: '09', Oct: '10', Nov: '11', Dec: '12'
+    };
+
+
+    const parts = eventDates.split(" ");
+    const day = parts[0]; 
+    const monthAbbreviation = parts[1].slice(0, 3); 
+    const year = parts[2]; 
+
+    const month = months[monthAbbreviation];
+
+    const formattedDate = `${year}-${month}-${day}`;
+
   
+
+    setFormat(formattedDate);
+  }
+}, [eventDate]);
+
+
+
+
 
   return (
     <Formik
@@ -369,32 +523,43 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
             </GridItem>
 
             <GridItem rowSpan={1} colSpan={1}>
-              <DatePicker
-                onDateSelect={handleDateSelect}
-                onClear={handleClearDate}
-                value={eventData?.eventDate || null}
-                placeholder="Select Date"
-                
-                    // eslint-disable-next-line
-                //@ts-ignore
-                border={dateError ? "2px solid red" : undefined}
-              />
+            <DatePicker
+  onDateSelect={(date) => {
+    setSelectedDate(date);
+    if (date) {
+      const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      setFormat(formattedDate);
+    }
+  }}
+  onClear={handleClearDate}
+  value={format || ""}
+  placeholder="Date"
+  isReadOnly={!!format} 
+  // eslint-disable-next-line
+  //@ts-ignore
+  border={dateError ? "2px solid red" : undefined}
+/>
+
+
+
             </GridItem>
 
             <GridItem rowSpan={1} colSpan={1}>
-              <Input
+              {/* <Input
                 type="time"
                 h="60px"
                 bgColor={bgColor}
                 value={selectedTime}
                 onChange={handleTimeChange}
-              />
+              /> */}
+                <CustomTimePicker value={selectedTime} onChange={handleTimeChange} />
+              
             </GridItem>
 
             <GridItem rowSpan={1} colSpan={2}>
               <div
                 style={{
-                  border: `1px solid ${borderColor}`,
+                  border: `${imageError ? "2px solid  red" : `1px solid ${borderColor}`}`, 
                   borderRadius: "4px",
                   height: "120px",
                   backgroundColor: color,
@@ -515,11 +680,11 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                       if (
                         message.trim() === "" &&
                         eventName.trim() === "" &&
-                        !selectedDate
+                        !selectedDate && formData.images.length === 0
                       ) {
                         toast({
                           description:
-                            "Message, Event Name, and Event Date are required to schedule",
+                            "Message, Event Name, and Event Date,Images are required to schedule",
                           status: "error",
                           position: "top",
                           duration: 3000,
@@ -528,11 +693,13 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                         setShowErrorBorder(true);
                         setEventError(true);
                         setDateError(true);
+                        setImageError(true)
 
                         setTimeout(() => {
                           setShowErrorBorder(false);
                           setEventError(false);
                           setDateError(false);
+                          setImageError(false)
                         }, 3000);
                       } else if (message.trim() === "") {
                         toast({
@@ -572,6 +739,19 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
 
                         setTimeout(() => {
                           setDateError(false);
+                        }, 3000);
+                      } else if (formData.images.length === 0) {
+                        toast({
+                          description: "Image is required to schedule",
+                          status: "error",
+                          position: "top",
+                          duration: 3000,
+                          isClosable: true,
+                        });
+                        setImageError(true);
+
+                        setTimeout(() => {
+                          setImageError(false);
                         }, 3000);
                       } else {
                         handleEditModalOpen();
@@ -648,13 +828,17 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
                             />
                           </GridItem>
                           <GridItem rowSpan={1} colSpan={1}>
-                            <Input
+                            {/* <Input
                               type="time"
                               h={"60px"}
                               bgColor={bgColor}
                               value={selectedScheduledTime}
                               onChange={handleScheduledTimeChange}
-                            />
+                            
+                            /> */}
+                                <CustomTimePicker value={selectedScheduledTime} onChange={handleScheduledTimeChange} />
+              
+                
                           </GridItem>
 
                           <GridItem rowSpan={1} colSpan={2}>

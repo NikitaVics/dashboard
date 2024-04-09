@@ -155,7 +155,7 @@ const Announcemnet = () => {
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/announcement/getAnnouncement`);
+            await mutate(`/api/announcement/getAnnouncement?announcementType=${""}${""}`);
           }
         }
       } catch (error) {
@@ -576,7 +576,7 @@ const Announcemnet = () => {
                       <DrawerBody>
                         <AnnouncementForm
                           message={undefined}
-                          onClose={onClose}
+                          onClose={() => setAddAnnouncementDrawerOpen(false)}
                           id={""}
                         />
                       </DrawerBody>
@@ -604,7 +604,7 @@ const Announcemnet = () => {
                       </DrawerHeader>
 
                       <DrawerBody>
-                        <EventAnnouncement onClose={onClose} id={""} />
+                        <EventAnnouncement onClose={() => setIsEventDrawerOpen(false)} id={""} />
                       </DrawerBody>
                     </DrawerContent>
                   </Drawer>
