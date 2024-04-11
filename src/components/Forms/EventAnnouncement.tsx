@@ -34,7 +34,7 @@ type FormItems = {
     eventDate: string;
     eventTime: string;
     eventName: string;
-    images: string | string[]; // Changed to handle array of images
+    images: string | string[]; 
   };
 
   onClose: () => void;
@@ -111,9 +111,7 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
   };
   
 
-  // const handleScheduledTimeChange = (time :  string) => {
-  //   setSelectedScheduledTime(time);
-  // };
+
 
   const handleCloseDrawer = () => {
     setIsEditModalOpen(false);
@@ -267,7 +265,7 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
         });
         
         onClose?.();
-        await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
+        await mutate(`/api/announcement?announcementType=${""}${""}`);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -296,7 +294,8 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
     
   };
 
-  console.log(selectedTime)
+  const [dateErrorBorder,setDateErrorBorder] = useState(false)
+  const [timeErrorBorder,setTimeErrorBorder] = useState(false)
 
   const handleSchedule = async () => {
     try {
@@ -311,7 +310,35 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
           data.append(`Images`, image);
         });
       }
-  
+      if(!selectedScheduleDate) {
+        toast({
+          description: "Date is required to schedule",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        setDateErrorBorder(true);
+
+        setTimeout(() => {
+          setDateErrorBorder(false);
+        }, 3000);
+      }
+
+      if(!selectedScheduledTime) {
+        toast({
+          description: "Time is required to schedule",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        setTimeErrorBorder(true);
+
+        setTimeout(() => {
+          setTimeErrorBorder(false);
+        }, 3000);
+      }
 
       const scheduledDateTimes = selectedDate
       ? `${selectedDate.getFullYear()}-${
@@ -357,10 +384,8 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
       );
 
       if (response) {
-      
         setIsSuccessDrawerOpen(true);
-        setIsSuccessDrawerOpen(true);
-        await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
+        await mutate(`/api/announcement?announcementType=${""}${""}`);
        
       }
     } catch (error) {
@@ -440,8 +465,8 @@ const EventAnnouncement = ({ onClose, eventData, id }: FormItems) => {
 
       if (response) {
         setIsSuccessDrawerOpen(true);
-        setIsSuccessDrawerOpen(true);
-        await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
+     
+        await mutate(`/api/announcement?announcementType=${""}${""}`);
   
       }
     } catch (error) {
@@ -552,7 +577,7 @@ useEffect(() => {
                 value={selectedTime}
                 onChange={handleTimeChange}
               /> */}
-                <CustomTimePicker value={selectedTime} onChange={handleTimeChange} />
+                <CustomTimePicker value={selectedTime} onChange={handleTimeChange} border={""} />
               
             </GridItem>
 
@@ -824,7 +849,7 @@ useEffect(() => {
                               onClear={handleClearDates}
                               value={""}
                               placeholder="Date"
-                              border={""}
+                              border={dateErrorBorder ? "2px solid red" : ""}
                             />
                           </GridItem>
                           <GridItem rowSpan={1} colSpan={1}>
@@ -836,7 +861,7 @@ useEffect(() => {
                               onChange={handleScheduledTimeChange}
                             
                             /> */}
-                                <CustomTimePicker value={selectedScheduledTime} onChange={handleScheduledTimeChange} />
+                                <CustomTimePicker value={selectedScheduledTime} onChange={handleScheduledTimeChange}   border={timeErrorBorder ? "2px solid red" : ""}/>
               
                 
                           </GridItem>

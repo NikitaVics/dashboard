@@ -15,12 +15,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const {
         bookerName = "",
         fromBookingDate = "",
-        toBookingDate,
+        toBookingDate = "",
       } = req.query;
       const params = {
         bookerName: bookerName as string,
         fromBookingDate: fromBookingDate as string,
-        toBookingDate: toBookingDate,
+        toBookingDate: toBookingDate as string,
       } as getMember;
       const response = await client.bookings.bookingDetails(params);
       res.status(200).json(response);

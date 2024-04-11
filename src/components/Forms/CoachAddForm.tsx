@@ -130,7 +130,7 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
             isClosable: true,
           });
           onClose?.();
-          await mutate(`/api/coach`);
+          await mutate(`/api/coach?searchTerm=${""}`);
         }
       } catch (error) {
         if (error instanceof HTTPError && error.response.status === 400) {
@@ -285,8 +285,8 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
                 focusBorderColor="rgba(78, 203, 113, 1)"
                 isInvalid={!gender && touched.gender}
               >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </Select>
               {touched.gender && !gender && (
                 <Text color="red.500" fontSize="sm" mt={2}>
