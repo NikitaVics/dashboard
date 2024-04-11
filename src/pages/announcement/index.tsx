@@ -402,7 +402,7 @@ const Announcemnet = () => {
                    
 
 
-                    <Stack gap={4}  > 
+                    <Stack gap={8}  > 
                    
                       <Text fontSize={"18px"} fontWeight={"700"}>
                         {t(`announce.maintain`)}
@@ -442,7 +442,7 @@ const Announcemnet = () => {
                                         >
                                           <Flex gap={10}>
                                             <Event />
-                                            <Stack gap={4}>
+                                            <Stack gap={8}>
                                               <Text fontSize={"20px"} fontWeight={"700"}>
                                                 {t(`announce.event`)}
                                               </Text>
@@ -464,7 +464,7 @@ const Announcemnet = () => {
 >
   <Icon as={FaPlus} h={3.5} w={4} />
   <Text>{t(`announce.create`)}</Text>
-</Button>;
+</Button>
 
                                             </Stack>
                                           </Flex>
@@ -480,7 +480,7 @@ const Announcemnet = () => {
                                         >
                                           <Flex  gap={10}>
                                             <Announce />
-                                            <Stack gap={4}>
+                                            <Stack gap={8}>
                                               <Text fontSize={"20px"} fontWeight={"700"}>
                                                 {t(`announce.announce`)}
                                               </Text>
