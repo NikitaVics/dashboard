@@ -255,7 +255,7 @@ function Member({ memberData }: EditTaxDetailsProps) {
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/members?searchTerm=${""}`);
+            await mutate(`/api/members?namefilter=${""}`);
           }
         }
       } catch (error) {

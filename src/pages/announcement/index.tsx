@@ -53,6 +53,11 @@ import InActivateIcon from "../components/Icons/InActivate";
 import ky, { HTTPError } from "ky";
 import FilterIcon from "../components/Icons/FilterIcon";
 
+import ViewCourt from "@/components/viewCourt";
+import Events from "@/components/eventForm";
+import ViewAnnouncement from "@/components/ViewAnnouncement";
+import EditAnnouncement from "../components/Icons/edit";
+
 const Announcemnet = () => {
   const { t } = useTranslation("announcement");
   const [selectedMenuItem, setSelectedMenuItem] = useState("");
@@ -63,7 +68,8 @@ const Announcemnet = () => {
   const [searchInput, setSearchInput] = useState("");
   const [debouncedSearchInput] = useDebounce(searchInput, 1500);
   const { data: announcementData } = useSWR(
-    ` /api/announcement/getAnnouncement?announcementType=${debouncedSearchInput}${selectedMenuItem}`
+    ` /api/announcement?announcementType=${debouncedSearchInput}${selectedMenuItem}`
+    
   );
   const responseData = announcementData?.result;
 
@@ -96,6 +102,31 @@ const Announcemnet = () => {
     }
   };
 
+  const handleEdit = (id: string, announcementType: string) => {
+    if (announcementType === "Court Maintenance") {
+      handleEditCourtOpen();
+      if (id) {
+        // eslint-disable-next-line
+        //@ts-ignore
+        setCourtId(id);
+      }
+    } else if (announcementType === "Event Announcement") {
+      handleEventOpen();
+      if (id) {
+        // eslint-disable-next-line
+        //@ts-ignore
+        setEventId(id);
+      }
+    } else if (announcementType === "Announcement") {
+      handleAnnouncementView();
+      if (id) {
+        // eslint-disable-next-line
+        //@ts-ignore
+        setAnnouncementId(id);
+      }
+    }
+  };
+
   const color = useColorModeValue("rgba(248, 248, 248, 1)", "dark.500");
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -106,10 +137,27 @@ const Announcemnet = () => {
     setIsEditModalOpen(true);
   };
 
+  const [editCourt, setEditCourt] = useState(false);
+  const handleEditCourtOpen = () => {
+    setEditCourt(true);
+  };
+
+  const [event,setEvent] = useState(false)
+
+  const handleEventOpen = () => {
+    setEvent(true);
+  };
+
+  const [announcement,setAnnouncement] = useState(false)
+  const handleAnnouncementView = () => {
+    setAnnouncement(true);
+  };
+
   const [isEventOpen, setIsEventOpen] = useState(false);
   const handleEventModalOpen = () => {
     setIsEventOpen(true);
   };
+
   const [isEventDrawerOpen, setIsEventDrawerOpen] = useState(false);
   const handleEvent = () => {
     setIsEventDrawerOpen(true);
@@ -155,7 +203,7 @@ const Announcemnet = () => {
               duration: 3000,
               isClosable: true,
             });
-            await mutate(`/api/announcement/getAnnouncement?announcementType=${""}${""}`);
+            await mutate(`/api/announcement?announcementType=${""}${""}`);
           }
         }
       } catch (error) {
@@ -267,15 +315,31 @@ const Announcemnet = () => {
                 icon={<EditIcon />}
                 bgColor={background}
                 _hover={{ bgColor: hover }}
-                onClick={() =>
-                  handleAnnouncement(
-                    row?.original?.id,
-                    row?.original?.announcementType
-                  )
-                }
+                onClick={() =>  handleEdit(
+                  row?.original?.id,
+                  row?.original?.announcementType
+                )
+              }
+               
               >
                 {t("common:buttons.view")}
               </MenuItem>
+              {eventStatus === "Scheduled" && (
+                <MenuItem
+                  icon={<EditAnnouncement />}
+                  bgColor={background}
+                  _hover={{ bgColor: hover }}
+                 
+                  onClick={() =>
+                    handleAnnouncement(
+                      row?.original?.id,
+                      row?.original?.announcementType
+                    )
+                  }
+                >
+                  Edit
+                </MenuItem>
+              )}
               {eventStatus === "Scheduled" && (
                 <MenuItem
                   icon={<InActivateIcon />}
@@ -287,6 +351,7 @@ const Announcemnet = () => {
                   {t("common:buttons.cancelSchedule")}
                 </MenuItem>
               )}
+
             </MenuList>
           </Menu>
         );
@@ -620,6 +685,16 @@ const Announcemnet = () => {
                   </>
                 )}
 
+                {editCourt && (
+                    <>
+                    <ViewCourt
+                      isOpen={editCourt}
+                      onClose={() => setEditCourt(false)}
+                      id={courtId}
+                    />
+                  </>
+                )}
+
                 {isEventOpen && (
                   <>
                     <EventsForm
@@ -630,11 +705,32 @@ const Announcemnet = () => {
                   </>
                 )}
 
+{event && (
+                  <>
+                    <Events
+                      isOpen={event}
+                      onClose={() => setEvent(false)}
+                      id={eventId}
+                    />
+                  </>
+                )}
+
+
                 {isAnnouncementOpen && (
                   <>
                     <Announcement
                       isOpen={isAnnouncementOpen}
                       onClose={() => setIsAnnouncementOpen(false)}
+                      id={announcementId}
+                    />
+                  </>
+                )}
+
+{announcement && (
+                  <>
+                    <ViewAnnouncement
+                      isOpen={announcement}
+                      onClose={() => setAnnouncement(false)}
                       id={announcementId}
                     />
                   </>

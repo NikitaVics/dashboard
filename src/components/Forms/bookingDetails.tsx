@@ -69,10 +69,11 @@ function BookingDetails({ memberData, onClose }: FormItems) {
               duration: 3000,
               isClosable: true,
             });
-            await mutate(
-              `/api/bookings/bookingDetails?searchTerm=${``}&bookingDate=${``}`
-            );
             onClose?.();
+            await mutate(
+              `/api/bookings/bookingDetails?bookerName=${``}&fromBookingDate=${``}&toBookingDate=${""}`
+            );
+           
           }
         }
       } catch (error) {

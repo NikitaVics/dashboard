@@ -81,7 +81,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
     scheduledDateTime: null,
     images: [] as File[],
   });
-  const [message, setMessage] = useState<string>("");
+  const [message, setMessage] = useState<string>(Data?.message || "");
 
   const handleMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
@@ -180,7 +180,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
           isClosable: true,
         });
         onClose?.();
-        await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
+        await mutate(`/api/announcement?announcementType=${""}${""}`);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -197,6 +197,11 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
     setSelectedDate(null);
   };
 
+
+
+  const [dateErrorBorder,setDateErrorBorder] = useState(false)
+  const [timeErrorBorder,setTimeErrorBorder] = useState(false)
+
   const handleSchedule = async () => {
     try {
       const data = new FormData();
@@ -210,6 +215,38 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
 
       if (formData.images) {
         data.append("Images", formData.images[0]);
+      }
+
+    
+
+      if(!selectedDate) {
+        toast({
+          description: "Date is required to schedule",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        setDateErrorBorder(true);
+
+        setTimeout(() => {
+          setDateErrorBorder(false);
+        }, 3000);
+      }
+
+      if(!selectedTime) {
+        toast({
+          description: "Time is required to schedule",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        setTimeErrorBorder(true);
+
+        setTimeout(() => {
+          setTimeErrorBorder(false);
+        }, 3000);
       }
 
       const scheduledDateTimes = selectedDate
@@ -233,7 +270,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
 
       if (response) {
         setIsSuccessDrawerOpen(true);
-        await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
+        await mutate(`/api/announcement?announcementType=${""}${""}`);
       }
     } catch (error) {
       if (error instanceof HTTPError && error.response.status === 400) {
@@ -291,7 +328,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
 
       if (response) {
         setIsSuccessDrawerOpen(true);
-        await mutate(`/api/announcement/getAnnouncement?announcementType=${""}`);
+        await mutate(`/api/announcement?announcementType=${""}${""}`);
       }
     } catch (error) {
       if (error instanceof HTTPError && error.response.status === 400) {
@@ -358,10 +395,11 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
             <GridItem rowSpan={1} colSpan={2}>
               <FormControl >
                 <Flex>
-                  {Data?.images && typeof Data.images === "string" ? (
+                
+                  { formData.images.length === 0 && Data?.images && typeof Data.images === "string" ? (
                     <Image src={Data.images} alt="Attached Image" ml={1} w="150px" />
                   ) : (
-                    Data?.images && Array.isArray(Data.images) && (
+                    formData.images.length === 0 && Data?.images && Array.isArray(Data.images) && (
                       <>
                         {Data.images.map((imageUrl, index) => (
                           <Image key={index} src={imageUrl} alt={`Attached Image ${index}`} ml={1} w="150px" />
@@ -386,7 +424,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
                     type="file"
                     name={"Images"}
                     ref={fileInputRef}
-                    style={{ display: "none" }}
+                    style={{ display: "none"}}
                     onChange={handleChange}
                     accept="image/*"
                   />
@@ -397,10 +435,11 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
                       position="absolute"
                       left="10px"
                       bg="transparent"
-                      // color="gray.500"
-                      color ={attachImage ? "red" : "gray500"}
+                   
+                      color ={attachImage ? "red" : "gray.500"}
                       _hover={{ color: "gray.700" }}
                       aria-label="Attach Image"
+                      zIndex={1} 
                     />
                   </Tooltip>
                   <Text mt={2} color="#E53E3E">{errors.message}</Text>
@@ -578,7 +617,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
                               onDateSelect={handleDateSelect}
                               onClear={handleClearDate}
                               value={""}
-                              placeholder={"Date"} border={""}                            />
+                              placeholder={"Date"} border={dateErrorBorder ? "2px solid red" : ""}                            />
                           </GridItem>
                           <GridItem rowSpan={1} colSpan={1}>
                             {/* <Input
@@ -588,7 +627,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
                               value={selectedTime}
                               onChange={handleTimeChange}
                             /> */}
-                              <CustomTimePicker value={selectedTime} onChange={handleTimeChange} />
+                              <CustomTimePicker value={selectedTime} onChange={handleTimeChange} border={timeErrorBorder ? "2px solid red" : ""}      />
                           </GridItem>
 
                           <GridItem rowSpan={1} colSpan={2}>

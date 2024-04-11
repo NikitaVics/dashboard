@@ -25,10 +25,20 @@ interface CustomDatePickerProps {
   value: string | null;
   placeholder: string;
   border: string;
+  disabled?: boolean; // Add disabled prop
 }
 
-const DatePicker = ({ onDateSelect, onClear, value, placeholder, border }: CustomDatePickerProps) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(value ? new Date(value) : null);
+const DatePicker = ({
+  onDateSelect,
+  onClear,
+  value,
+  placeholder,
+  border,
+  disabled = false, // Default to false if disabled prop is not provided
+}: CustomDatePickerProps) => {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    value ? new Date(value) : null
+  );
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
   const [formattedDate, setFormattedDate] = useState<string>(value || "");
 
@@ -38,8 +48,8 @@ const DatePicker = ({ onDateSelect, onClear, value, placeholder, border }: Custo
 
   const handleClear = () => {
     setSelectedDate(null);
-    setFormattedDate('');
-    setInput(''); 
+    setFormattedDate("");
+    setInput("");
     setShowDatePicker(false);
     onClear();
   };
@@ -48,11 +58,13 @@ const DatePicker = ({ onDateSelect, onClear, value, placeholder, border }: Custo
     setSelectedDate(date);
     const formatted = format(date, "yyyy-MM-dd");
     setFormattedDate(formatted);
-    setInput(formatted); 
+    setInput(formatted);
   };
 
   const toggleDatePicker = () => {
-    setShowDatePicker(!showDatePicker);
+    if (!disabled) {
+      setShowDatePicker(!showDatePicker);
+    }
   };
 
   const applyDateSelection = () => {
@@ -76,6 +88,9 @@ const DatePicker = ({ onDateSelect, onClear, value, placeholder, border }: Custo
                 bgColor={bgColor}
                 border={border ? border : undefined}
                 readOnly
+                _readOnly={{ cursor: disabled ? "not-allowed" : "pointer" }}
+                isReadOnly={disabled}
+                pointerEvents={disabled ? "none" : "auto"}
               />
               <InputRightElement>
                 <CalenderIcon mt={4} />
@@ -90,7 +105,7 @@ const DatePicker = ({ onDateSelect, onClear, value, placeholder, border }: Custo
               <ModalCloseButton />
               <ModalBody bgColor={bgColor}>
                 <Calendar
-                 // eslint-disable-next-line
+                // eslint-disable-next-line
                 //@ts-ignore
                   date={selectedDate}
                   onChange={(date) => handleSelect(date as Date)}
