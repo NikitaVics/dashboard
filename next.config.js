@@ -7,7 +7,7 @@ const nextTranslatePlugin = require("next-translate-plugin");
  */
 const nextConfig = {
   reactStrictMode: true,
-   basePath: 'http://asop.synology.me:8082/api/', 
+   assetPrefix: 'http://asop.synology.me:8082/api/', 
   webpack: (config) => {
     config.module.rules.push({
       test: /\.tsx?$/,
