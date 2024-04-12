@@ -15,4 +15,5 @@ const getApplication = async (
     .json<User>();
 };
 
+
 export default getApplication;

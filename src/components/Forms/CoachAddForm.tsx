@@ -120,7 +120,6 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
             body: data,
           }
         );
-
         if (response) {
           toast({
             description: "Successfully added",

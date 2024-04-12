@@ -50,7 +50,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
     setIsEditModalOpen(true);
   };
 
-  const[attachImage,setAttachImage] = useState(false)
+  const [attachImage, setAttachImage] = useState(false);
 
   const [selectedTime, setSelectedTime] = useState("");
 
@@ -61,12 +61,13 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
     onClose?.();
   };
 
-  const handleTimeChange = (time : string) => {
-    const [hours, minutes] = time.split(':');
+  const handleTimeChange = (time: string) => {
+    const [hours, minutes] = time.split(":");
     const hoursInt = parseInt(hours, 10);
     const minutesInt = parseInt(minutes, 10);
     const formattedHours = hoursInt < 10 ? `0${hoursInt}` : `${hoursInt}`;
-    const formattedMinutes = minutesInt < 10 ? `0${minutesInt}` : `${minutesInt}`;
+    const formattedMinutes =
+      minutesInt < 10 ? `0${minutesInt}` : `${minutesInt}`;
     const formattedTime = `${formattedHours}:${formattedMinutes}`;
     setSelectedTime(formattedTime);
   };
@@ -89,14 +90,15 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
 
   const [isImageAttached, setIsImageAttached] = useState(false);
 
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
+  ) => {
     if ("files" in e.target && e.target.files) {
       setFormData({
         ...formData,
         images: Array.from(e.target.files),
       });
-      setIsImageAttached(true); 
+      setIsImageAttached(true);
     } else {
       setFormData({
         ...formData,
@@ -114,19 +116,16 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
         duration: 3000,
         isClosable: true,
       });
-      setIsImageAttached(false); 
+      setIsImageAttached(false);
     }
   }, [isImageAttached]);
-  
-
-
 
   const [showErrorBorder, setShowErrorBorder] = useState(false);
 
   const handleSendClick = async () => {
     try {
       const data = new FormData();
-     if (message.trim() !== "") {
+      if (message.trim() !== "") {
         data.append("Message", message);
       } else {
         toast({
@@ -138,7 +137,6 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
         });
 
         setShowErrorBorder(true);
-
 
         setTimeout(() => {
           setShowErrorBorder(false);
@@ -153,7 +151,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
           duration: 3000,
           isClosable: true,
         });
-        setAttachImage(true)
+        setAttachImage(true);
 
         setTimeout(() => {
           setAttachImage(false);
@@ -167,9 +165,12 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
         });
       }
 
-      const response = await ky.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement/create Announcement`, {
-        body: data,
-      });
+      const response = await ky.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement/create Announcement`,
+        {
+          body: data,
+        }
+      );
 
       if (response) {
         toast({
@@ -197,10 +198,8 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
     setSelectedDate(null);
   };
 
-
-
-  const [dateErrorBorder,setDateErrorBorder] = useState(false)
-  const [timeErrorBorder,setTimeErrorBorder] = useState(false)
+  const [dateErrorBorder, setDateErrorBorder] = useState(false);
+  const [timeErrorBorder, setTimeErrorBorder] = useState(false);
 
   const handleSchedule = async () => {
     try {
@@ -209,7 +208,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
 
       // if (formData.images) {
       //   formData.images.forEach((image) => {
-      //     data.append(`Images`, image);
+      //     data.append(Images, image);
       //   });
       // }
 
@@ -217,9 +216,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
         data.append("Images", formData.images[0]);
       }
 
-    
-
-      if(!selectedDate) {
+      if (!selectedDate) {
         toast({
           description: "Date is required to schedule",
           status: "error",
@@ -234,7 +231,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
         }, 3000);
       }
 
-      if(!selectedTime) {
+      if (!selectedTime) {
         toast({
           description: "Time is required to schedule",
           status: "error",
@@ -250,23 +247,31 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
       }
 
       const scheduledDateTimes = selectedDate
-      ? `${selectedDate.getFullYear()}-${
-          String(selectedDate.getMonth() + 1).padStart(2, "0")
-        }-${String(selectedDate.getDate()).padStart(2, "0")}`
-      : "";
-    
+        ? `${selectedDate.getFullYear()}-${String(
+            selectedDate.getMonth() + 1
+          ).padStart(2, "0")}-${String(selectedDate.getDate()).padStart(
+            2,
+            "0"
+          )}`
+        : "";
+
       const time = selectedTime;
-      const [hours, minutes] = time.split(':');
-      const utcTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00Z`;
-     
-      
-      const utcDate = `${scheduledDateTimes.split('T')[0]}T${utcTime}`;
+      const [hours, minutes] = time.split(":");
+      const utcTime = `${hours.padStart(2, "0")}:${minutes.padStart(
+        2,
+        "0"
+      )}:00Z`;
+
+      const utcDate = `${scheduledDateTimes.split("T")[0]}T${utcTime}`;
 
       data.append("ScheduledDateTime", utcDate);
 
-      const response = await ky.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement/create Announcement`, {
-        body: data,
-      });
+      const response = await ky.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement/create Announcement`,
+        {
+          body: data,
+        }
+      );
 
       if (response) {
         setIsSuccessDrawerOpen(true);
@@ -296,7 +301,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
   const handleEdits = async () => {
     try {
       const data = new FormData();
-      
+
       data.append("Message", message);
 
       if (formData.images) {
@@ -308,23 +313,31 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
       data.append("Id", id);
 
       const scheduledDateTimes = selectedDate
-      ? `${selectedDate.getFullYear()}-${
-          String(selectedDate.getMonth() + 1).padStart(2, "0")
-        }-${String(selectedDate.getDate()).padStart(2, "0")}`
-      : "";
-    
+        ? `${selectedDate.getFullYear()}-${String(
+            selectedDate.getMonth() + 1
+          ).padStart(2, "0")}-${String(selectedDate.getDate()).padStart(
+            2,
+            "0"
+          )}`
+        : "";
+
       const time = selectedTime;
-      const [hours, minutes] = time.split(':');
-      const utcTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00Z`;
-     
-      
-      const utcDate = `${scheduledDateTimes.split('T')[0]}T${utcTime}`;
+      const [hours, minutes] = time.split(":");
+      const utcTime = `${hours.padStart(2, "0")}:${minutes.padStart(
+        2,
+        "0"
+      )}:00Z`;
+
+      const utcDate = `${scheduledDateTimes.split("T")[0]}T${utcTime}`;
 
       data.append("ScheduledDateTime", utcDate);
 
-      const response = await ky.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement`, {
-        body: data,
-      });
+      const response = await ky.put(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement`,
+        {
+          body: data,
+        }
+      );
 
       if (response) {
         setIsSuccessDrawerOpen(true);
@@ -361,12 +374,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
-     
   };
-
-
-  
- 
 
   return (
     <Formik
@@ -376,7 +384,6 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
         image: Data?.images || "",
       }}
       onSubmit={handleSendClick}
-    
     >
       {({ errors }) => (
         <Form noValidate>
@@ -393,16 +400,30 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
             borderRadius={"20px"}
           >
             <GridItem rowSpan={1} colSpan={2}>
-              <FormControl >
+              <FormControl>
                 <Flex>
-                
-                  { formData.images.length === 0 && Data?.images && typeof Data.images === "string" ? (
-                    <Image src={Data.images} alt="Attached Image" ml={1} w="150px" />
+                  {formData.images.length === 0 &&
+                  Data?.images &&
+                  typeof Data.images === "string" ? (
+                    <Image
+                      src={Data.images}
+                      alt="Attached Image"
+                      ml={1}
+                      w="150px"
+                    />
                   ) : (
-                    formData.images.length === 0 && Data?.images && Array.isArray(Data.images) && (
+                    formData.images.length === 0 &&
+                    Data?.images &&
+                    Array.isArray(Data.images) && (
                       <>
                         {Data.images.map((imageUrl, index) => (
-                          <Image key={index} src={imageUrl} alt={`Attached Image ${index}`} ml={1} w="150px" />
+                          <Image
+                            key={index}
+                            src={imageUrl}
+                            alt={`Attached Image ${index}`}
+                            ml={1}
+                            w="150px"
+                          />
                         ))}
                       </>
                     )
@@ -416,15 +437,14 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
                     bgColor={bgColor}
                     onChange={handleMessageChange}
                     value={message || Data?.message}
-               
-                    border={showErrorBorder ? "2px solid red" : undefined} 
+                    border={showErrorBorder ? "2px solid red" : undefined}
                     name="message"
                   />
                   <input
                     type="file"
                     name={"Images"}
                     ref={fileInputRef}
-                    style={{ display: "none"}}
+                    style={{ display: "none" }}
                     onChange={handleChange}
                     accept="image/*"
                   />
@@ -435,14 +455,15 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
                       position="absolute"
                       left="10px"
                       bg="transparent"
-                   
-                      color ={attachImage ? "red" : "gray.500"}
+                      color={attachImage ? "red" : "gray.500"}
                       _hover={{ color: "gray.700" }}
                       aria-label="Attach Image"
-                      zIndex={1} 
+                      zIndex={1}
                     />
                   </Tooltip>
-                  <Text mt={2} color="#E53E3E">{errors.message}</Text>
+                  <Text mt={2} color="#E53E3E">
+                    {errors.message}
+                  </Text>
                 </Box>
               </FormControl>
             </GridItem>
@@ -480,75 +501,75 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
               </>
             ) : (
               <>
-              <GridItem rowSpan={1} colSpan={1}>
-  <Button
-    w="full"
-    bg="none"
-    variant={"outline"}
-    borderColor="rgba(78, 203, 113, 1)"
-    border="1px solid"
-    color="rgba(78, 203, 113, 1)"
-    h="80px"
-    onClick={() => {
-      if (message.trim() === "" && formData.images.length === 0) {
-        toast({
-          description: "Message  are required to schedule",
-          status: "error",
-          position: "top",
-          duration: 3000,
-          isClosable: true,
-        });
-        toast({
-          description: "Please Attach Image to schedule",
-          status: "error",
-          position: "top",
-          duration: 3000,
-          isClosable: true,
-        });
-        setShowErrorBorder(true);
-     setAttachImage(true)
-        
-        setTimeout(() => {
-          setShowErrorBorder(false);
-          setAttachImage(false)
-        }, 3000);
-      } else if (message.trim() === "") {
-        toast({
-          description: "Message is required to schedule",
-          status: "error",
-          position: "top",
-          duration: 3000,
-          isClosable: true,
-        });
-        setShowErrorBorder(true);
-    
-       
-        setTimeout(() => {
-          setShowErrorBorder(false);
-        }, 3000);
-      } else if (formData.images.length === 0) {
-        toast({
-          description: "Please Attach image",
-          status: "error",
-          position: "top",
-          duration: 3000,
-          isClosable: true,
-        });
-        setAttachImage(true);
-    
-       
-        setTimeout(() => {
-          setAttachImage(false);
-        }, 3000);
-      } else {
-        handleEditModalOpen();
-      }
-    }}
-    
-  >
-    {t(`common:buttons.schedule`)}
-  </Button>
-</GridItem>
+                <GridItem rowSpan={1} colSpan={1}>
+                  <Button
+                    w="full"
+                    bg="none"
+                    variant={"outline"}
+                    borderColor="rgba(78, 203, 113, 1)"
+                    border="1px solid"
+                    color="rgba(78, 203, 113, 1)"
+                    h="80px"
+                    onClick={() => {
+                      if (
+                        message.trim() === "" &&
+                        formData.images.length === 0
+                      ) {
+                        toast({
+                          description: "Message  are required to schedule",
+                          status: "error",
+                          position: "top",
+                          duration: 3000,
+                          isClosable: true,
+                        });
+                        toast({
+                          description: "Please Attach Image to schedule",
+                          status: "error",
+                          position: "top",
+                          duration: 3000,
+                          isClosable: true,
+                        });
+                        setShowErrorBorder(true);
+                        setAttachImage(true);
+
+                        setTimeout(() => {
+                          setShowErrorBorder(false);
+                          setAttachImage(false);
+                        }, 3000);
+                      } else if (message.trim() === "") {
+                        toast({
+                          description: "Message is required to schedule",
+                          status: "error",
+                          position: "top",
+                          duration: 3000,
+                          isClosable: true,
+                        });
+                        setShowErrorBorder(true);
+
+                        setTimeout(() => {
+                          setShowErrorBorder(false);
+                        }, 3000);
+                      } else if (formData.images.length === 0) {
+                        toast({
+                          description: "Please Attach image",
+                          status: "error",
+                          position: "top",
+                          duration: 3000,
+                          isClosable: true,
+                        });
+                        setAttachImage(true);
+
+                        setTimeout(() => {
+                          setAttachImage(false);
+                        }, 3000);
+                      } else {
+                        handleEditModalOpen();
+                      }
+                    }}
+                  >
+                    {t(`common:buttons.schedule`)}
+                  </Button>
+                </GridItem>
 
                 <GridItem rowSpan={1} colSpan={1}>
                   <Button
@@ -617,7 +638,9 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
                               onDateSelect={handleDateSelect}
                               onClear={handleClearDate}
                               value={""}
-                              placeholder={"Date"} border={dateErrorBorder ? "2px solid red" : ""}                            />
+                              placeholder={"Date"}
+                              border={dateErrorBorder ? "2px solid red" : ""}
+                            />
                           </GridItem>
                           <GridItem rowSpan={1} colSpan={1}>
                             {/* <Input
@@ -627,7 +650,11 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
                               value={selectedTime}
                               onChange={handleTimeChange}
                             /> */}
-                              <CustomTimePicker value={selectedTime} onChange={handleTimeChange} border={timeErrorBorder ? "2px solid red" : ""}      />
+                            <CustomTimePicker
+                              value={selectedTime}
+                              onChange={handleTimeChange}
+                              border={timeErrorBorder ? "2px solid red" : ""}
+                            />
                           </GridItem>
 
                           <GridItem rowSpan={1} colSpan={2}>
@@ -654,7 +681,12 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
               </DrawerContent>
             </Drawer>
           )}
-          {isSuccessDrawerOpen && <SuccessDrawer isOpen={isSuccessDrawerOpen} onClose={handleCloseSuccessDrawer} />}
+          {isSuccessDrawerOpen && (
+            <SuccessDrawer
+              isOpen={isSuccessDrawerOpen}
+              onClose={handleCloseSuccessDrawer}
+            />
+          )}
         </Form>
       )}
     </Formik>

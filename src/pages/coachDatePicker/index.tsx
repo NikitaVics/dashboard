@@ -93,7 +93,9 @@ const DatePicker = ({
                 pointerEvents={disabled ? "none" : "auto"}
               />
               <InputRightElement>
-                <CalenderIcon mt={4} />
+                <CalenderIcon 
+                mt={4} 
+                />
               </InputRightElement>
             </InputGroup>
           </div>
