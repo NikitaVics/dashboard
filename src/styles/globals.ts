@@ -1,4 +1,4 @@
-import { GlobalStyleProps, mode } from "@chakra-ui/theme-tools"
+import { GlobalStyleProps, mode } from "@chakra-ui/theme-tools";
 
 // Global style overrides.
 const styles = {
@@ -39,6 +39,6 @@ const styles = {
       background: mode("rgba(248, 248, 248, 1)", "rgba(0, 0, 0, 0.02)")(props),
     },
   }),
-}
+};
 
-export default styles
+export default styles;

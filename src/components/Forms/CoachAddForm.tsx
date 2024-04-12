@@ -8,6 +8,7 @@ import {
   Text,
   useColorModeValue,
   useToast,
+  IconButton,
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import useTranslation from "next-translate/useTranslation";
@@ -18,6 +19,7 @@ import { mutate } from "swr";
 import * as Yup from "yup";
 import { InputControl } from "../Input/Input";
 import DatePicker from "@/pages/coachDatePicker";
+import { CloseIcon } from "@chakra-ui/icons";
 
 type FormItems = {
   gender: string | Blob;
@@ -96,68 +98,64 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
     }
   };
 
-  const handleSubmit = async (values: FormItems) => {
-   if (gender) {
-    try {
-
-      const data = new FormData();
-      data.append("FirstName", values.firstName);
-      data.append("LastName", values.lastName);
-      data.append("Gender", gender);
-      data.append("CoachFrom", selectedDate?.toISOString() || ""); 
-      data.append("PhoneNumber", values.phoneNumber);
-      data.append("Email", values.email);
-      data.append("Image", image);
-
-      const response = await ky.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Coach`,
-        {
-          body: data,
-        }
-      );
-
-      if (response) {
-        toast({
-          description: "Successfully added",
-          status: "success",
-          position: "top",
-          duration: 3000,
-          isClosable: true,
-        });
-        onClose?.();
-        await mutate(`/api/coach`);
-      }
-    } catch (error) {
-      if (error instanceof HTTPError && error.response.status === 400) {
-        const errorResponse = await error.response.json();
-        const messages = errorResponse.error.messages;
-        toast({
-          description: (
-            <>
-              {messages.map((message: string, index: number) => (
-                <Text key={index}>{message}</Text>
-              ))}
-            </>
-          ),
-          status: "error",
-          position: "top",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
-    }
-   } else {
-    toast({
-      description: "Gender is required",
-      status: "success",
-      position: "top",
-      duration: 3000,
-      isClosable: true,
-    });
-   }
+  const handleRemoveImage = () => {
+    setImage("");
   };
 
-  const emailRules = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+  const handleSubmit = async (values: FormItems) => {
+    if (gender) {
+      try {
+        const data = new FormData();
+        data.append("FirstName", values.firstName);
+        data.append("LastName", values.lastName);
+        data.append("Gender", gender);
+        data.append("CoachFrom", selectedDate?.toISOString() || "");
+        data.append("PhoneNumber", values.phoneNumber);
+        data.append("Email", values.email);
+        data.append("Image", image);
+
+        const response = await ky.post(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Coach`,
+          {
+            body: data,
+          }
+        );
+        if (response) {
+          toast({
+            description: "Successfully added",
+            status: "success",
+            position: "top",
+            duration: 3000,
+            isClosable: true,
+          });
+          onClose?.();
+          await mutate(`/api/coach`);
+        }
+      } catch (error) {
+        if (error instanceof HTTPError && error.response.status === 400) {
+          const errorResponse = await error.response.text();
+
+          toast({
+            description: errorResponse,
+            status: "error",
+            position: "top",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      }
+    } else {
+      toast({
+        description: "Gender is required",
+        status: "error",
+        position: "top",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const emailRules = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -185,11 +183,9 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
     phoneNumber: Yup.string()
       .required("Phone number is required")
       .min(7, "Phone number must be at least 7 digits")
+      .max(15, "Phone number must be at most 15 digits")
       .matches(/^[0-9]+$/, "Phone number must contain only digits"),
   });
-  
-
-
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
@@ -297,19 +293,19 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
             </GridItem>
 
             <GridItem rowSpan={1} colSpan={2}>
-      <DatePicker
+              <DatePicker
                 onDateSelect={handleDateSelect}
-                onClear={handleClearDate} value={null} placeholder={"Coach From"} border={""}      />
-              {/* <DatePicker
-  onDateSelect={(date) => console.log('Selected Date:', date)}
-  onClear={() => console.log('Clearing date')}
-/> */}
-
+                onClear={handleClearDate}
+                value={null}
+                placeholder={"Coach From"}
+                border={""}
+              />
             </GridItem>
 
             <GridItem rowSpan={1} colSpan={2}>
               <div
                 style={{
+                  position: "relative",
                   border: `1px solid ${borderColor}`,
                   borderRadius: "4px",
                   height: "120px",
@@ -320,15 +316,29 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
                 }}
               >
                 {image ? (
-                  <img
-                    src={
-                      typeof image === "string"
-                        ? image
-                        : URL.createObjectURL(image)
-                    }
-                    alt="Uploaded"
-                    style={{ maxHeight: "100%", maxWidth: "100%" }}
-                  />
+                  <>
+                    <img
+                      src={
+                        typeof image === "string"
+                          ? image
+                          : URL.createObjectURL(image)
+                      }
+                      alt="Uploaded"
+                      style={{ maxHeight: "100%", maxWidth: "100%" }}
+                    />
+                    <IconButton
+                      icon={<CloseIcon />}
+                      aria-label="Remove Image"
+                      onClick={handleRemoveImage}
+                      position="absolute"
+                      top="2"
+                      right="2"
+                      bg="transparent"
+                      _hover={{ bg: "transparent" }}
+                      color="red.500"
+                      zIndex={2}
+                    />
+                  </>
                 ) : (
                   <label
                     htmlFor="attachment"

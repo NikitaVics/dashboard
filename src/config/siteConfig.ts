@@ -1,4 +1,4 @@
-const title = "BEHRAIN"
+const title = "BEHRAIN";
 
 const siteConfig = {
   title,
@@ -6,6 +6,6 @@ const siteConfig = {
   api: {
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
   },
-}
+};
 
-export default siteConfig
+export default siteConfig;

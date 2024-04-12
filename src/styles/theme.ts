@@ -1,12 +1,12 @@
-import { extendTheme, ThemeConfig } from "@chakra-ui/react"
+import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 
-import colors from "./foundations/colors"
-import styles from "./globals"
+import colors from "./foundations/colors";
+import styles from "./globals";
 
 const config: ThemeConfig = {
   initialColorMode: "dark",
   useSystemColorMode: false,
-}
+};
 
 const breakpoints = {
   sm: "30em",
@@ -14,7 +14,7 @@ const breakpoints = {
   lg: "65em",
   xl: "80em",
   "2xl": "96em",
-}
+};
 
 const customTheme = extendTheme({
   config,
@@ -27,6 +27,6 @@ const customTheme = extendTheme({
   styles,
   breakpoints,
   components: {},
-})
+});
 
-export default customTheme
+export default customTheme;

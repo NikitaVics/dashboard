@@ -83,7 +83,9 @@ const DatePicker = ({
                 readOnly
               />
               <InputRightElement>
-                <CalenderIcon mt={4} />
+                <CalenderIcon 
+                mt={4} 
+                />
               </InputRightElement>
             </InputGroup>
           </div>
