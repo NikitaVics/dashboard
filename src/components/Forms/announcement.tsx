@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import {
   Button,
   Drawer,
@@ -12,7 +12,6 @@ import {
   Grid,
   GridItem,
   IconButton,
-  Input,
   Textarea,
   Tooltip,
   useColorModeValue,
@@ -28,6 +27,7 @@ import { AttachmentIcon } from "@chakra-ui/icons";
 import SuccessDrawer from "./successDrawer";
 import { mutate } from "swr";
 import DatePicker from "@/pages/coachDatePicker";
+import CustomTimePicker from "../CustomTimePicker";
 
 type FormItems = {
   // eslint-disable-next-line
@@ -61,8 +61,15 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
     onClose?.();
   };
 
-  const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSelectedTime(event.target.value);
+  const handleTimeChange = (time: string) => {
+    const [hours, minutes] = time.split(":");
+    const hoursInt = parseInt(hours, 10);
+    const minutesInt = parseInt(minutes, 10);
+    const formattedHours = hoursInt < 10 ? `0${hoursInt}` : `${hoursInt}`;
+    const formattedMinutes =
+      minutesInt < 10 ? `0${minutesInt}` : `${minutesInt}`;
+    const formattedTime = `${formattedHours}:${formattedMinutes}`;
+    setSelectedTime(formattedTime);
   };
 
   const handleCloseDrawer = () => {
@@ -75,11 +82,13 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
     scheduledDateTime: null,
     images: [] as File[],
   });
-  const [message, setMessage] = useState<string>("");
+  const [message, setMessage] = useState<string>(Data?.message || "");
 
   const handleMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
   };
+
+  const [isImageAttached, setIsImageAttached] = useState(false);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
@@ -89,6 +98,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
         ...formData,
         images: Array.from(e.target.files),
       });
+      setIsImageAttached(true);
     } else {
       setFormData({
         ...formData,
@@ -96,6 +106,19 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (isImageAttached) {
+      toast({
+        description: "Image Attached Successfully",
+        status: "success",
+        position: "top",
+        duration: 3000,
+        isClosable: true,
+      });
+      setIsImageAttached(false);
+    }
+  }, [isImageAttached]);
 
   const [showErrorBorder, setShowErrorBorder] = useState(false);
 
@@ -158,6 +181,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
           isClosable: true,
         });
         onClose?.();
+        await mutate(`/api/announcement?announcementType=${""}${""}`);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -174,24 +198,73 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
     setSelectedDate(null);
   };
 
+  const [dateErrorBorder, setDateErrorBorder] = useState(false);
+  const [timeErrorBorder, setTimeErrorBorder] = useState(false);
+
   const handleSchedule = async () => {
     try {
       const data = new FormData();
       data.append("Message", message);
 
-      if (formData.images) {
-        formData.images.forEach((image) => {
-          data.append(`Images`, image);
-        });
-      }
+      // if (formData.images) {
+      //   formData.images.forEach((image) => {
+      //     data.append(Images, image);
+      //   });
+      // }
 
       if (formData.images) {
         data.append("Images", formData.images[0]);
       }
 
-      const scheduledDateTime = selectedDate?.toISOString() || "";
+      if (!selectedDate) {
+        toast({
+          description: "Date is required to schedule",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        setDateErrorBorder(true);
 
-      data.append("ScheduledDateTime", scheduledDateTime);
+        setTimeout(() => {
+          setDateErrorBorder(false);
+        }, 3000);
+      }
+
+      if (!selectedTime) {
+        toast({
+          description: "Time is required to schedule",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+        setTimeErrorBorder(true);
+
+        setTimeout(() => {
+          setTimeErrorBorder(false);
+        }, 3000);
+      }
+
+      const scheduledDateTimes = selectedDate
+        ? `${selectedDate.getFullYear()}-${String(
+            selectedDate.getMonth() + 1
+          ).padStart(2, "0")}-${String(selectedDate.getDate()).padStart(
+            2,
+            "0"
+          )}`
+        : "";
+
+      const time = selectedTime;
+      const [hours, minutes] = time.split(":");
+      const utcTime = `${hours.padStart(2, "0")}:${minutes.padStart(
+        2,
+        "0"
+      )}:00Z`;
+
+      const utcDate = `${scheduledDateTimes.split("T")[0]}T${utcTime}`;
+
+      data.append("ScheduledDateTime", utcDate);
 
       const response = await ky.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement/create Announcement`,
@@ -202,7 +275,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
 
       if (response) {
         setIsSuccessDrawerOpen(true);
-        await mutate(`/api/getAnnouncement`);
+        await mutate(`/api/announcement?announcementType=${""}${""}`);
       }
     } catch (error) {
       if (error instanceof HTTPError && error.response.status === 400) {
@@ -239,11 +312,25 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
 
       data.append("Id", id);
 
-      const scheduledDateTime = new Date(
-        `${selectedDate}T${selectedTime}:00.000Z`
-      ).toISOString();
+      const scheduledDateTimes = selectedDate
+        ? `${selectedDate.getFullYear()}-${String(
+            selectedDate.getMonth() + 1
+          ).padStart(2, "0")}-${String(selectedDate.getDate()).padStart(
+            2,
+            "0"
+          )}`
+        : "";
 
-      data.append("ScheduledDateTime", scheduledDateTime);
+      const time = selectedTime;
+      const [hours, minutes] = time.split(":");
+      const utcTime = `${hours.padStart(2, "0")}:${minutes.padStart(
+        2,
+        "0"
+      )}:00Z`;
+
+      const utcDate = `${scheduledDateTimes.split("T")[0]}T${utcTime}`;
+
+      data.append("ScheduledDateTime", utcDate);
 
       const response = await ky.put(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement`,
@@ -254,7 +341,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
 
       if (response) {
         setIsSuccessDrawerOpen(true);
-        await mutate(`/api/getAnnouncement`);
+        await mutate(`/api/announcement?announcementType=${""}${""}`);
       }
     } catch (error) {
       if (error instanceof HTTPError && error.response.status === 400) {
@@ -315,7 +402,9 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
             <GridItem rowSpan={1} colSpan={2}>
               <FormControl>
                 <Flex>
-                  {Data?.images && typeof Data.images === "string" ? (
+                  {formData.images.length === 0 &&
+                  Data?.images &&
+                  typeof Data.images === "string" ? (
                     <Image
                       src={Data.images}
                       alt="Attached Image"
@@ -323,6 +412,7 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
                       w="150px"
                     />
                   ) : (
+                    formData.images.length === 0 &&
                     Data?.images &&
                     Array.isArray(Data.images) && (
                       <>
@@ -365,10 +455,10 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
                       position="absolute"
                       left="10px"
                       bg="transparent"
-                      // color="gray.500"
-                      color={attachImage ? "red" : "gray500"}
+                      color={attachImage ? "red" : "gray.500"}
                       _hover={{ color: "gray.700" }}
                       aria-label="Attach Image"
+                      zIndex={1}
                     />
                   </Tooltip>
                   <Text mt={2} color="#E53E3E">
@@ -549,17 +639,21 @@ const AnnouncementForm = ({ Data, onClose, id }: FormItems) => {
                               onClear={handleClearDate}
                               value={""}
                               placeholder={"Date"}
-                              border={""}
+                              border={dateErrorBorder ? "2px solid red" : ""}
                             />
                           </GridItem>
                           <GridItem rowSpan={1} colSpan={1}>
-                            <Input
+                            {/* <Input
                               type="time"
                               h="60px"
-                              placeholder={"Time"}
                               bgColor={bgColor}
                               value={selectedTime}
                               onChange={handleTimeChange}
+                            /> */}
+                            <CustomTimePicker
+                              value={selectedTime}
+                              onChange={handleTimeChange}
+                              border={timeErrorBorder ? "2px solid red" : ""}
                             />
                           </GridItem>
 

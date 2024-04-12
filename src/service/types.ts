@@ -82,6 +82,7 @@ export type ReportProps = {
   export type getMember = {
     searchTerm : string
    bookerName : string
+   namefilter : string
    fromBookingDate : string
    toBookingDate : string
   }

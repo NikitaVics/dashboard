@@ -93,7 +93,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
               isClosable: true,
             });
             onClose?.();
-            await mutate(`/api/members?searchTerm=${""}`);
+            await mutate(`/api/members?namefilter=${""}`);
           }
         } else {
           toast({
@@ -150,7 +150,7 @@ function MembersDetails({ memberData, memberId, onClose }: FormItems) {
               isClosable: true,
             });
             onClose?.();
-            await mutate(`/api/members?searchTerm=${""}`);
+            await mutate(`/api/members?namefilter=${""}`);
           }
         } else {
           toast({

@@ -2,10 +2,10 @@ import ky from "ky"
 
 import { User, getMember } from "../types"
 
-const getMembersList = async (httpClient: typeof ky, { searchTerm }: getMember,) => {
+const getMembersList = async (httpClient: typeof ky, { namefilter }: getMember,) => {
   return httpClient.get(`Management/Member/members-list`, {
     searchParams: {
-      searchTerm: searchTerm,
+      namefilter: namefilter,
     } as unknown as string,
   }).json<User>()
 }

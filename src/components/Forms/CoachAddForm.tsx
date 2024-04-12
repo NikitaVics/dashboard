@@ -129,12 +129,12 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
             isClosable: true,
           });
           onClose?.();
-          await mutate(`/api/coach`);
+          await mutate(`/api/coach?searchTerm=${""}`);
         }
       } catch (error) {
         if (error instanceof HTTPError && error.response.status === 400) {
           const errorResponse = await error.response.text();
-
+        
           toast({
             description: errorResponse,
             status: "error",
@@ -143,6 +143,8 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
             isClosable: true,
           });
         }
+        
+        
       }
     } else {
       toast({
@@ -183,7 +185,7 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
     phoneNumber: Yup.string()
       .required("Phone number is required")
       .min(7, "Phone number must be at least 7 digits")
-      .max(15, "Phone number must be at most 15 digits")
+      .max(15,"Phone number must be at most 15 digits")
       .matches(/^[0-9]+$/, "Phone number must contain only digits"),
   });
 
@@ -282,8 +284,8 @@ const CoachAddForm = ({ coachData, onClose }: FormItems) => {
                 focusBorderColor="rgba(78, 203, 113, 1)"
                 isInvalid={!gender && touched.gender}
               >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </Select>
               {touched.gender && !gender && (
                 <Text color="red.500" fontSize="sm" mt={2}>

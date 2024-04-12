@@ -42,6 +42,7 @@ import EditIcon from "../components/Icons/EditIcon";
 import SearchIcon from "../components/Icons/searchIcon";
 import CustomDateRangePicker from "../DatePicker";
 
+
 type EditTaxDetailsProps = {
   memberData: BookingsProps;
 };
@@ -346,7 +347,9 @@ function Bookings({ memberData }: EditTaxDetailsProps) {
   const color2 = useColorModeValue("dark.400", "light.50");
 
   const handleClearDate = () => {
-      setDate("");
+    setInputValue("");
+    setDate("");
+    setEndDate("")
     };
 
   const [showPeakBooking, setShowPeakBooking] = useState(true);

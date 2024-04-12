@@ -312,7 +312,7 @@ const Coach = ({ coaches }: EditCoachProps) => {
                 }}
                 onSubmit={() => {}}
               >
-                <HStack justifyContent="space-between" my={{ base: 3, md: 5 }}>
+                <HStack justifyContent="space-between" my={{ base: 3, md: 5 }} px={10}>
                   <Formik
                     initialValues={{
                       firstName: "",

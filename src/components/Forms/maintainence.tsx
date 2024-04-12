@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -10,7 +10,6 @@ import {
   DrawerOverlay,
   Grid,
   GridItem,
-  Input,
   Stack,
   Text,
   Textarea,
@@ -29,6 +28,7 @@ import ky, { HTTPError } from "ky";
 import SuccessDrawer from "./successDrawer";
 import { mutate } from "swr";
 import DatePicker from "@/pages/coachDatePicker";
+import CustomTimePicker from "../CustomTimePicker";
 
 interface ImageItem {
   id: number;
@@ -67,15 +67,23 @@ const CourtMaintainence: React.FC<FormItems> = ({
 
   const [isSuccessDrawerOpen, setIsSuccessDrawerOpen] = useState(false);
 
-  const handleCloseSuccessDrawer = () => {
+  const handleCloseSuccessDrawer =  () => {
     setIsSuccessDrawerOpen(false);
     onClose?.();
+  
   };
 
   const [showErrorBorder, setShowErrorBorder] = useState(false);
+  const [courtName, setCourtName] = useState(false);
 
-  const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSelectedTime(event.target.value);
+  const handleTimeChange = (time : string) => {
+    const [hours, minutes] = time.split(':');
+    const hoursInt = parseInt(hours, 10);
+    const minutesInt = parseInt(minutes, 10);
+    const formattedHours = hoursInt < 10 ? `0${hoursInt}` : `${hoursInt}`;
+    const formattedMinutes = minutesInt < 10 ? `0${minutesInt}` : `${minutesInt}`;
+    const formattedTime = `${formattedHours}:${formattedMinutes}`;
+    setSelectedTime(formattedTime);
   };
 
   const handleCloseDrawer = () => {
@@ -119,12 +127,29 @@ const CourtMaintainence: React.FC<FormItems> = ({
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
-    setShowErrorBorder(false); // Reset error border when text changes
+    setShowErrorBorder(false); 
   };
 
   const handleSubmit = async () => {
     try {
+      
       const selectedImages = images.filter((image) => image.selected);
+      if (selectedImages.length === 0) {
+        toast({
+          description: "Please select at least one court",
+          status: "error",
+          position: "top",
+          duration: 3000,
+          isClosable: true,
+        });
+      
+      setCourtName(true);
+
+      setTimeout(() => {
+        setCourtName(false);
+      }, 3000);
+    }
+    
       const courtNames = selectedImages
         .map((image) => t(`announce.${image.name.toLowerCase()}`))
         .join(", ");
@@ -151,6 +176,7 @@ const CourtMaintainence: React.FC<FormItems> = ({
             isClosable: true,
           });
           onClose?.();
+          await mutate(`/api/announcement?announcementType=${""}${""}`);
         }
       } else {
         toast({
@@ -197,6 +223,9 @@ const CourtMaintainence: React.FC<FormItems> = ({
     setSelectedDate(null);
   };
 
+  const [dateErrorBorder,setDateErrorBorder] = useState(false)
+  const [timeErrorBorder,setTimeErrorBorder] = useState(false)
+
   const handleSchedule = async () => {
     try {
       const selectedImages = images.filter((image) => image.selected);
@@ -204,19 +233,70 @@ const CourtMaintainence: React.FC<FormItems> = ({
         .map((image) => t(`announce.${image.name.toLowerCase()}`))
         .join(", ");
 
-      const scheduledDateTime = selectedDate?.toISOString() || "";
+        if(!selectedDate) {
+          toast({
+            description: "Date is required to schedule",
+            status: "error",
+            position: "top",
+            duration: 3000,
+            isClosable: true,
+          });
+          setDateErrorBorder(true);
+
+          setTimeout(() => {
+            setDateErrorBorder(false);
+          }, 3000);
+        }
+
+        if(!selectedTime) {
+          toast({
+            description: "Time is required to schedule",
+            status: "error",
+            position: "top",
+            duration: 3000,
+            isClosable: true,
+          });
+          setTimeErrorBorder(true);
+
+          setTimeout(() => {
+            setTimeErrorBorder(false);
+          }, 3000);
+        }
+        
+
+        const scheduledDateTimes = selectedDate
+        ? `${selectedDate.getFullYear()}-${
+            String(selectedDate.getMonth() + 1).padStart(2, "0")
+          }-${String(selectedDate.getDate()).padStart(2, "0")}`
+        : "";
+      
+        const times = selectedTime;
+        const [hour, minute] = times.split(':');
+        const utcTimess = `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}:00Z`;
+        
+       
+        
+        const scheduledDateTime = `${scheduledDateTimes.split('T')[0]}T${utcTimess}`;
 
       const updatedValues = {
         scheduledDateTime,
         message: message,
         courtNames,
       };
-      const response = await ky.post(`/api/announcement/AddCourtMaintainence`, {
-        json: updatedValues,
-      });
+      const response = await ky.post(
+        `/api/announcement/AddCourtMaintainence`,
+        {
+          json: updatedValues,
+        }
+      );
 
       if (response) {
+       
         setIsSuccessDrawerOpen(true);
+        await mutate(`/api/announcement?announcementType=${""}${""}`);
+       
+        
+       
       }
     } catch (error) {
       if (error instanceof HTTPError && error.response.status === 400) {
@@ -256,24 +336,18 @@ const CourtMaintainence: React.FC<FormItems> = ({
               duration: 3000,
               isClosable: true,
             });
-            await mutate(
-              `/api/announcement/getAnnouncement?announcementType=${""}`
-            );
+           
             onClose?.();
+            await mutate(`/api/announcement?announcementType=${""}${""}`);
+           
+      
           }
         }
       } catch (error) {
         if (error instanceof HTTPError && error.response.status === 400) {
-          const errorResponse = await error.response.json();
-          const messages = errorResponse.error.messages;
+          const messages = "Already Sent can't be cancel";
           toast({
-            description: (
-              <>
-                {messages.map((message: string, index: number) => (
-                  <Text key={index}>{message}</Text>
-                ))}
-              </>
-            ),
+            description:messages,
             status: "error",
             position: "top",
             duration: 3000,
@@ -286,15 +360,30 @@ const CourtMaintainence: React.FC<FormItems> = ({
 
   const handleEdits = async () => {
     try {
+     
       const data = new FormData();
       data.append("Id", courtId);
       data.append("Message", message);
 
-      const event = new Date(
-        `${selectedDate}T${selectedTime}:00.000Z`
-      ).toISOString();
 
-      data.append("EventDateTime", event);
+      const scheduledDateTimes = selectedDate
+      ? `${selectedDate.getFullYear()}-${
+          String(selectedDate.getMonth() + 1).padStart(2, "0")
+        }-${String(selectedDate.getDate()).padStart(2, "0")}`
+      : "";
+      // const event = new Date(
+      //   `${selectedDate}T${selectedTime}:00.000Z`
+      // ).toISOString();
+
+      const time = selectedTime;
+      const [hours, minutes] = time.split(':');
+      const utcTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00Z`;
+      
+      console.log("Time in UTC format:", utcTime);
+      
+      const utcDate = `${scheduledDateTimes.split('T')[0]}T${utcTime}`;
+
+      data.append("ScheduledDateTime", utcDate);
 
       const response = await ky.put(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}Management/Announcement`,
@@ -305,7 +394,7 @@ const CourtMaintainence: React.FC<FormItems> = ({
 
       if (response) {
         setIsSuccessDrawerOpen(true);
-        await mutate(`/api/getAnnouncement`);
+        await mutate(`/api/announcement?announcementType=${""}${""}`);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -341,16 +430,14 @@ const CourtMaintainence: React.FC<FormItems> = ({
                 <GridItem key={image.id} rowSpan={1} colSpan={1}>
                   <Stack
                     bgColor={bgColor}
-                    border={
-                      image.selected ? "1px solid rgba(78, 203, 113, 1)" : ""
-                    }
+                    border={courtName ? "2px solid red" :`2px solid ${image.selected ? 'rgba(78, 203, 113, 1)' : 'transparent'}`}
                     p={4}
+                    
                     borderRadius={"20px"}
                     onClick={() => handleImageClick(image.id)}
                     _hover={{
                       cursor: "pointer",
-                      transform: "scale(1.1)",
-                      transition: "transform 0.5s",
+                      border: "2px solid rgba(78, 203, 113, 1)",
                     }}
                   >
                     {image.icon}
@@ -428,9 +515,38 @@ const CourtMaintainence: React.FC<FormItems> = ({
                       color="rgba(78, 203, 113, 1)"
                       h="80px"
                       onClick={() => {
-                        if (message.trim() !== "") {
-                          handleEditModalOpen();
-                        } else {
+                        const selectedImages = images.filter((image) => image.selected);
+                        if (message.trim() === "" && selectedImages.length === 0)  {
+                          toast({
+                            description: "Message and court Names are required to schedule",
+                            status: "error",
+                            position: "top",
+                            duration: 3000,
+                            isClosable: true,
+                          });
+                          setShowErrorBorder(true);
+                          setCourtName(true);
+
+                          setTimeout(() => {
+                            setShowErrorBorder(false);
+                            setCourtName(false);
+                          }, 3000);
+                        
+                        } else if (selectedImages.length === 0) {
+                            toast({
+                              description: "Please select at least one court to schedule",
+                              status: "error",
+                              position: "top",
+                              duration: 3000,
+                              isClosable: true,
+                            });
+                          
+                          setCourtName(true);
+                    
+                          setTimeout(() => {
+                            setCourtName(false);
+                          }, 3000);
+                        } else if (message.trim() === "") {
                           toast({
                             description: "Message is required to schedule",
                             status: "error",
@@ -438,13 +554,17 @@ const CourtMaintainence: React.FC<FormItems> = ({
                             duration: 3000,
                             isClosable: true,
                           });
+                        
                           setShowErrorBorder(true);
-
-                          setTimeout(() => {
-                            setShowErrorBorder(false);
-                          }, 3000);
+                  
+                        setTimeout(() => {
+                          setShowErrorBorder(false);
+                        }, 3000);
+                      } else {
+                        handleEditModalOpen();
+                      }
                         }
-                      }}
+                      }
                     >
                       {t(`common:buttons.schedule`)}
                     </Button>
@@ -518,17 +638,19 @@ const CourtMaintainence: React.FC<FormItems> = ({
                                 onClear={handleClearDate}
                                 value={""}
                                 placeholder={"Date"}
-                                border={""}
+                                border={dateErrorBorder ? "2px solid red" : ""}
                               />
                             </GridItem>
                             <GridItem rowSpan={1} colSpan={1}>
-                              <Input
+                              {/* <Input
                                 type="time"
                                 h="60px"
                                 bgColor={bgColor}
                                 value={selectedTime}
                                 onChange={handleTimeChange}
-                              />
+                              /> */}
+                             <CustomTimePicker value={selectedTime} onChange={handleTimeChange}  border={timeErrorBorder ? "2px solid red" : ""} />
+              
                             </GridItem>
 
                             <GridItem rowSpan={1} colSpan={2}>

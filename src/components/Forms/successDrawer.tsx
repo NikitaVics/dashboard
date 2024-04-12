@@ -5,7 +5,6 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
-  // DrawerHeader,
   Text,
   DrawerBody,
   Flex,
@@ -31,9 +30,6 @@ const SuccessDrawer: React.FC<SuccessDrawerProps> = ({ isOpen, onClose }) => {
           mt={3}
           bgColor="rgba(0, 0, 0, 0.08)"
         />
-        {/* <DrawerHeader fontSize="28px" fontWeight="700">
-          Schedule Announcement
-        </DrawerHeader> */}
         <DrawerBody maxW="full">
           <Flex
             direction="column"
