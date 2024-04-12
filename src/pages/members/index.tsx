@@ -33,7 +33,6 @@ import { InputControl } from "@/components/Input/Input";
 import { useDebounce } from "use-debounce";
 import ActivateIcon from "../components/Icons/activateIcon";
 
-
 type EditTaxDetailsProps = {
   memberData: MemberProps;
 };
@@ -80,13 +79,14 @@ function Member({ memberData }: EditTaxDetailsProps) {
     },
     {
       Header: t(`members.phone`),
-         // eslint-disable-next-line
+      // eslint-disable-next-line
       //@ts-ignore
       accessor: (row) => {
-      
-        const phone = row.phoneNumber ? `${row.countryCode} ${row.phoneNumber}` : "";
+        const phone = row.phoneNumber
+          ? `${row.countryCode} ${row.phoneNumber}`
+          : "";
         return phone;
-      }
+      },
     },
     {
       Header: t(`members.gender`),
