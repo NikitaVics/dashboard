@@ -24,6 +24,6 @@ app.prepare().then(() => {
     }
   }).listen(port, (err) => {
     if (err) throw err
-    console.log(Ready UI on  http://localhost:${port})
+    console.log(`Ready UI on  http://localhost:${port}`)
   })
 })
