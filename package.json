@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "node server.js",
     "lint:check": "next lint",
     "lint": "next lint --fix",
     "format": "prettier --loglevel error --write \"{src}/**/*.{ts,tsx,js,json}\"",
